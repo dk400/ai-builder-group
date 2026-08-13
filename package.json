@@ -1,0 +1,11 @@
+{
+  "name": "ai-builder-group-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AI 빌더 그룹 — 저장소 루트. 실서비스 코드는 05-서비스-nextjs/ 안에 있다.",
+  "scripts": {
+    "dev": "node scripts/run.js dev",
+    "build": "node scripts/run.js build",
+    "verify": "node scripts/verify.js"
+  }
+}

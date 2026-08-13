@@ -1,0 +1,27 @@
+# 앱 자체의 무시 규칙은 05-서비스-nextjs/.gitignore 에 있다.
+# 여기는 저장소 전체에 걸리는 것만 둔다.
+
+# 의존성 · 빌드 산출물 (어느 깊이에 생기든)
+node_modules/
+.next/
+out/
+.vercel
+*.tsbuildinfo
+
+# 환경 변수 — 절대 커밋하지 않는다
+.env
+.env.*
+!.env.example
+
+# OS · 탐색기 잔여물 (Windows 작업 환경)
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 에디터
+.vscode/
+.idea/
+
+# 임시 파일
+*.tmp
+~$*
