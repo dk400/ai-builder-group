@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work — AI 빌더 그룹 | 목업 v22 P-02</title>
+<meta name="description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-builder-group-pearl.vercel.app/work.html">
+<meta property="og:title" content="Work — AI 빌더 그룹">
+<meta property="og:description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:image" content="https://ai-builder-group-pearl.vercel.app/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AI 빌더 그룹">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* ── v13: 벤토 패널 구조 — 01 수행 프로젝트 / 02 빌더 프로필 / 03 빠른 매칭 (증거→사람→전환 순서) ── */
+.head-stats { display: flex; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+.head-stats b { display: block; font-family: var(--mono); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+.head-stats span { font-size: 14px; color: var(--muted); }
+
+.panels { padding: 34px 0 8px; }
+.panel { border-radius: 30px; padding: clamp(28px, 4vw, 52px); margin-top: 26px; scroll-margin-top: 96px; }
+.panel--tint { background: var(--paper-2); border: 1px solid var(--line); }
+.panel--sand { background: var(--paper-3); border: 1px solid var(--line-2); }
+.panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+  flex-wrap: wrap; margin-bottom: 30px; }
+.panel__no { font-family: var(--mono); font-size: 12px; letter-spacing: .18em; color: var(--muted);
+  text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.panel__no i { font-style: normal; background: var(--ink); color: var(--lime); border-radius: 8px;
+  padding: 3px 9px; font-weight: 700; letter-spacing: .06em; }
+.panel__head h2 { font-size: clamp(24px, 3vw, 32px); margin: 0 0 4px; }
+.panel__sub { color: var(--muted); font-size: 16px; margin: 0; word-break: keep-all; }
+.panel__side { font-size: 14.5px; color: var(--muted); padding-top: 38px; white-space: nowrap; }
+.panel__side a { color: var(--ink); font-weight: 700; }
+@media (max-width: 760px) { .panel__side { padding-top: 0; } }
+
+/* ── 매칭 위젯 — 밝은 카드 + 진행 바 ── */
+.quiz { background: #fff; border: 1.5px solid var(--ink); border-radius: 22px; overflow: hidden;
+  box-shadow: 0 16px 44px rgba(14,14,12,.07); max-width: 820px; }
+.quiz__head { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px 28px; background: var(--ink); color: var(--paper); }
+.quiz__head b { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; }
+.quiz__head b em { font-style: normal; color: var(--lime); }
+.quiz__head .time { font-family: var(--mono); font-size: 11.5px; color: rgba(244,241,234,.55); letter-spacing: .1em; }
+.prog { display: flex; gap: 6px; padding: 18px 28px 0; }
+.prog i { height: 5px; flex: 1; border-radius: 99px; background: var(--paper-3); transition: .25s; }
+.prog i.done { background: var(--lime); }
+.quiz__body { padding: 20px 28px 28px; }
+.qstep { display: none; }
+.qstep.on { display: block; }
+.qq { font-size: 20px; font-weight: 800; margin: 0 0 18px; letter-spacing: -0.03em; }
+.qq small { display: block; font-family: var(--mono); font-size: 11.5px; color: var(--muted-2);
+  font-weight: 400; letter-spacing: .14em; margin-bottom: 6px; }
+.opts { display: flex; flex-wrap: wrap; gap: 10px; }
+.opt { border: 1px solid var(--line); background: var(--paper-2); color: var(--ink); border-radius: 999px;
+  padding: 13px 24px; font-family: var(--sans); font-size: 15.5px; font-weight: 600; cursor: pointer; transition: .15s; }
+.opt:hover { border-color: var(--ink); background: var(--lime); }
+.qres .lead { font-size: 16.5px; color: var(--muted); margin: 0 0 18px; word-break: keep-all; }
+.qres .lead em { font-style: normal; color: var(--ink); font-weight: 800;
+  background: linear-gradient(transparent 62%, var(--lime) 62%); padding: 0 2px; }
+.picks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px; }
+@media (max-width: 760px) { .picks { grid-template-columns: 1fr; } }
+.pick { background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px;
+  display: flex; gap: 14px; align-items: center; text-decoration: none; color: inherit; transition: .15s; }
+.pick:hover { border-color: var(--ink); }
+.pick img { width: 52px; height: 52px; border-radius: 16px; object-fit: cover; flex: none; }
+.pick b { display: block; font-size: 16.5px; }
+.pick span { font-size: 13.5px; color: var(--muted); }
+.pick .why { margin-left: auto; font-family: var(--mono); font-size: 10.5px; background: var(--lime); color: var(--ink);
+  padding: 5px 10px; border-radius: 999px; letter-spacing: .06em; white-space: nowrap; font-weight: 700; }
+.redo { background: none; border: 0; color: var(--muted); font-family: var(--sans); font-size: 14px; cursor: pointer;
+  margin-left: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.redo:hover { color: var(--ink); }
+.qback { background: none; border: 0; padding: 0; margin-top: 20px; font-family: var(--sans); font-size: 14px;
+  font-weight: 600; color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+.qback::before { content: "←"; font-family: var(--mono); transition: transform .15s; }
+.qback:hover { color: var(--ink); }
+.qback:hover::before { transform: translateX(-3px); }
+.qres .qback { margin: 0 0 0 14px; }
+
+/* ── 빌더 프로필 — 포트레이트 카드 (클릭 → builder.html 프로필) ── */
+.bld__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.bcard { display: block; text-decoration: none; }
+.bcard .slot { aspect-ratio: 4/5; border-radius: 20px; outline: 2px solid transparent; outline-offset: -2px;
+  transition: outline-color var(--hover); }
+.bcard .slot > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(28%); transition: transform .7s var(--ease-in), filter .35s; }
+.bcard:hover .slot { outline-color: var(--ink); }
+.bcard:hover .slot > img { transform: scale(1.045); filter: grayscale(0); }
+.bcard .lv { position: absolute; top: 14px; left: 14px; z-index: 3; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink); padding: 7px 13px; border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--line); }
+.bcard .lv--lead { background: var(--lime); border-color: var(--ink); font-weight: 700; }
+.bcard .lv--new { background: var(--ink); color: var(--lime); border-color: var(--ink); font-weight: 700; }
+.bcard .ct { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 48px 16px 14px;
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  background: linear-gradient(transparent, rgba(14,14,12,.66)); font-family: var(--mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: rgba(244,241,234,.9); }
+.bcard .ct .go { opacity: 0; transform: translateX(-6px); transition: opacity var(--hover), transform .25s var(--ease-in); }
+.bcard:hover .ct .go { opacity: 1; transform: none; }
+.bcard .meta { padding: 14px 2px 0; }
+.bcard b { display: block; font-size: 18px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); }
+.bcard:hover b { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+.bcard .role { display: block; font-size: 13px; color: var(--muted); margin: 4px 0 8px; }
+.bcard p { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.6; word-break: keep-all; }
+.bcard .stk { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 12px; }
+.bcard .stk i { font-style: normal; font-family: var(--mono); font-size: 11.5px; letter-spacing: .03em;
+  background: var(--paper-3); color: var(--muted); border-radius: 999px; padding: 4px 10px; }
+.panel--tint .bcard .stk i { background: var(--paper-3); }
+.bld-note { margin: 30px 0 0; font-family: var(--mono); font-size: 12px; color: var(--muted-2); letter-spacing: .04em; }
+.bld-note b { color: var(--muted); font-weight: 700; }
+@media (max-width: 1000px) { .bld__grid { grid-template-columns: repeat(2, 1fr); } }
+/* v22: 모바일 — 빌더 리스트를 2행 가로 스와이프 캐러셀로 (한 화면 2×2, 옆으로 넘김) */
+@media (max-width: 640px) {
+  .bld__grid { display: grid; grid-template-columns: none; grid-auto-flow: column;
+    grid-template-rows: repeat(2, auto); grid-auto-columns: 44vw; gap: 18px 14px;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px;
+    overscroll-behavior-x: contain;
+    margin: 0 -20px; padding: 0 20px 8px; scrollbar-width: none; }
+  .bld__grid::-webkit-scrollbar { display: none; }
+  .bcard { scroll-snap-align: start; min-width: 0; }
+  .bcard .slot { aspect-ratio: 4/4.6; border-radius: 16px; }
+  .bcard .meta { padding: 9px 2px 0; }
+  .bcard b { font-size: 15px; }
+  .bcard .role { font-size: 11.5px; margin: 2px 0 0; }
+  .bcard p, .bcard .stk { display: none; }
+  .bcard .lv { top: 9px; left: 9px; font-size: 9px; padding: 4px 8px; letter-spacing: .12em; }
+  .bcard .ct { padding: 34px 12px 9px; font-size: 9.5px; }
+}
+
+/* ── 포트폴리오 그리드 (plus-ex 리듬) ── */
+.pxg { display: grid; grid-template-columns: repeat(12, 1fr); gap: 22px; }
+.pxg .wcard:nth-child(1) { grid-column: span 8; }
+.pxg .wcard:nth-child(2) { grid-column: span 4; align-self: end; }
+.pxg .wcard:nth-child(3) { grid-column: span 4; }
+.pxg .wcard:nth-child(4) { grid-column: span 8; }
+.pxg .wcard:nth-child(5) { grid-column: span 6; }
+.pxg .wcard:nth-child(6) { grid-column: span 6; margin-top: 60px; }
+.pxg .wcard:nth-child(7) { grid-column: span 4; }
+.pxg .wcard:nth-child(8) { grid-column: span 4; margin-top: 40px; }
+.pxg .wcard:nth-child(9) { grid-column: span 4; }
+.pxg .wcard:nth-child(1) .slot { aspect-ratio: 16/10; }
+.pxg .wcard:nth-child(2) .slot { aspect-ratio: 4/5; }
+.pxg .wcard:nth-child(3) .slot { aspect-ratio: 4/5; }
+.pxg .wcard:nth-child(4) .slot { aspect-ratio: 16/10; }
+.pxg .wcard:nth-child(5) .slot, .pxg .wcard:nth-child(6) .slot { aspect-ratio: 16/11; }
+.pxg .wcard:nth-child(7) .slot, .pxg .wcard:nth-child(8) .slot, .pxg .wcard:nth-child(9) .slot { aspect-ratio: 16/12; }
+.pxg .wcard:nth-child(1) h3, .pxg .wcard:nth-child(4) h3 { font-size: 25px; }
+/* v22: 모바일 — 포트폴리오 2단 그리드 (스크롤 절반, 필터와 무관하게 안정) + 오버레이 태그 배지 */
+@media (max-width: 900px) {
+  .pxg { grid-template-columns: 1fr 1fr; gap: 24px 14px; }
+  .pxg .wcard { grid-column: auto !important; margin-top: 0 !important; min-width: 0; }
+  .pxg .wcard:nth-child(n) .slot { aspect-ratio: 4/3; }
+  .pxg .wcard:nth-child(n) h3 { font-size: 15.5px; margin: 0 0 3px; }
+  .pxg .wcard .bf__bar { display: none; }
+  .pxg .wcard .meta { position: relative; padding: 12px 2px 0; }
+  .pxg .wcard .mrow { position: absolute; left: 8px; right: 8px; bottom: calc(100% + 10px); margin: 0; z-index: 4; }
+  .pxg .wcard .mrow .tag { font-size: 10px; padding: 4px 9px; box-shadow: 0 6px 14px rgba(14,14,12,.28); }
+  .pxg .wcard .mrow .yr { display: none; }
+  .pxg .wcard p { font-size: 12.5px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .pxg .wcard .builders { font-size: 11px; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+.list-note { margin: 48px 0 0; text-align: center; }
+.head-cnt { font-family: var(--mono); font-size: 13px; letter-spacing: .16em; color: var(--muted-2); }
+.slot .cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+
+/* v19: 이음새 리본 (서브 페이지 슬림 버전) */
+.ribbon-sep { position: relative; height: 0; z-index: 6; pointer-events: none; }
+.ribbon-sep svg { position: absolute; left: 0; right: 0; top: -120px; width: 100%; height: 200px;
+  display: block; overflow: visible; filter: drop-shadow(0 12px 24px rgba(14,14,12,.14)); }
+.ribbon-sep .edge2 { fill: none; stroke: var(--paper); stroke-width: 44; stroke-linecap: round; }
+.ribbon-sep .lane2 { fill: none; stroke: var(--ink); stroke-width: 38; stroke-linecap: round; }
+.ribbon-sep text { font-family: var(--sans); dominant-baseline: middle; }
+.ribbon-sep text.t2 { font-size: 14.5px; font-weight: 700; letter-spacing: .14em; fill: var(--lime); }
+@media (max-width: 960px) { .ribbon-sep svg { top: -108px; height: 150px; filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="gnb scrolled">
+  <div class="gnb__in">
+    <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+    <button class="gnb__burger" aria-label="메뉴">☰</button>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="work.html" class="active">Work</a>
+      <a href="insight.html">Insight</a>
+      <a href="content.html">콘텐츠</a>
+    </nav>
+    <a class="btn btn--lime btn--sm btn--pulse" href="contact.html" data-track="cta_click" data-location="gnb">문의하기</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <h1><span class="w300">만드는 사람과,</span> 만든 것들</h1>
+      <p>추천받고 싶다면 30초 매칭으로, 직접 둘러보고 싶다면 작업물부터. 두 길 모두 열어두었습니다.</p>
+      <div class="head-stats">
+        <div><b class="num">10</b><span>검증된 빌더</span></div>
+        <div><b class="num">09</b><span>공개 프로젝트</span></div>
+        <div><b class="num">4.9</b><span>평균 만족도</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v19: 이음새 리본 — 페이지 헤드 ↔ 패널 -->
+  <div class="ribbon-sep" aria-hidden="true">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+      <path id="rsW" d="M -80,120 C 260,80 520,150 820,110 C 1120,70 1320,130 1700,90" fill="none"/>
+      <use href="#rsW" class="edge2"/>
+      <use href="#rsW" class="lane2"/>
+      <text class="t2" dy="5">
+        <textPath href="#rsW" data-wflow data-unit="5" data-speed="0.024" data-dir="rev">AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ </textPath>
+      </text>
+    </svg>
+  </div>
+
+  <div class="wrap panels">
+
+    <!-- ── 패널 01 · 수행 프로젝트 ── -->
+    <section class="panel panel--sand" id="works">
+      <div class="panel__head">
+        <div>
+          <div class="panel__no"><i>01</i>직접 탐색</div>
+          <h2>수행 프로젝트 <span class="head-cnt num" data-cnt>( 09 )</span></h2>
+          <p class="panel__sub">비슷한 결과물을 먼저 찾으세요 — 담당 빌더가 함께 보입니다.</p>
+        </div>
+        <div class="panel__side">고르기 어렵다면 → <a href="#match">03 빠른 매칭 ↓</a></div>
+      </div>
+
+      <div class="chips" role="tablist" style="margin:0 0 34px">
+        <button class="chip on" data-cat="all">전체</button>
+        <button class="chip" data-cat="aiax">AI · AX</button>
+        <button class="chip" data-cat="commerce">Commerce</button>
+        <button class="chip" data-cat="platform">SaaS · Admin</button>
+        <button class="chip" data-cat="finance">Finance</button>
+      </div>
+
+      <div class="pxg" data-list>
+        <a class="wcard" href="work-detail.html" data-c="commerce" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-iloom.png" alt="iloom 리빙 커머스 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">Commerce</span><span class="yr num">2026</span></div>
+            <h3>iloom — 리빙 커머스 리뉴얼</h3>
+            <p>가구 브랜드 일룸의 커머스 경험 개편. 상품 탐색부터 상담 전환까지 여정 재설계.</p>
+            <div class="builders">with 똑똑한개발자 · 빌더 조쉬</div></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="aiax" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-daisy.png" alt="DAISY AI 업무 플랫폼 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">AI · AX</span><span class="yr num">2026</span></div>
+            <h3>DAISY — 대홍기획</h3>
+            <p>광고 그룹의 AI 업무 플랫폼 · 빌더 유나</p></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="platform" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-aerok-user.jpg" alt="Aerok 사용자 앱 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">O2O</span><span class="yr num">2025</span></div>
+            <h3>Aerok User — 사용자 앱</h3>
+            <p>예약·이용 플로우 전면 구축 · 빌더 리아</p></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="finance" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-nice.png" alt="NICE 정보통신 결제 어드민 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">Finance</span><span class="yr num">2025</span></div>
+            <h3>NICE 정보통신 — 결제 인프라 어드민</h3>
+            <p>결제 데이터 대시보드와 운영 콘솔. 금융 수준 권한·감사 로그 설계 포함.</p>
+            <div class="builders">with 똑똑한개발자 · 빌더 도현</div></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="platform" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-aerok-admin.jpg" alt="Aerok 운영 콘솔 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">SaaS · Admin</span><span class="yr num">2025</span></div>
+            <h3>Aerok Admin — 운영 콘솔</h3>
+            <p>지점·정산 통합 관리 · 빌더 도현</p></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="commerce" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-btv.png" alt="Btv 우리동네광고 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">Media</span><span class="yr num">2024</span></div>
+            <h3>Btv 우리동네광고 — SK브로드밴드</h3>
+            <p>소상공인 TV 광고 셀프 집행 플랫폼 · 빌더 조쉬</p></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="platform" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-markspon.png" alt="마크스폰 EDK 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">SaaS · Admin</span><span class="yr num">2025</span></div>
+            <h3>마크스폰 EDK</h3>
+            <p>기업 복지 커머스 운영 시스템 · 빌더 도현</p></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="aiax" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-canape.png" alt="CANAPE AI 심리 분석 서비스 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">AI · AX</span><span class="yr num">2023</span></div>
+            <h3>CANAPE — 도다마인드</h3>
+            <p>AI 심리 분석 서비스 · 빌더 유나</p></div>
+        </a>
+        <a class="wcard" href="work-detail.html" data-c="platform" data-cursor="VIEW →">
+          <div class="slot mask">
+            <img class="cover" src="assets/img/work-familycare.jpg" alt="키즈노트 패밀리케어 화면" loading="lazy">
+          </div>
+          <div class="meta"><div class="mrow"><span class="tag">Platform</span><span class="yr num">2022</span></div>
+            <h3>패밀리케어 — 키즈노트</h3>
+            <p>가족 돌봄 연결 서비스 · 빌더 리아</p></div>
+        </a>
+      </div>
+
+      <div class="empty" data-empty hidden>
+        <h3>이 분야의 첫 프로젝트가 곧 공개됩니다</h3>
+        <p>고민 중인 프로젝트가 이 분야라면, 30초 매칭으로 알려주세요.</p>
+        <a class="btn btn--ghost btn--sm" href="#match">30초 매칭 받기 ↓</a>
+        <a class="btn btn--ink btn--sm" href="contact.html">문의하기 <span class="arr">→</span></a>
+      </div>
+
+      <div class="list-note"><button class="btn btn--ghost">더 보기</button></div>
+    </section>
+
+    <!-- ── 패널 02 · 빌더 프로필 ── -->
+    <section class="panel panel--tint" id="builders">
+      <div class="panel__head">
+        <div>
+          <div class="panel__no"><i>02</i>만드는 사람들</div>
+          <h2>검증된 빌더 <span class="head-cnt num">( 10 )</span></h2>
+          <p class="panel__sub">카드를 누르면 빌더의 프로필과 수행한 작업물을 볼 수 있습니다.</p>
+        </div>
+        <div class="panel__side">누구에게 맡길지 고민된다면 → <a href="#match">03 빠른 매칭 ↓</a></div>
+      </div>
+      <div class="bld__grid">
+        <a class="bcard rv" href="builder.html?b=josh" data-cursor="PROFILE →" data-track="builder_click" data-slug="josh">
+          <div class="slot mask">
+            <img src="assets/img/av-josh.jpg" alt="빌더 조쉬 프로필 사진">
+            <span class="lv lv--lead">✳ 이달의 빌더</span>
+            <div class="ct"><span>수행 <span class="num">14</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 조쉬</b>
+            <span class="role">프로덕트 빌더 · 기획+개발</span>
+            <p>기획자·디자이너·개발자를 합친 원맨 프로덕트 빌더. AI 네이티브 운영법 인터뷰의 그 사람.</p>
+            <div class="stk"><i>Next.js</i><i>LLM API</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d1" href="builder.html?b=ria" data-cursor="PROFILE →" data-track="builder_click" data-slug="ria">
+          <div class="slot mask">
+            <img src="assets/img/av-ria.jpg" alt="빌더 리아 프로필 사진">
+            <div class="ct"><span>수행 <span class="num">9</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 리아</b>
+            <span class="role">랜딩 · 인터랙션</span>
+            <p>디자인 감도와 전환 설계가 강점. 수주용 랜딩과 브랜드 사이트를 주로 맡습니다.</p>
+            <div class="stk"><i>Interaction</i><i>GA4 설계</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d2" href="builder.html?b=dohyun" data-cursor="PROFILE →" data-track="builder_click" data-slug="dohyun">
+          <div class="slot mask">
+            <img src="assets/img/av-dohyun.jpg" alt="빌더 도현 프로필 사진">
+            <div class="ct"><span>수행 <span class="num">11</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 도현</b>
+            <span class="role">플랫폼 · 어드민</span>
+            <p>데이터 모델링과 권한 설계 경험 다수. 관리자·정산 시스템을 안정적으로 짓습니다.</p>
+            <div class="stk"><i>Supabase</i><i>RBAC</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d3" href="builder.html?b=yuna" data-cursor="PROFILE →" data-track="builder_click" data-slug="yuna">
+          <div class="slot mask">
+            <img src="assets/img/av-yuna.jpg" alt="빌더 유나 프로필 사진">
+            <div class="ct"><span>수행 <span class="num">7</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 유나</b>
+            <span class="role">AI 서비스 · 에이전트</span>
+            <p>LLM 연동·프롬프트 설계를 실무로 다룹니다. PoC부터 단계 검증으로 리스크를 줄입니다.</p>
+            <div class="stk"><i>Agents</i><i>RAG</i></div>
+          </div>
+        </a>
+        <a class="bcard rv" href="builder.html?b=hajun" data-cursor="PROFILE →" data-track="builder_click" data-slug="hajun">
+          <div class="slot mask">
+            <img src="assets/img/av-hajun.jpg" alt="빌더 하준 프로필 사진">
+            <div class="ct"><span>수행 <span class="num">6</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 하준</b>
+            <span class="role">모바일 앱 · 크로스플랫폼</span>
+            <p>하나의 코드베이스로 iOS·Android를 함께 짓습니다. 스토어 심사·배포까지 책임집니다.</p>
+            <div class="stk"><i>Flutter</i><i>스토어 배포</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d1" href="builder.html?b=sein" data-cursor="PROFILE →" data-track="builder_click" data-slug="sein">
+          <div class="slot mask">
+            <img src="assets/img/av-sein.jpg" alt="빌더 세인 프로필 사진">
+            <div class="ct"><span>수행 <span class="num">5</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 세인</b>
+            <span class="role">데이터 · 업무 자동화</span>
+            <p>반복되는 손작업을 파이프라인과 에이전트로 바꿉니다. 데이터가 흐르게 만드는 빌더.</p>
+            <div class="stk"><i>Python</i><i>n8n</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d2" href="builder.html?b=minseo" data-cursor="PROFILE →" data-track="builder_click" data-slug="minseo">
+          <div class="slot mask">
+            <img src="assets/img/av-minseo.jpg" alt="빌더 민서 프로필 사진">
+            <div class="ct"><span>수행 <span class="num">4</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 민서</b>
+            <span class="role">브랜드 · 모션 디자인</span>
+            <p>디자인 시스템과 모션으로 서비스의 인상을 만듭니다. 개발자가 바로 쓸 수 있는 디자인.</p>
+            <div class="stk"><i>Design System</i><i>Motion</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d2" href="builder.html?b=taeo" data-cursor="PROFILE →" data-track="builder_click" data-slug="taeo">
+          <div class="slot mask">
+            <img src="assets/img/av-taeo.jpg" alt="빌더 태오 프로필 사진">
+            <span class="lv lv--new">NEW</span>
+            <div class="ct"><span>수행 <span class="num">8</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 태오</b>
+            <span class="role">커머스 · 결제</span>
+            <p>PG·정기결제 연동과 주문·정산 흐름 설계가 전문. 돈이 오가는 화면을 꼼꼼하게 짓습니다.</p>
+            <div class="stk"><i>PG 연동</i><i>구독 결제</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d3" href="builder.html?b=eunchae" data-cursor="PROFILE →" data-track="builder_click" data-slug="eunchae">
+          <div class="slot mask">
+            <img src="assets/img/av-eunchae.jpg" alt="빌더 은채 프로필 사진">
+            <span class="lv lv--new">NEW</span>
+            <div class="ct"><span>수행 <span class="num">5</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 은채</b>
+            <span class="role">그로스 · SEO</span>
+            <p>검색 유입과 콘텐츠 구조를 설계합니다. 만든 뒤에 발견되게 하는 것까지가 일입니다.</p>
+            <div class="stk"><i>SEO</i><i>Analytics</i></div>
+          </div>
+        </a>
+        <a class="bcard rv d4" href="builder.html?b=junho" data-cursor="PROFILE →" data-track="builder_click" data-slug="junho">
+          <div class="slot mask">
+            <img src="assets/img/av-junho.jpg" alt="빌더 준호 프로필 사진">
+            <span class="lv lv--new">NEW</span>
+            <div class="ct"><span>수행 <span class="num">3</span>건</span><span class="go">Profile →</span></div>
+            <div class="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+          </div>
+          <div class="meta">
+            <b>빌더 준호</b>
+            <span class="role">운영 · 인프라</span>
+            <p>배포 자동화와 모니터링으로 서비스를 지킵니다. 출시 후에도 문제가 먼저 보이게.</p>
+            <div class="stk"><i>CI/CD</i><i>모니터링</i></div>
+          </div>
+        </a>
+      </div>
+      <p class="bld-note">※ <b>✳ 이달의 빌더</b>는 매달 고객 평가로 새로 선정합니다 · <b>NEW</b>는 합류 90일 이내의 빌더입니다</p>
+    </section>
+
+    <!-- ── 패널 03 · 빠른 매칭 ── -->
+    <section class="panel panel--tint" id="match">
+      <div class="panel__head">
+        <div>
+          <div class="panel__no"><i>03</i>빠른 매칭</div>
+          <h2>딱 맞는 빌더를 찾아드려요</h2>
+          <p class="panel__sub">세 번만 고르면 프로젝트에 맞는 빌더 2명을 추천해 드립니다.</p>
+        </div>
+        <div class="panel__side">직접 고르고 싶다면 → <a href="#works">01 작업물 탐색 ↑</a></div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz__head">
+          <b><em>✳</em> 빌더 매칭</b>
+          <span class="time">약 30초</span>
+        </div>
+        <div class="prog" id="prog"><i class="done"></i><i></i><i></i></div>
+        <div class="quiz__body">
+          <div class="qstep on" data-s="1">
+            <p class="qq"><small>질문 1 / 3</small>무엇을 만드시나요?</p>
+            <div class="opts">
+              <button class="opt" data-next="2" data-pick="landing">랜딩 페이지</button>
+              <button class="opt" data-next="2" data-pick="platform">웹 서비스 · 플랫폼</button>
+              <button class="opt" data-next="2" data-pick="ai">AI 기능 · 챗봇</button>
+              <button class="opt" data-next="2" data-pick="app">모바일 앱</button>
+            </div>
+          </div>
+          <div class="qstep" data-s="2">
+            <p class="qq"><small>질문 2 / 3</small>예산 범위는요?</p>
+            <div class="opts">
+              <button class="opt" data-next="3">500만 원 이하</button>
+              <button class="opt" data-next="3">500~1,500만 원</button>
+              <button class="opt" data-next="3">1,500만 원 이상</button>
+              <button class="opt" data-next="3">아직 모르겠어요</button>
+            </div>
+            <button class="qback" type="button" data-back="1">이전 질문</button>
+          </div>
+          <div class="qstep" data-s="3">
+            <p class="qq"><small>질문 3 / 3</small>언제 시작하고 싶으세요?</p>
+            <div class="opts">
+              <button class="opt" data-next="r">최대한 빨리</button>
+              <button class="opt" data-next="r">한 달 안</button>
+              <button class="opt" data-next="r">일정 협의 필요</button>
+            </div>
+            <button class="qback" type="button" data-back="2">이전 질문</button>
+          </div>
+          <div class="qstep qres" data-s="r">
+            <p class="lead">조건에 맞는 빌더 <em>2명</em>을 찾았어요. 문의를 남기면 이 구성으로 제안을 드립니다.</p>
+            <div class="picks" data-picks></div>
+            <a class="btn btn--ink" href="contact.html" data-track="cta_click" data-location="work_match">이 구성으로 문의하기 <span class="arr">→</span></a>
+            <button class="qback" type="button" data-back="3">이전 질문</button>
+            <button class="redo" type="button">처음부터 다시</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-banner">
+        <div>
+          <h3>비슷한 프로젝트를 계획 중이신가요?</h3>
+          <p>프로젝트 이야기를 들려주세요. 맞는 빌더를 배정해 드립니다.</p>
+        </div>
+        <a class="btn btn--lime" href="contact.html" data-track="cta_click" data-location="work_detail">프로젝트 문의 <span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft6">
+      <div class="ft6__brand">
+        <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+        <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
+      </div>
+      <div class="col"><b>Service</b><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></div>
+      <div class="col"><b>Company</b><a href="index.html#how">일하는 방식</a><a href="index.html#faq">FAQ</a><span class="soon">채용 (준비 중)</span></div>
+      <div class="col"><b>Contact</b><a href="contact.html">프로젝트 문의</a><a href="mailto:contact@example.com">contact@_______</a></div>
+      <div class="col"><b>Social</b><a href="content.html">YouTube</a><span class="soon">Instagram (예정)</span><span class="soon">LinkedIn (예정)</span></div>
+    </div>
+    <p class="ft__legal"><b>AI 빌더 그룹</b> · 수행 프로젝트는 파트너 똑똑한개발자와 함께한 작업을 포함합니다.</p>
+    <div class="ft__bottom"><span>© 2026 AI Builder Group</span><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+
+<!-- 플로팅 CTA 독 — 히어로 CTA와 화면상 비중복 (히어로/최종CTA 노출 시 숨김) -->
+<div class="dock" data-dock>
+  <div class="dock__txt"><b>검증된 바이브 코딩</b><span>부담 없이 문의를 남겨보세요</span></div>
+  <a class="btn btn--lime btn--sm" href="contact.html" data-track="cta_click" data-location="floating">프로젝트 문의 <span class="arr">→</span></a>
+  <button class="dock__x" aria-label="닫기" data-dock-x>✕</button>
+</div>
+<button class="dock-open" data-dock-open aria-label="문의 바 다시 열기">💬</button>
+
+<script src="assets/app.js"></script>
+<script>
+/* v19.5 이음새 리본 — 문구 덱 로테이션(페이드 전환) + 곡선 흐름 */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DECKS = {
+    rsW: [
+      'AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ ',
+      'REAL PROJECTS ONLY ✳ 실제 서비스 URL 공개 ✳ ',
+      '고르기 어려우면 30초 매칭 ✳ FIND YOUR BUILDER ✳ ',
+      '기획부터 검수까지 ✳ ONE TEAM ✳ AI BUILDER GROUP ✳ '
+    ]
+  };
+  var ROT = { rsW: 5000 };
+  var flows = [];
+  document.querySelectorAll('[data-wflow]').forEach(function (tp) {
+    var pid = tp.getAttribute('href').slice(1);
+    var path = document.getElementById(pid);
+    if (!path) return;
+    var decks = DECKS[pid] || [tp.textContent];
+    var pathLen = path.getTotalLength();
+    var txt = tp.parentNode;
+    txt.style.transition = 'opacity .45s ease';
+    var f = { tp: tp, di: 0, off: 0, unit: 10,
+      speed: parseFloat(tp.dataset.speed || '0.022') * (tp.dataset.dir === 'rev' ? -1 : 1) };
+    function setDeck(i) {
+      f.di = i;
+      var phrase = decks[i];
+      tp.textContent = phrase;
+      var one = Math.max(1, tp.getComputedTextLength());
+      var n = Math.max(2, Math.ceil(pathLen * 1.5 / one) + 1);
+      tp.textContent = new Array(n + 1).join(phrase);
+      f.unit = one / pathLen * 100;
+      f.off = -f.unit / 2;
+    }
+    setDeck(0);
+    flows.push(f);
+    /* 문구 로테이션 — 2.6초 첫 전환 후 기본 주기 반복. 백그라운드 탭에서는 전환 건너뜀 */
+    if (!reduce && decks.length > 1) {
+      var period = ROT[pid] || 5000;
+      var swap = function () {
+        if (document.hidden) return;
+        txt.style.opacity = 0;
+        setTimeout(function () { setDeck((f.di + 1) % decks.length); txt.style.opacity = 1; }, 470);
+      };
+      setTimeout(function () { swap(); setInterval(swap, period); }, 2600);
+    }
+  });
+  if (reduce || !flows.length) return;
+  (function loop() {
+    flows.forEach(function (f) {
+      f.off -= f.speed;
+      if (f.off <= -f.unit) f.off += f.unit;
+      if (f.off > 0) f.off -= f.unit;
+      f.tp.setAttribute('startOffset', f.off + '%');
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+<script>
+/* 프로젝트 필터 */
+(function () {
+  var cnt = document.querySelector('[data-cnt]');
+  var cards = document.querySelectorAll('[data-list] .wcard');
+  var empty = document.querySelector('[data-empty]');
+  document.querySelectorAll('.chips .chip').forEach(function (ch) {
+    ch.addEventListener('click', function () {
+      document.querySelectorAll('.chips .chip').forEach(function (c) { c.classList.remove('on'); });
+      ch.classList.add('on');
+      var cat = ch.dataset.cat, shown = 0;
+      cards.forEach(function (c) {
+        var show = cat === 'all' || c.dataset.c === cat;
+        c.style.display = show ? '' : 'none'; if (show) shown++;
+      });
+      empty.hidden = shown > 0;
+      if (cnt) cnt.textContent = '( 0' + shown + ' )';
+      history.replaceState(null, '', cat === 'all' ? '#' : '#category=' + cat);
+    });
+  });
+})();
+</script>
+
+<script>
+/* 빌더 매칭 위저드 — 첫 답변에 따라 추천 빌더가 달라짐 */
+(function () {
+  var MATCH = {
+    landing:  [['리아', '랜딩 · 인터랙션 · 9건 수행', 'av-ria.jpg', 'BEST', 'ria'],
+               ['민서', '브랜드 · 모션 디자인 · 4건 수행', 'av-minseo.jpg', '디자인', 'minseo']],
+    platform: [['도현', '플랫폼 · 어드민 · 11건 수행', 'av-dohyun.jpg', 'BEST', 'dohyun'],
+               ['조쉬', '프로덕트 빌더 · 14건 수행', 'av-josh.jpg', 'LEAD', 'josh']],
+    ai:       [['유나', 'AI 서비스 · 에이전트 · 7건 수행', 'av-yuna.jpg', 'BEST', 'yuna'],
+               ['세인', '데이터 · 업무 자동화 · 5건 수행', 'av-sein.jpg', '자동화', 'sein']],
+    app:      [['하준', '모바일 앱 · 크로스플랫폼 · 6건 수행', 'av-hajun.jpg', 'BEST', 'hajun'],
+               ['리아', '랜딩 · 인터랙션 · 9건 수행', 'av-ria.jpg', '디자인', 'ria']]
+  };
+  var picked = 'ai';
+  function go(s) {
+    document.querySelectorAll('.qstep').forEach(function (x) { x.classList.toggle('on', x.dataset.s === s); });
+    var done = s === 'r' ? 3 : (parseInt(s, 10) || 1);
+    document.querySelectorAll('#prog i').forEach(function (seg, i) { seg.classList.toggle('done', i < done); });
+    if (s === 'r') renderPicks();
+  }
+  function renderPicks() {
+    var box = document.querySelector('[data-picks]');
+    box.innerHTML = (MATCH[picked] || MATCH.ai).map(function (b) {
+      return '<a class="pick" href="builder.html?b=' + b[4] + '">'
+        + '<img src="assets/img/' + b[2] + '" alt="빌더 ' + b[0] + ' 프로필 사진">'
+        + '<div><b>빌더 ' + b[0] + '</b><span>' + b[1] + '</span></div>'
+        + '<span class="why">' + b[3] + '</span></a>';
+    }).join('');
+  }
+  document.querySelectorAll('.opt').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.dataset.pick) picked = b.dataset.pick;
+      go(b.dataset.next);
+    });
+  });
+  document.querySelectorAll('.qback').forEach(function (b) {
+    b.addEventListener('click', function () { go(b.dataset.back); });
+  });
+  document.querySelector('.redo').addEventListener('click', function () { go('1'); });
+})();
+</script>
+
+<script>
+/* 플로팅 독 — 스크롤 진입 후 표시, 최종 CTA·푸터 근처/닫기 시 숨김 */
+(function () {
+  var dock = document.querySelector('[data-dock]');
+  if (!dock) return;
+  var closed = false;
+  try { closed = sessionStorage.getItem('dock') === '1'; } catch (e) {}
+  var xbtn = document.querySelector('[data-dock-x]');
+  var reopen = document.querySelector('[data-dock-open]');
+  function syncReopen() { if (reopen) reopen.classList.toggle('show', closed); }
+  xbtn.addEventListener('click', function () {
+    closed = true; dock.classList.remove('show');
+    try { sessionStorage.setItem('dock', '1'); } catch (e) {}
+    syncReopen();
+  });
+  if (reopen) reopen.addEventListener('click', function () {
+    closed = false;
+    try { sessionStorage.removeItem('dock'); } catch (e) {}
+    syncReopen(); upd();
+  });
+  var endEl = document.querySelector('.s10') || document.querySelector('.cta-banner') || document.querySelector('footer');
+  function upd() {
+    if (closed) return;
+    var nearEnd = endEl && endEl.getBoundingClientRect().top < window.innerHeight * 0.9;
+    dock.classList.toggle('show', window.scrollY > window.innerHeight * 0.85 && !nearEnd);
+  }
+  window.addEventListener('scroll', upd, { passive: true }); upd(); syncReopen();
+})();
+</script>
+</body>
+</html>

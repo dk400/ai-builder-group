@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>미래엔 AIDT · 디자인 가이드</title>
+<link rel="stylesheet" href="assets/guide.css">
+<style>
+  :root { --brand:#5650FF; --brand-ink:#FFFFFF; --brand-soft:#F5F7FD; }
+  .mn-grad { background:linear-gradient(90deg,#5650FF 0%,#AF4BFF 100%); }
+  .mn-btn { font-family:var(--sans); border:0; cursor:pointer; font-weight:800; letter-spacing:-0.03em; }
+  .mn-btn--grad { background:linear-gradient(90deg,#5650FF 0%,#AF4BFF 100%); color:#fff; border-radius:500px; padding:16px 34px; font-size:18px; }
+  .mn-btn--solid{ background:#5650FF; color:#fff; border-radius:500px; padding:16px 34px; font-size:18px; }
+  .mn-btn--line { background:#fff; color:#5650FF; border:2px solid #5650FF; border-radius:500px; padding:14px 32px; font-size:18px; }
+  .mn-btn--pill { background:#fff; color:#212529; border-radius:40px; padding:14px 12px 14px 24px; font-size:20px; box-shadow:0 4px 40px rgba(0,0,0,.1); display:inline-flex; align-items:center; gap:14px; }
+  .mn-btn--pill i { width:28px;height:28px;border-radius:50%;background:linear-gradient(90deg,#5650FF,#AF4BFF);display:inline-block; }
+  .mn-card { background:#fff; border-radius:20px; padding:28px; box-shadow:0 4px 40px rgba(0,0,0,.1); }
+  .mn-card h4 { margin:0 0 6px; font-size:22px; font-weight:800; letter-spacing:-0.03em; line-height:1.5; color:#000; }
+  .mn-card p  { margin:0; font-size:16px; font-weight:400; color:#909090; line-height:1.5; letter-spacing:-0.03em; }
+  .mn-gtext { background:linear-gradient(90deg,#5650FF 0%,#AF4BFF 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .mn-thumb { border-radius:10px; border:3px solid #fff; box-shadow:0 4px 40px rgba(0,0,0,.1); height:120px; }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar__in">
+  <a class="topbar__home" href="index.html">← Index</a>
+  <span class="topbar__dot"></span>
+  <span class="topbar__title">미래엔 AIDT</span>
+  <nav class="topbar__nav">
+    <a href="#mood">무드</a><a href="#color">컬러</a><a href="#type">타이포</a>
+    <a href="#shape">형태</a><a href="#comp">컴포넌트</a><a href="#rule">규칙</a><a href="#token">토큰</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">04 / EdTech · AI Digital Textbook</div>
+  <h1>미래엔 AIDT<br><mark>바이올렛 그라데이션</mark> 에듀테크</h1>
+  <p class="hero__desc">
+    <strong>단 하나의 그라데이션</strong>(#5650FF → #AF4BFF)이 사이트 전체를 지배합니다.
+    페이지 전체에서 78번 반복 사용될 만큼 이 그라데이션 자체가 브랜드입니다. 서체는 SUIT,
+    본문 기본 굵기가 <strong>800(ExtraBold)</strong>일 정도로 굵고 또렷하며, 배경은 흰색이 아닌
+    아주 옅은 라벤더 톤(#F5F7FD)입니다.
+  </p>
+  <div class="hero__meta">
+    <span class="chip chip--brand">#5650FF → #AF4BFF</span>
+    <span class="chip">SUIT</span>
+    <span class="chip">Weight 800 기본</span>
+    <span class="chip">Radius 10 / 40 / 500px</span>
+    <a class="chip chip--link" href="https://aidt.m-teacher.co.kr/index.html" target="_blank" rel="noopener">원본 사이트 ↗</a>
+  </div>
+</div></header>
+
+<!-- 1 -->
+<section class="sec" id="mood"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">01</span><h2>디자인 무드</h2></div>
+  <p class="sec__sub">"AI로 바뀌는 교실". 그라데이션 하나로 첨단감을 만들고, 나머지는 교과서 표지 이미지에 맡깁니다.</p>
+  <div class="grid g4">
+    <div class="card"><span class="card__k">Tone</span><h3>단일 그라데이션</h3><p>인디고 → 퍼플. 버튼·아이콘·강조 텍스트·구분선까지 전부 같은 각도(90deg) 같은 색으로 통일합니다.</p></div>
+    <div class="card"><span class="card__k">Canvas</span><h3>#F5F7FD 라벤더 화이트</h3><p>순백 대신 파란기가 아주 살짝 섞인 배경. 흰 카드가 자연스럽게 떠 보입니다.</p></div>
+    <div class="card"><span class="card__k">Type</span><h3>초굵은 SUIT</h3><p>거의 모든 텍스트가 800. 최대 84px 헤드라인으로 강한 임팩트를 만듭니다.</p></div>
+    <div class="card"><span class="card__k">Imagery</span><h3>교과서 그리드</h3><p>실제 교과서 표지를 흰 3px 테두리 + 10px 라운드 썸네일로 벽처럼 깔아 콘텐츠 양감을 보여줍니다.</p></div>
+  </div>
+</div></section>
+
+<!-- 2 -->
+<section class="sec" id="color"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">02</span><h2>컬러 시스템</h2></div>
+  <p class="sec__sub">스와치를 클릭하면 HEX가 복사됩니다.</p>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Signature Gradient</h3>
+  <div style="height:86px;border-radius:20px;margin-bottom:12px;background:linear-gradient(90deg,#5650FF 0%,#AF4BFF 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.1em">linear-gradient(90deg, #5650FF 0%, #AF4BFF 100%)</div>
+  <div style="height:52px;border-radius:20px;margin-bottom:26px;background:linear-gradient(90deg,#B1AEFF 0%,#D6A3FF 100%);display:flex;align-items:center;justify-content:center;color:#4a3f78;font-family:var(--mono);font-size:11px;letter-spacing:.1em">SOFT — linear-gradient(90deg, #B1AEFF 0%, #D6A3FF 100%)</div>
+
+  <div class="swatches" style="margin-bottom:30px">
+    <button class="sw" data-hex="#5650FF"><span class="sw__chip" style="background:#5650FF"></span><span class="sw__body"><span class="sw__name">Primary</span><span class="sw__hex">#5650FF</span><span class="sw__use">그라데이션 시작점, 아웃라인 버튼 테두리(2px)</span></span></button>
+    <button class="sw" data-hex="#AF4BFF"><span class="sw__chip" style="background:#AF4BFF"></span><span class="sw__body"><span class="sw__name">Secondary</span><span class="sw__hex">#AF4BFF</span><span class="sw__use">그라데이션 끝점, 강조 텍스트</span></span></button>
+    <button class="sw" data-hex="#B1AEFF"><span class="sw__chip" style="background:#B1AEFF"></span><span class="sw__body"><span class="sw__name">Primary Soft</span><span class="sw__hex">#B1AEFF</span><span class="sw__use">비활성/보조 그라데이션 시작</span></span></button>
+    <button class="sw" data-hex="#D6A3FF"><span class="sw__chip" style="background:#D6A3FF"></span><span class="sw__body"><span class="sw__name">Secondary Soft</span><span class="sw__hex">#D6A3FF</span><span class="sw__use">비활성/보조 그라데이션 끝</span></span></button>
+  </div>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Neutral</h3>
+  <div class="swatches" style="margin-bottom:26px">
+    <button class="sw" data-hex="#000000"><span class="sw__chip" style="background:#000000"></span><span class="sw__body"><span class="sw__name">Black</span><span class="sw__hex">#000000</span><span class="sw__use"><strong>헤드라인·본문 기본색</strong></span></span></button>
+    <button class="sw" data-hex="#212529"><span class="sw__chip" style="background:#212529"></span><span class="sw__body"><span class="sw__name">Ink</span><span class="sw__hex">#212529</span><span class="sw__use">버튼 라벨, UI 텍스트</span></span></button>
+    <button class="sw" data-hex="#909090"><span class="sw__chip" style="background:#909090"></span><span class="sw__body"><span class="sw__name">Muted</span><span class="sw__hex">#909090</span><span class="sw__use">캡션·부가 설명</span></span></button>
+    <button class="sw" data-hex="#B8B9BC"><span class="sw__chip" style="background:#B8B9BC"></span><span class="sw__body"><span class="sw__name">Disabled</span><span class="sw__hex">#B8B9BC</span><span class="sw__use">비활성 텍스트</span></span></button>
+    <button class="sw" data-hex="#D7D7D7"><span class="sw__chip" style="background:#D7D7D7"></span><span class="sw__body"><span class="sw__name">On Dark Sub</span><span class="sw__hex">#D7D7D7</span><span class="sw__use">다크 배경 위 보조 텍스트</span></span></button>
+    <button class="sw" data-hex="#F5F7FD"><span class="sw__chip" style="background:#F5F7FD;border-bottom:1px solid #e4e7f0"></span><span class="sw__body"><span class="sw__name">Canvas</span><span class="sw__hex">#F5F7FD</span><span class="sw__use"><strong>페이지 기본 배경</strong> (라벤더 화이트)</span></span></button>
+    <button class="sw" data-hex="#FFFFFF"><span class="sw__chip" style="background:#FFFFFF;border-bottom:1px solid #e4e7f0"></span><span class="sw__body"><span class="sw__name">Surface</span><span class="sw__hex">#FFFFFF</span><span class="sw__use">카드·썸네일 테두리(3px)</span></span></button>
+  </div>
+
+  <div class="card"><span class="card__k">⚠️ 주의</span>
+    <h3>사이트의 :root 변수는 Bootstrap 기본값입니다</h3>
+    <p><code>--primary: #007bff</code> 같은 값이 남아 있지만 실제 화면에서는 전혀 쓰이지 않습니다. 브랜드 컬러는 CSS 변수가 아니라 개별 클래스의 <code>background-image</code>에 직접 박혀 있으므로, 위의 실측 값을 기준으로 삼으세요.</p>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section class="sec" id="type"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">03</span><h2>타이포그래피</h2></div>
+  <p class="sec__sub">
+    <strong>SUIT</strong> 단일 서체. 사용 굵기의 절반 이상이 <strong>800</strong>이라는 게 결정적 특징입니다.
+    자간은 대체로 <strong>−0.03em</strong>, 큰 헤드라인은 line-height 1.25~1.3, 본문은 1.5로 딱 나뉩니다.
+  </p>
+  <div class="card" style="background:#F5F7FD;border-color:#E4E7F0;padding:8px 26px 18px;margin-bottom:26px">
+    <div class="spec"><div class="spec__meta">Hero<br>84px / 800<br>lh 105px (1.25)<br>ls −2.4px</div>
+      <div class="spec__demo" style="font-size:64px;font-weight:800;line-height:1.25;letter-spacing:-0.03em;color:#000">미래엔 AIDT</div></div>
+    <div class="spec"><div class="spec__meta">Display<br>60px / 800<br>lh 78px (1.3)<br>ls −1.8px</div>
+      <div class="spec__demo" style="font-size:52px;font-weight:800;line-height:1.3;letter-spacing:-0.03em;color:#000">과거의 경험으로<br><span class="mn-gtext">현재</span>를 가르치고</div></div>
+    <div class="spec"><div class="spec__meta">H1<br>48px / 800<br>lh 62.4px (1.3)<br>ls −1.44px</div>
+      <div class="spec__demo" style="font-size:44px;font-weight:800;line-height:1.3;letter-spacing:-0.03em;color:#000">수업의 재발견</div></div>
+    <div class="spec"><div class="spec__meta">H2<br>32px / 800<br>lh 48px (1.5)<br>ls −0.54px</div>
+      <div class="spec__demo" style="font-size:32px;font-weight:800;line-height:1.5;letter-spacing:-0.017em;color:#000">AI·디지털 교육자료</div></div>
+    <div class="spec"><div class="spec__meta">H3<br>22px / 800<br>lh 33px (1.5)</div>
+      <div class="spec__demo" style="font-size:22px;font-weight:800;line-height:1.5;letter-spacing:-0.017em;color:#000">초등 · 중학 · 고등</div></div>
+    <div class="spec"><div class="spec__meta">Label<br>20px / 700<br>lh 30px (1.5)<br>ls −0.6px</div>
+      <div class="spec__demo" style="font-size:20px;font-weight:700;line-height:1.5;letter-spacing:-0.03em;color:#000">미래엔 엠티처</div></div>
+    <div class="spec"><div class="spec__meta">Body (기본)<br>18px / 700<br>lh 27px (1.5)<br>ls −0.96px</div>
+      <div class="spec__demo" style="font-size:18px;font-weight:700;line-height:1.5;letter-spacing:-0.053em;color:#000">선생님의 수업을 더 쉽게, 학생의 배움을 더 깊게 만드는 AI 디지털 교과서.</div></div>
+    <div class="spec"><div class="spec__meta">Caption<br>16px / 400<br>lh 24px (1.5)<br>color #909090</div>
+      <div class="spec__demo" style="font-size:16px;font-weight:400;line-height:1.5;letter-spacing:-0.03em;color:#909090">2026학년도 검정 교과서 기준</div></div>
+  </div>
+
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>역할</th><th>Size</th><th>Weight</th><th>Line-height</th><th>Letter-spacing</th></tr></thead>
+    <tbody>
+      <tr><td>Hero</td><td class="mono">84px</td><td class="mono">800</td><td class="mono">105px (1.25)</td><td class="mono">−2.4px</td></tr>
+      <tr><td>Display</td><td class="mono">60px</td><td class="mono">800</td><td class="mono">78px (1.3)</td><td class="mono">−1.8px</td></tr>
+      <tr><td>H0</td><td class="mono">56px</td><td class="mono">800</td><td class="mono">72.8px (1.3)</td><td class="mono">−0.54px</td></tr>
+      <tr><td>H1</td><td class="mono">48px</td><td class="mono">800</td><td class="mono">62.4px (1.3)</td><td class="mono">−1.44px</td></tr>
+      <tr><td>H2</td><td class="mono">32px</td><td class="mono">800</td><td class="mono">48px (1.5)</td><td class="mono">−0.54px</td></tr>
+      <tr><td>H3</td><td class="mono">22px</td><td class="mono">800 · 900</td><td class="mono">33px (1.5)</td><td class="mono">−0.54 / −0.96px</td></tr>
+      <tr><td>Label</td><td class="mono">20px</td><td class="mono">700 · 800</td><td class="mono">30px (1.5)</td><td class="mono">−0.6px</td></tr>
+      <tr><td>Body</td><td class="mono">18px</td><td class="mono">700 · 800</td><td class="mono">27px (1.5)</td><td class="mono">−0.96 / −0.54px</td></tr>
+      <tr><td>Sub</td><td class="mono">16px</td><td class="mono">400 · 500</td><td class="mono">24px (1.5)</td><td class="mono">−0.48px</td></tr>
+      <tr><td>Caption</td><td class="mono">13px</td><td class="mono">700</td><td class="mono">19.5px (1.5)</td><td class="mono">−0.39px</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sec__sub" style="margin-top:14px">기본 line-height는 <strong>1.5 고정</strong>, 48px 이상만 1.25~1.3으로 좁힙니다. 강조어는 그라데이션 텍스트(<code>background-clip: text</code>)로 처리합니다.</p>
+</div></section>
+
+<!-- 4 -->
+<section class="sec" id="shape"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">04</span><h2>형태 · 깊이</h2></div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card" style="text-align:center"><div style="height:70px;background:#EDEBFF;border-radius:7px;margin-bottom:14px"></div><h3>7 / 10px</h3><p>교과서 썸네일, 작은 이미지</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#EDEBFF;border-radius:20px;margin-bottom:14px"></div><h3>20 / 30px</h3><p>카드, 섹션 블록</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#EDEBFF;border-radius:40px;margin-bottom:14px"></div><h3>32 / 40px</h3><p>대형 알약 버튼, 셀렉트</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:linear-gradient(90deg,#5650FF,#AF4BFF);border-radius:500px;margin-bottom:14px"></div><h3>500px</h3><p><strong>완전 알약</strong> — 가장 많이 사용</p></div>
+  </div>
+  <div class="grid g3">
+    <div class="card"><span class="card__k">Shadow — 표준</span><div style="height:56px;background:#fff;border-radius:20px;box-shadow:0 4px 40px rgba(0,0,0,.1);margin:10px 0"></div><p><code>0 4px 40px rgba(0,0,0,.1)</code></p></div>
+    <div class="card"><span class="card__k">Shadow — 강조</span><div style="height:56px;background:#fff;border-radius:20px;box-shadow:0 5px 50px rgba(0,0,0,.1);margin:10px 0"></div><p><code>0 5px 50px rgba(0,0,0,.1)</code></p></div>
+    <div class="card"><span class="card__k">Shadow — 히어로</span><div style="height:56px;background:#fff;border-radius:20px;box-shadow:0 4px 60px rgba(0,0,0,.1);margin:10px 0"></div><p><code>0 4px 60px rgba(0,0,0,.1)</code></p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><span class="card__k">Border</span><h3>흰색 3px 프레임 + 브랜드 2px 아웃라인</h3><p>교과서 이미지는 예외 없이 <code>3px solid #FFF</code> 프레임으로 감싸고, 세컨더리 버튼은 <code>2px solid #5650FF</code> 아웃라인을 씁니다.</p></div>
+</div></section>
+
+<!-- 5 -->
+<section class="sec" id="comp"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">05</span><h2>컴포넌트</h2></div>
+
+  <div class="canvas" style="margin-bottom:16px;background:#F5F7FD;border-color:#E4E7F0">
+    <span class="canvas__label">Buttons</span>
+    <button class="mn-btn mn-btn--grad">지금 체험하기</button>
+    <button class="mn-btn mn-btn--solid">자료 다운로드</button>
+    <button class="mn-btn mn-btn--line">더 알아보기</button>
+    <button class="mn-btn mn-btn--pill"><span>엠티처 수업의 재발견</span><i></i></button>
+  </div>
+
+  <div class="canvas" style="margin-bottom:16px;background:#F5F7FD;border-color:#E4E7F0">
+    <span class="canvas__label">Gradient Text — 강조어 처리</span>
+    <div style="font-size:40px;font-weight:800;letter-spacing:-0.03em;line-height:1.3">미래의 교실은 <span class="mn-gtext">AI</span>와 함께</div>
+  </div>
+
+  <span class="canvas__label" style="display:block;margin-bottom:10px">Cards — radius 20px + soft glow shadow</span>
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="mn-card"><h4>초등</h4><p>1~6학년 전 과목 AI 디지털 교과서</p></div>
+    <div class="mn-card"><h4>중학</h4><p>수학 · 영어 · 정보 교과 지원</p></div>
+    <div class="mn-card" style="background:linear-gradient(90deg,#5650FF 0%,#AF4BFF 100%);color:#fff"><h4 style="color:#fff">고등</h4><p style="color:rgba(255,255,255,.85)">공통수학 · 영어 중심 확장</p></div>
+  </div>
+
+  <span class="canvas__label" style="display:block;margin-bottom:10px">Textbook Thumbnails — 3px 흰 프레임 + radius 10px</span>
+  <div class="grid g4" style="background:#F5F7FD;padding:24px;border-radius:20px">
+    <div class="mn-thumb" style="background:linear-gradient(150deg,#2C3E70,#5B6FA8)"></div>
+    <div class="mn-thumb" style="background:linear-gradient(150deg,#FFE9A8,#FFC46B)"></div>
+    <div class="mn-thumb" style="background:linear-gradient(150deg,#BCE3F5,#7FB6DE)"></div>
+    <div class="mn-thumb" style="background:linear-gradient(150deg,#FFD3DC,#F79FB2)"></div>
+  </div>
+</div></section>
+
+<!-- 6 -->
+<section class="sec" id="rule"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">06</span><h2>체크리스트</h2></div>
+  <div class="grid g2">
+    <div class="dd dd--do"><h4>✓ Do</h4><ul>
+      <li>그라데이션은 <strong>항상 90deg, #5650FF → #AF4BFF</strong>로 고정. 각도를 바꾸지 않는다.</li>
+      <li>배경은 #FFF가 아니라 <strong>#F5F7FD</strong>에서 시작.</li>
+      <li>본문 굵기를 700~800까지 과감히 올린다 (400은 캡션 전용).</li>
+      <li>강조어는 색 대신 <strong>그라데이션 텍스트</strong>로.</li>
+      <li>그림자는 y축 4~5px, 블러 40~60px의 넓고 부드러운 형태로.</li>
+    </ul></div>
+    <div class="dd dd--no"><h4>✗ Don't</h4><ul>
+      <li>Bootstrap 기본 <code>--primary: #007bff</code>를 브랜드 색으로 오해하기.</li>
+      <li>그라데이션을 대각선/방사형으로 변주하기 — 통일감이 무너진다.</li>
+      <li>그라데이션 배경 위에 그라데이션 텍스트 얹기.</li>
+      <li>line-height를 1.5보다 좁게 잡기 (48px 미만 텍스트).</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- 7 -->
+<section class="sec" id="token"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">07</span><h2>복사용 CSS 토큰</h2></div>
+<pre class="code"><span class="c">/* ---- Mirae-N AIDT Design Tokens ---- */</span>
+<span class="c">/* ※ 사이트의 :root 는 Bootstrap 기본값이라 사용하지 않음.
+      아래는 실제 렌더링 값을 토큰화한 것. */</span>
+:root {
+  <span class="c">/* Brand */</span>
+  <span class="p">--primary</span>:        <span class="v">#5650FF</span>;
+  <span class="p">--secondary</span>:      <span class="v">#AF4BFF</span>;
+  <span class="p">--primary-soft</span>:   <span class="v">#B1AEFF</span>;
+  <span class="p">--secondary-soft</span>: <span class="v">#D6A3FF</span>;
+  <span class="p">--grad</span>:      <span class="v">linear-gradient(90deg, #5650FF 0%, #AF4BFF 100%)</span>;
+  <span class="p">--grad-soft</span>: <span class="v">linear-gradient(90deg, #B1AEFF 0%, #D6A3FF 100%)</span>;
+
+  <span class="c">/* Neutral */</span>
+  <span class="p">--black</span>:    <span class="v">#000000</span>;
+  <span class="p">--ink</span>:      <span class="v">#212529</span>;
+  <span class="p">--muted</span>:    <span class="v">#909090</span>;
+  <span class="p">--disabled</span>: <span class="v">#B8B9BC</span>;
+  <span class="p">--on-dark-sub</span>: <span class="v">#D7D7D7</span>;
+  <span class="p">--canvas</span>:   <span class="v">#F5F7FD</span>;
+  <span class="p">--surface</span>:  <span class="v">#FFFFFF</span>;
+
+  <span class="c">/* Radius */</span>
+  <span class="p">--r-xs</span>: <span class="v">7px</span>;  <span class="p">--r-sm</span>: <span class="v">10px</span>; <span class="p">--r-md</span>: <span class="v">20px</span>;
+  <span class="p">--r-lg</span>: <span class="v">30px</span>; <span class="p">--r-xl</span>: <span class="v">40px</span>; <span class="p">--r-pill</span>: <span class="v">500px</span>;
+
+  <span class="c">/* Elevation */</span>
+  <span class="p">--shadow</span>:    <span class="v">0 4px 40px rgba(0,0,0,.1)</span>;
+  <span class="p">--shadow-lg</span>: <span class="v">0 5px 50px rgba(0,0,0,.1)</span>;
+  <span class="p">--shadow-xl</span>: <span class="v">0 4px 60px rgba(0,0,0,.1)</span>;
+
+  <span class="c">/* Layout */</span>
+  <span class="p">--container-padding</span>: <span class="v">120px</span>;
+  <span class="p">--hd</span>: <span class="v">72px</span>;  <span class="c">/* 헤더 높이 */</span>
+
+  <span class="p">--font</span>: <span class="v">SUIT, sans-serif</span>;
+}
+
+body { background: var(--canvas); color: var(--black);
+       font-family: var(--font); font-size: 18px; font-weight: 700;
+       line-height: 1.5; letter-spacing: -0.03em; }
+
+.hero    { font-size: 84px; font-weight: 800; line-height: 1.25; }
+.display { font-size: 60px; font-weight: 800; line-height: 1.3;  }
+.h1      { font-size: 48px; font-weight: 800; line-height: 1.3;  }
+.h2      { font-size: 32px; font-weight: 800; line-height: 1.5;  }
+.caption { font-size: 16px; font-weight: 400; color: var(--muted); }
+
+.btn      { background: var(--grad); color: #fff; border: 0;
+            border-radius: var(--r-pill); padding: 16px 34px;
+            font: 800 18px/1 var(--font); letter-spacing: -0.03em; }
+.btn-line { background: #fff; color: var(--primary);
+            border: 2px solid var(--primary); border-radius: var(--r-pill); }
+.card     { background: #fff; border-radius: var(--r-md);
+            padding: 28px; box-shadow: var(--shadow); }
+.thumb    { border: 3px solid #fff; border-radius: var(--r-sm);
+            box-shadow: var(--shadow); }
+.grad-text{ background: var(--grad); -webkit-background-clip: text;
+            background-clip: text; color: transparent; }
+</pre>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  SOURCE — aidt.m-teacher.co.kr · computed style 추출 · 2026.08 &nbsp;·&nbsp; <a href="index.html">← 전체 목록</a>
+</div></footer>
+
+<script src="assets/copy.js"></script>
+</body>
+</html>

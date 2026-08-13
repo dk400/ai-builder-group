@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브 코딩 외주, 잘하는 곳과 못하는 곳의 차이 — Insight | 목업 v22 P-05</title>
+<meta name="description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-builder-group-pearl.vercel.app/insight-detail.html">
+<meta property="og:title" content="바이브 코딩 외주, 잘하는 곳과 못하는 곳의 차이 — Insight">
+<meta property="og:description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:image" content="https://ai-builder-group-pearl.vercel.app/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AI 빌더 그룹">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.art-head { padding: 64px 0 44px; text-align: center; }
+/* v21: 뒤로가기 링크 — 중앙 정렬 헤드에서 좌측 고정 */
+.backlink { display: flex; width: fit-content; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700;
+  color: var(--muted); text-decoration: none; margin: 0 0 34px; transition: color var(--hover); }
+.backlink::before { content: "←"; font-family: var(--mono); transition: transform var(--hover); }
+.backlink:hover { color: var(--ink); }
+.backlink:hover::before { transform: translateX(-4px); }
+.art-head h1 { margin: 0 auto 20px; font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; letter-spacing: -0.045em;
+  line-height: 1.22; max-width: 21ch; }
+.art-head .meta { font-size: 16px; color: var(--muted); }
+.art-head .meta b { color: var(--ink); }
+.art-body { display: grid; grid-template-columns: minmax(0, 720px) 220px; gap: 68px; justify-content: center; padding: 44px 0 76px; }
+.art { font-size: 16.5px; line-height: 1.9; color: var(--ink-2); }
+.art .ph { margin: 0 0 40px; }
+.art h2 { font-size: 25px; letter-spacing: -0.035em; margin: 50px 0 16px; scroll-margin-top: 96px; color: var(--ink); }
+.art p { margin: 0 0 19px; word-break: keep-all; }
+.art blockquote { margin: 32px 0; padding: 24px 30px; border-left: 3px solid var(--lime); background: var(--paper-2);
+  border-radius: 0 18px 18px 0; font-weight: 700; color: var(--ink); font-size: 18px; letter-spacing: -0.02em; }
+.art .yt { position: relative; border-radius: 18px; overflow: hidden; background: var(--ink); aspect-ratio: 16/9; margin: 32px 0 10px; cursor: pointer; }
+.art .yt::before { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(80% 90% at 30% 20%, rgba(216,255,61,.22), transparent 58%),
+              linear-gradient(200deg, transparent 50%, rgba(0,0,0,.5)); }
+.art .yt .play { position: absolute; inset: 0; display: grid; place-items: center; }
+.art .yt .play i { width: 62px; height: 62px; border-radius: 50%; background: var(--lime); color: var(--ink);
+  display: grid; place-items: center; font-size: 18px; transition: transform .3s; box-shadow: 0 12px 40px rgba(216,255,61,.25); }
+.art .yt:hover .play i { transform: scale(1.12); }
+.art .yt-link { font-size: 14.5px; margin: 0 0 30px; }
+.toc { position: sticky; top: 96px; font-size: 15px; align-self: start; }
+.toc b { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2); margin-bottom: 14px; text-transform: uppercase; }
+.toc a { display: block; text-decoration: none; color: var(--muted); padding: 8px 0 8px 15px; border-left: 2px solid var(--line); transition: .15s; line-height: 1.5; }
+.toc a.now { color: var(--ink); border-left-color: var(--ink); font-weight: 700; }
+.tags { display: flex; gap: 8px; margin: 40px 0 0; }
+.rel-h { font-size: 24px; margin: 0 0 18px; letter-spacing: -0.03em; }
+.relrow { display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: baseline;
+  padding: 20px 8px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .15s, padding-left .15s; }
+.relrow:first-of-type { border-top: 1px solid var(--line-2); }
+.relrow:hover { background: var(--paper-2); padding-left: 16px; }
+.relrow .c { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--muted-2); text-transform: uppercase; }
+.relrow .t { font-size: 18px; font-weight: 700; letter-spacing: -0.025em; }
+@media (max-width: 1000px) { .art-body { grid-template-columns: 1fr; padding-inline: 0; } .toc { display: none; } .relrow { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="gnb scrolled">
+  <div class="gnb__in">
+    <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+    <button class="gnb__burger" aria-label="메뉴">☰</button>
+    <nav><a href="index.html">Home</a><a href="work.html">Work</a><a href="insight.html" class="active">Insight</a><a href="content.html">콘텐츠</a></nav>
+    <a class="btn btn--lime btn--sm btn--pulse" href="contact.html" data-track="cta_click" data-location="gnb">문의하기</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap art-head">
+    <a class="backlink" href="insight.html">인사이트 목록으로</a>
+    <h1>바이브 코딩 외주,<br>잘하는 곳과 못하는 곳의 차이</h1>
+    <p class="meta">발주 가이드 · <b>운영팀</b> · 2026.08.11 · 읽는 데 4분</p>
+  </div>
+
+  <div class="wrap art-body">
+    <article class="art">
+      <div class="ph ph--tall" data-label="Cover Image"><span class="fx">I—001 / COVER</span></div>
+
+      <p>"바이브 코딩으로 외주해 드립니다"라는 업체가 빠르게 늘고 있습니다. 같은 도구를 쓴다고 같은 결과가 나오지 않는데도, 밖에서 보면 구분이 어렵습니다. 이 글은 발주하는 입장에서 그 차이를 가려내는 기준을 정리한 것입니다.</p>
+
+      <h2 id="t1">첫째, 포트폴리오의 '실체'를 물어보세요</h2>
+      <p>포트폴리오 개수가 많다고 실적이 많은 것이 아닙니다. 실제로 존재하지 않는 프로젝트를 산업별 목업으로 만들어두는 업체가 있습니다. 확인 방법은 간단합니다 — "이 프로젝트, 실제 서비스 URL을 알려주실 수 있나요?"라고 물어보면 됩니다.</p>
+      <blockquote>실제로 수행한 프로젝트라면, 보여주지 못할 이유가 없습니다.</blockquote>
+
+      <h2 id="t2">둘째, 사이트의 만듦새를 보세요</h2>
+      <p>그 업체의 자체 사이트를 열어보세요. 모든 섹션이 똑같은 방식으로 움직인다면 — 모든 텍스트가 동일하게 아래에서 위로 떠오르기만 한다면 — 그것은 AI로 한 번에 생성하고 손보지 않았다는 신호입니다. 자기 사이트에 시간을 쓰지 않는 팀이 고객 사이트에 시간을 쓸 가능성은 낮습니다.</p>
+
+      <div class="yt" data-track="youtube_outbound" data-slug="quality-video"><div class="play"><i>▶</i></div></div>
+      <p class="yt-link"><a href="content.html">유튜브에서 보기 →</a></p>
+
+      <h2 id="t3">셋째, 가격이 아니라 구조를 물어보세요</h2>
+      <p>"반값"을 앞세우는 곳은 조심해야 합니다. 물어야 할 것은 가격이 아니라 구조입니다 — 누가 만드는지, 어떻게 검증된 사람인지, 진행 중에 무엇을 확인시켜 주는지, 끝나면 무엇을 넘겨주는지. 이 네 가지에 명확히 답하는 팀이라면 도구가 무엇이든 결과물이 나옵니다.</p>
+
+      <div class="tags"><span class="tag">발주 가이드</span><span class="tag">외주</span><span class="tag">체크리스트</span></div>
+    </article>
+
+    <nav class="toc" aria-label="목차">
+      <b>Contents</b>
+      <a href="#t1" class="now">1. 포트폴리오의 실체</a>
+      <a href="#t2">2. 사이트의 만듦새</a>
+      <a href="#t3">3. 가격이 아니라 구조</a>
+    </nav>
+  </div>
+
+  <section style="padding-top:0">
+    <div class="wrap" style="max-width:776px">
+      <h3 class="rel-h">함께 읽기</h3>
+      <a class="relrow" href="insight-detail.html"><span class="c">발주 가이드</span><span class="t">외주 맡기기 전 확인해야 할 5가지</span></a>
+      <a class="relrow" href="insight-detail.html"><span class="c">일하는 방식</span><span class="t">우리가 3주 만에 랜딩 페이지를 만드는 순서</span></a>
+      <div class="cta-banner" style="margin-top:52px">
+        <div>
+          <h3>글이 도움되셨나요?</h3>
+          <p>프로젝트 이야기를 들려주세요.</p>
+        </div>
+        <a class="btn btn--lime" href="contact.html" data-track="cta_click" data-location="insight_detail">문의하기 <span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft6">
+      <div class="ft6__brand">
+        <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+        <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
+      </div>
+      <div class="col"><b>Service</b><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></div>
+      <div class="col"><b>Company</b><a href="index.html#how">일하는 방식</a><a href="index.html#faq">FAQ</a><span class="soon">채용 (준비 중)</span></div>
+      <div class="col"><b>Contact</b><a href="contact.html">프로젝트 문의</a><a href="mailto:contact@example.com">contact@_______</a></div>
+      <div class="col"><b>Social</b><a href="content.html">YouTube</a><span class="soon">Instagram (예정)</span><span class="soon">LinkedIn (예정)</span></div>
+    </div>
+    <p class="ft__legal"><b>AI 빌더 그룹</b> · 사업자 정보는 사이트 오픈과 함께 게재됩니다.<br>이메일 문의는 pluug 장애 대비 대체 경로입니다.</p>
+    <div class="ft__bottom"><span>© 2026 AI Builder Group</span><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+window.track('insight_detail_view', { slug: '바이브코딩-외주-차이', category: 'client-guide', author_type: 'team' });
+/* TOC 현재 위치 하이라이트 */
+(function () {
+  var links = document.querySelectorAll('.toc a');
+  var heads = ['t1','t2','t3'].map(function (id) { return document.getElementById(id); });
+  window.addEventListener('scroll', function () {
+    var i = heads.length - 1;
+    while (i > 0 && heads[i].getBoundingClientRect().top > 140) i--;
+    links.forEach(function (l, j) { l.classList.toggle('now', j === i); });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>

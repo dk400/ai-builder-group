@@ -1,0 +1,63 @@
+/* 다크 지면 페이지 (시안 B 크래프트) */
+body { color: var(--paper);
+  background:
+    radial-gradient(1000px 640px at 96% -8%, rgba(216,255,61,.09), transparent 55%),
+    radial-gradient(1200px 800px at -6% 110%, rgba(216,255,61,.05), transparent 55%),
+    var(--ink);
+  background-attachment: fixed; }
+body::after { opacity: .05; }
+.gnb.scrolled { background: color-mix(in srgb, var(--ink) 86%, transparent); border-bottom-color: var(--d-line); }
+.gnb nav a { color: var(--paper); opacity: .5; } .gnb nav a:hover { opacity: 1; }
+.gnb nav a.active { opacity: 1; } .gnb nav a.active::after { background: var(--lime); }
+.logo { color: var(--paper); }
+.page-head { border-bottom-color: var(--d-line); }
+.page-head p { color: var(--d-mut); }
+.crumb { color: var(--d-mut2); }
+/* v19: 이음새 리본 (다크 페이지 — 라임 발광) */
+.ribbon-sep { position: relative; height: 0; z-index: 6; pointer-events: none; }
+.ribbon-sep svg { position: absolute; left: 0; right: 0; top: -120px; width: 100%; height: 200px;
+  display: block; overflow: visible; filter: drop-shadow(0 12px 28px rgba(0,0,0,.4)); }
+.ribbon-sep .edge { fill: none; stroke: #000; stroke-width: 44; stroke-linecap: round; }
+.ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 38; stroke-linecap: round; }
+.ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .1em;
+  fill: var(--ink); dominant-baseline: middle; }
+@media (max-width: 960px) { .ribbon-sep svg { top: -108px; height: 150px; filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); } }
+.vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f;
+  transition: transform .35s cubic-bezier(.2,.6,.2,1); display: block; text-decoration: none; }
+.vcell:hover { transform: scale(1.018); }
+.vcell .thumb { position: absolute; inset: 0;
+  background: radial-gradient(80% 90% at 28% 18%, rgba(216,255,61,.24), transparent 58%),
+              radial-gradient(90% 90% at 82% 88%, rgba(244,241,234,.1), transparent 55%),
+              linear-gradient(200deg, transparent 50%, rgba(0,0,0,.5)); }
+.vcell .dur { position: absolute; top: 16px; right: 16px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .1em; background: rgba(0,0,0,.55); color: rgba(244,241,234,.8); padding: 5px 10px; border-radius: 999px; }
+.vcell .play { position: absolute; inset: 0; display: grid; place-items: center; }
+.vcell .play i { width: 60px; height: 60px; border-radius: 50%; background: var(--lime); color: var(--ink);
+  display: grid; place-items: center; font-size: 18px; transition: transform .3s; box-shadow: 0 12px 40px rgba(216,255,61,.22); }
+.vcell:hover .play i { transform: scale(1.14); }
+.vcell .cap { position: absolute; left: 22px; bottom: 18px; right: 22px; }
+.vcell .cap b { display: block; font-size: 16.5px; letter-spacing: -0.025em; font-weight: 700; }
+.vcell .cap span { font-family: var(--mono); font-size: 11px; color: var(--d-mut); letter-spacing: .12em; text-transform: uppercase; }
+.feat { aspect-ratio: 21/9; margin-bottom: 20px; }
+.feat .cap b { font-size: 24px; letter-spacing: -0.035em; }
+.vg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.vg .vcell { aspect-ratio: 16/9; }
+.sub-banner { position: relative; overflow: hidden; margin: 68px 0 0; border: 1px solid var(--d-line); border-radius: 26px;
+  padding: 44px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.sub-banner::before { content: "✳"; position: absolute; right: -20px; bottom: -54px; font-size: 180px;
+  line-height: 1; color: var(--lime); opacity: .1; pointer-events: none; }
+.sub-banner .k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--d-mut2); display: block; margin-bottom: 10px; }
+.sub-banner h3 { margin: 0 0 4px; font-size: 23px; font-weight: 800; letter-spacing: -0.035em; }
+.sub-banner p { margin: 0; color: var(--d-mut); font-size: 14px; }
+footer { background: #131310; border-top-color: var(--d-line); }
+.ft__top { border-bottom-color: var(--d-line); }
+.ft__brand p, .ft__nav a, .ft__biz, .ft__bottom { color: var(--d-mut2); }
+.ft__biz b { color: var(--d-mut); }
+.ft__nav a:hover, .ft__bottom a:hover { color: var(--paper); }
+@media (max-width: 900px) { .vg { grid-template-columns: 1fr; } .feat { aspect-ratio: 16/9; } }
+.vcell .vimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.vcell .vshade { position: absolute; inset: 0; background: linear-gradient(200deg, rgba(0,0,0,.04) 40%, rgba(0,0,0,.72)); }
+.vcell .cap b { text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+.chbadge { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(0,0,0,.6); color: #fff;
+  font-size: 11.5px; font-weight: 700; padding: 5px 11px; border-radius: 999px; letter-spacing: -0.01em; }

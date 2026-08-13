@@ -1,0 +1,22 @@
+.done { text-align: center; padding: 124px 0 104px; }
+.check { width: 92px; height: 92px; margin: 0 auto 34px; }
+.check circle { fill: none; stroke: var(--lime); stroke-width: 5; stroke-dasharray: 260; stroke-dashoffset: 260;
+  animation: circ .7s ease-out forwards; }
+.check path { fill: none; stroke: var(--ink); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 60; stroke-dashoffset: 60; animation: tick .45s .5s ease-out forwards; }
+@keyframes circ { to { stroke-dashoffset: 0; } }
+@keyframes tick { to { stroke-dashoffset: 0; } }
+.done .k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .26em; color: var(--muted-2);
+  text-transform: uppercase; display: block; margin-bottom: 18px; }
+.done h1 { margin: 0 0 16px; font-size: clamp(30px, 4.2vw, 48px); font-weight: 800; letter-spacing: -0.045em; }
+.done h1 .w300 { font-weight: 300; }
+.done p { margin: 0 0 8px; color: var(--muted); font-size: 16px; }
+.done .note { font-family: var(--mono); font-size: 12px; color: var(--muted-2); }
+.next { display: grid; grid-template-columns: repeat(2, minmax(0, 330px)); gap: 16px; justify-content: center; margin: 52px 0 44px; }
+.ncard { border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); padding: 26px 28px;
+  text-align: left; text-decoration: none; transition: border-color .15s, transform .2s; }
+.ncard:hover { border-color: var(--ink); transform: translateY(-3px); }
+.ncard .k2 { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--muted-2); text-transform: uppercase; }
+.ncard b { display: block; margin-top: 10px; font-size: 16px; letter-spacing: -0.025em; line-height: 1.5; }
+.ga-note { margin-top: 60px; font-family: var(--mono); font-size: 11.5px; color: var(--muted-2); letter-spacing: .05em; }
+@media (max-width: 700px) { .next { grid-template-columns: 1fr; } }

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코들(Codle) · 디자인 가이드</title>
+<link rel="stylesheet" href="assets/guide.css">
+<style>
+  :root { --brand:#3E88FF; --brand-ink:#FFFFFF; --brand-soft:#ECF3FF; }
+  .cd-btn { font-family:var(--sans); border:0; cursor:pointer; font-weight:600; }
+  .cd-btn--primary { background:#3E88FF; color:#fff; border-radius:9999px; padding:16px 28px; font-size:18px; }
+  .cd-btn--grad    { background:linear-gradient(90deg,#3E88FF 10%,#0045B3 90%); color:#fff; border-radius:9999px; padding:16px 28px; font-size:18px; }
+  .cd-btn--white   { background:#fff; color:#0145B3; border-radius:9999px; padding:16px 28px; font-size:18px; box-shadow:0 10px 30px 8px rgba(62,136,255,.1); }
+  .cd-btn--soft    { background:#ECF3FF; color:#0145B3; border-radius:16px; padding:16px 24px; font-size:18px; }
+  .cd-btn--text    { background:transparent; color:#0145B3; padding:0 0 8px; font-size:20px; font-weight:700; border-bottom:2px solid #0145B3; border-radius:0; }
+  .cd-card { background:#fff; border-radius:30px; padding:30px; box-shadow:0 10px 30px 8px rgba(62,136,255,.1); }
+  .cd-card h4 { margin:0 0 8px; font-size:24px; font-weight:600; line-height:1.5; color:#363636; }
+  .cd-card p  { margin:0; font-size:18px; font-weight:500; color:#425968; line-height:1.56; }
+  .cd-nav { display:flex; align-items:center; gap:28px; background:#fff; border-radius:9999px; padding:14px 18px 14px 28px; box-shadow:0 10px 30px 8px rgba(62,136,255,.1); }
+  .cd-nav a { text-decoration:none; color:#425968; font-size:16px; font-weight:500; }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar__in">
+  <a class="topbar__home" href="index.html">← Index</a>
+  <span class="topbar__dot"></span>
+  <span class="topbar__title">코들 Codle</span>
+  <nav class="topbar__nav">
+    <a href="#mood">무드</a><a href="#color">컬러</a><a href="#type">타이포</a>
+    <a href="#shape">형태</a><a href="#comp">컴포넌트</a><a href="#rule">규칙</a><a href="#token">토큰</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">05 / AI EdTech · SaaS Landing</div>
+  <h1>코들 Codle<br><mark>스카이 블루</mark> 소프트 SaaS</h1>
+  <p class="hero__desc">
+    미래엔과 같은 교육 도메인이지만 인상은 정반대입니다. 채도 높은 <strong>스카이 블루(#3E88FF)</strong> 하나로 밀고 가면서
+    <strong>파란 빛을 띤 컬러 섀도우</strong>(<code>rgba(62,136,255,.1)</code>)로 요소를 공중에 띄웁니다.
+    자간을 거의 조정하지 않고(대부분 normal), 헤드라인에만 <strong>나눔스퀘어 네오</strong>를 섞어 쓰는 것도 특징.
+  </p>
+  <div class="hero__meta">
+    <span class="chip chip--brand">#3E88FF Primary</span>
+    <span class="chip">Pretendard + NanumSquareNeo</span>
+    <span class="chip">Blue Glow Shadow</span>
+    <span class="chip">Radius 16 / 30 / 9999px</span>
+    <a class="chip chip--link" href="https://ai.codle.io/kr" target="_blank" rel="noopener">원본 사이트 ↗</a>
+  </div>
+</div></header>
+
+<!-- 1 -->
+<section class="sec" id="mood"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">01</span><h2>디자인 무드</h2></div>
+  <p class="sec__sub">"가볍고 밝은 AI 도구". 무게를 덜어내고 공기감을 최대한 살린 SaaS 랜딩 문법.</p>
+  <div class="grid g4">
+    <div class="card"><span class="card__k">Tone</span><h3>밝은 블루 단색</h3><p>#3E88FF(밝음) ↔ #0145B3(깊음) 두 축만 씁니다. 다른 색상 계열이 거의 등장하지 않습니다.</p></div>
+    <div class="card"><span class="card__k">Depth</span><h3>컬러 글로우</h3><p>검정 그림자 대신 <strong>파란 그림자</strong>. <code>0 10px 30px 8px rgba(62,136,255,.1)</code>로 요소가 빛나며 떠 있는 느낌.</p></div>
+    <div class="card"><span class="card__k">Surface</span><h3>플로팅 GNB</h3><p>헤더가 페이지 상단에 붙지 않고 흰 알약 형태로 떠 있습니다. 배경 그라데이션이 그 뒤로 비칩니다.</p></div>
+    <div class="card"><span class="card__k">Type</span><h3>혼합 서체</h3><p>본문은 Pretendard, 큰 헤드라인은 NanumSquareNeo ExtraBold/Heavy, 영문 숫자는 Montserrat.</p></div>
+  </div>
+</div></section>
+
+<!-- 2 -->
+<section class="sec" id="color"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">02</span><h2>컬러 시스템</h2></div>
+  <p class="sec__sub">실제 <code>:root</code> 변수 + 실측 값입니다. 스와치를 클릭하면 HEX가 복사됩니다.</p>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Brand Blue</h3>
+  <div class="swatches" style="margin-bottom:12px">
+    <button class="sw" data-hex="#3E88FF"><span class="sw__chip" style="background:#3E88FF"></span><span class="sw__body"><span class="sw__name">Primary</span><span class="sw__hex">#3E88FF</span><span class="sw__use">CTA 버튼, 강조 텍스트, 그림자 색</span></span></button>
+    <button class="sw" data-hex="#4084F4"><span class="sw__chip" style="background:#4084F4"></span><span class="sw__body"><span class="sw__name">Primary Hover</span><span class="sw__hex">#4084F4</span><span class="sw__use">버튼 호버·배너 배경</span></span></button>
+    <button class="sw" data-hex="#0145B3"><span class="sw__chip" style="background:#0145B3"></span><span class="sw__body"><span class="sw__name">Primary 2</span><span class="sw__hex">#0145B3</span><span class="sw__use"><strong>강조 텍스트 기본색</strong> · 그라데이션 끝</span></span></button>
+    <button class="sw" data-hex="#ECF3FF"><span class="sw__chip" style="background:#ECF3FF"></span><span class="sw__body"><span class="sw__name">Blue Tint</span><span class="sw__hex">#ECF3FF</span><span class="sw__use">보조 버튼·섹션 배경</span></span></button>
+    <button class="sw" data-hex="#F7FAFE"><span class="sw__chip" style="background:#F7FAFE;border-bottom:1px solid #e4eaf2"></span><span class="sw__body"><span class="sw__name">Blue Mist</span><span class="sw__hex">#F7FAFE</span><span class="sw__use">가장 옅은 섹션 배경</span></span></button>
+    <button class="sw" data-hex="#C8E3FF"><span class="sw__chip" style="background:#C8E3FF"></span><span class="sw__body"><span class="sw__name">Sky</span><span class="sw__hex">#C8E3FF</span><span class="sw__use">히어로 배경 그라데이션 끝점</span></span></button>
+  </div>
+  <div style="height:70px;border-radius:16px;margin-bottom:12px;background:linear-gradient(90deg,#3E88FF 10%,#0045B3 90%);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.1em">--gradient-primary : linear-gradient(90deg, #3E88FF 10%, #0045B3 90%)</div>
+  <div style="height:70px;border-radius:16px;margin-bottom:32px;background:linear-gradient(#F9FFFF 0%,#C8E3FF 100%);display:flex;align-items:center;justify-content:center;color:#0145B3;font-family:var(--mono);font-size:11px;letter-spacing:.1em">HERO BG — linear-gradient(#F9FFFF, #C8E3FF)</div>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Neutral</h3>
+  <div class="swatches" style="margin-bottom:30px">
+    <button class="sw" data-hex="#171717"><span class="sw__chip" style="background:#171717"></span><span class="sw__body"><span class="sw__name">Foreground</span><span class="sw__hex">#171717</span><span class="sw__use">최상위 텍스트 (드물게 사용)</span></span></button>
+    <button class="sw" data-hex="#363636"><span class="sw__chip" style="background:#363636"></span><span class="sw__body"><span class="sw__name">Gray 2</span><span class="sw__hex">#363636</span><span class="sw__use"><strong>본문·헤드라인 기본색</strong> (최다 사용)</span></span></button>
+    <button class="sw" data-hex="#333D4B"><span class="sw__chip" style="background:#333D4B"></span><span class="sw__body"><span class="sw__name">Gray 1</span><span class="sw__hex">#333D4B</span><span class="sw__use">보조 헤드라인</span></span></button>
+    <button class="sw" data-hex="#425968"><span class="sw__chip" style="background:#425968"></span><span class="sw__body"><span class="sw__name">Text Sub</span><span class="sw__hex">#425968</span><span class="sw__use">설명문·GNB 메뉴</span></span></button>
+    <button class="sw" data-hex="#6B7684"><span class="sw__chip" style="background:#6B7684"></span><span class="sw__body"><span class="sw__name">Text Muted</span><span class="sw__hex">#6B7684</span><span class="sw__use">캡션·메타</span></span></button>
+    <button class="sw" data-hex="#F4F6F9"><span class="sw__chip" style="background:#F4F6F9;border-bottom:1px solid #e6e9ee"></span><span class="sw__body"><span class="sw__name">Surface</span><span class="sw__hex">#F4F6F9</span><span class="sw__use">중립 섹션 배경</span></span></button>
+    <button class="sw" data-hex="#F8F8F8"><span class="sw__chip" style="background:#F8F8F8;border-bottom:1px solid #e9e9e9"></span><span class="sw__body"><span class="sw__name">Surface 2</span><span class="sw__hex">#F8F8F8</span><span class="sw__use">푸터·구분 영역</span></span></button>
+    <button class="sw" data-hex="#FFFFFF"><span class="sw__chip" style="background:#FFFFFF;border-bottom:1px solid #e9e9e9"></span><span class="sw__body"><span class="sw__name">Background</span><span class="sw__hex">#FFFFFF</span><span class="sw__use">카드·GNB 표면</span></span></button>
+  </div>
+
+  <div class="grid g2">
+    <div class="dd dd--do"><h4>✓ Do</h4><ul>
+      <li>강조 텍스트는 #3E88FF가 아니라 <strong>#0145B3</strong>으로 (밝은 배경에서 대비 확보).</li>
+      <li>흰 배경 위 흰 버튼은 <strong>파란 글로우 섀도우</strong>로 구분한다.</li>
+      <li>블루 배경 섹션 위 버튼은 흰색 + #0145B3 텍스트 조합.</li>
+    </ul></div>
+    <div class="dd dd--no"><h4>✗ Don't</h4><ul>
+      <li>#3E88FF를 본문 텍스트 색으로 쓰기 — 대비 3:1 미만.</li>
+      <li>회색 그림자(rgba(0,0,0,…)) 사용 — 톤이 탁해진다.</li>
+      <li>블루 외 액센트 컬러(초록·주황 등) 추가.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section class="sec" id="type"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">03</span><h2>타이포그래피</h2></div>
+  <p class="sec__sub">
+    3개 서체를 역할별로 나눠 씁니다. <strong>자간을 거의 건드리지 않는 것</strong>(측정된 값의 대부분이 normal)이
+    앞의 네 사이트와 가장 다른 지점입니다. 대신 line-height를 크게(1.4~1.8) 가져가 여백감을 만듭니다.
+  </p>
+
+  <div class="grid g3" style="margin-bottom:26px">
+    <div class="card"><span class="card__k">Body</span><h3>Pretendard</h3><p>본문·버튼·GNB·캡션 등 UI 전반. 굵기 400~700.</p></div>
+    <div class="card"><span class="card__k">Display</span><h3>NanumSquare Neo</h3><p>ExtraBold(800) / Heavy(900). 36px 이상 헤드라인 전용.</p></div>
+    <div class="card"><span class="card__k">Numeric</span><h3>Montserrat</h3><p>영문 라벨·숫자 지표. 소량 사용.</p></div>
+  </div>
+
+  <div class="card" style="padding:8px 26px 18px;margin-bottom:26px">
+    <div class="spec"><div class="spec__meta">Hero<br>70px / 900<br>lh 87.5px (1.25)<br><em>NanumSquareNeo Heavy</em></div>
+      <div class="spec__demo" style="font-size:58px;font-weight:900;line-height:1.25;color:#363636">AI로 여는 수업</div></div>
+    <div class="spec"><div class="spec__meta">Display<br>56px / 800<br>lh 78.4px (1.4)<br>ls −0.14px</div>
+      <div class="spec__demo" style="font-size:50px;font-weight:800;line-height:1.4;color:#363636">누구나 쉽게 쓰는 AI 교육 플랫폼</div></div>
+    <div class="spec"><div class="spec__meta">H1<br>44px / 800<br>lh 57.2px (1.3)</div>
+      <div class="spec__demo" style="font-size:44px;font-weight:800;line-height:1.3;color:#363636">선생님의 시간을 돌려드립니다</div></div>
+    <div class="spec"><div class="spec__meta">H2 (Accent)<br>36px / 800<br>lh 40px (1.11)<br>color #0145B3</div>
+      <div class="spec__demo" style="font-size:36px;font-weight:800;line-height:1.11;color:#0145B3">무료로 시작하세요</div></div>
+    <div class="spec"><div class="spec__meta">H3<br>32px / 400<br>lh 32px (1.0)<br>ls −0.8px</div>
+      <div class="spec__demo" style="font-size:32px;font-weight:400;line-height:1.0;letter-spacing:-0.025em;color:#363636">수업 준비, 5분이면 충분</div></div>
+    <div class="spec"><div class="spec__meta">Card Title<br>24px / 600<br>lh 43.2px (1.8)</div>
+      <div class="spec__demo" style="font-size:24px;font-weight:600;line-height:1.8;color:#363636">자동 평가 리포트</div></div>
+    <div class="spec"><div class="spec__meta">Lead<br>24px / 400<br>lh 36px (1.5)</div>
+      <div class="spec__demo" style="font-size:24px;font-weight:400;line-height:1.5;color:#363636">학생 한 명 한 명의 학습 데이터를 자동으로 정리합니다.</div></div>
+    <div class="spec"><div class="spec__meta">Body (기본)<br>18px / 500<br>lh 28px (1.56)<br>color #425968</div>
+      <div class="spec__demo" style="font-size:18px;font-weight:500;line-height:1.56;color:#425968">별도 설치 없이 브라우저에서 바로 시작할 수 있고, 기존 수업 자료를 그대로 가져올 수 있습니다.</div></div>
+    <div class="spec"><div class="spec__meta">Link<br>20px / 700<br>lh 28px (1.4)<br>color #0145B3</div>
+      <div class="spec__demo" style="font-size:20px;font-weight:700;line-height:1.4;color:#0145B3;border-bottom:2px solid #0145B3;display:inline-block;padding-bottom:4px">더 알아보기</div></div>
+    <div class="spec"><div class="spec__meta">Caption<br>12px / 400<br>lh 16px · ls +0.6px</div>
+      <div class="spec__demo" style="font-size:12px;font-weight:400;line-height:1.33;letter-spacing:0.6px;color:#6B7684">© Codle. All rights reserved.</div></div>
+  </div>
+
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>역할</th><th>Size</th><th>Weight</th><th>Line-height</th><th>Letter-spacing</th><th>Font</th></tr></thead>
+    <tbody>
+      <tr><td>Hero</td><td class="mono">70px</td><td class="mono">900</td><td class="mono">87.5px (1.25)</td><td class="mono">normal</td><td class="mono">NanumSquareNeo Heavy</td></tr>
+      <tr><td>Display</td><td class="mono">56px</td><td class="mono">800</td><td class="mono">78.4px (1.4)</td><td class="mono">−0.14px</td><td class="mono">NanumSquareNeo EB</td></tr>
+      <tr><td>H1</td><td class="mono">44px</td><td class="mono">800</td><td class="mono">57.2px (1.3)</td><td class="mono">−0.11px</td><td class="mono">NanumSquareNeo EB</td></tr>
+      <tr><td>H1 on Blue</td><td class="mono">42px</td><td class="mono">800</td><td class="mono">54.6px (1.3)</td><td class="mono">normal</td><td class="mono">NanumSquareNeo</td></tr>
+      <tr><td>H2 Accent</td><td class="mono">36px</td><td class="mono">800</td><td class="mono">40px (1.11)</td><td class="mono">−0.09px</td><td class="mono">NanumSquareNeo EB</td></tr>
+      <tr><td>H3</td><td class="mono">32px</td><td class="mono">400</td><td class="mono">32px (1.0)</td><td class="mono">−0.8px</td><td class="mono">Pretendard</td></tr>
+      <tr><td>Card Title</td><td class="mono">24px</td><td class="mono">600</td><td class="mono">43.2px (1.8)</td><td class="mono">normal</td><td class="mono">Pretendard</td></tr>
+      <tr><td>Lead</td><td class="mono">24px</td><td class="mono">400</td><td class="mono">36px (1.5)</td><td class="mono">normal</td><td class="mono">Pretendard</td></tr>
+      <tr><td>Label</td><td class="mono">20px</td><td class="mono">600 · 700</td><td class="mono">28~30px (1.4~1.5)</td><td class="mono">normal</td><td class="mono">Pretendard</td></tr>
+      <tr><td>Body</td><td class="mono">18px</td><td class="mono">500</td><td class="mono">28px (1.56)</td><td class="mono">normal</td><td class="mono">Pretendard</td></tr>
+      <tr><td>Small</td><td class="mono">16px</td><td class="mono">500</td><td class="mono">22.4px (1.4)</td><td class="mono">normal</td><td class="mono">Pretendard</td></tr>
+      <tr><td>Caption</td><td class="mono">12px</td><td class="mono">400</td><td class="mono">16px (1.33)</td><td class="mono">+0.6px</td><td class="mono">Pretendard</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<!-- 4 -->
+<section class="sec" id="shape"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">04</span><h2>형태 · 깊이</h2></div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card" style="text-align:center"><div style="height:70px;background:#ECF3FF;border-radius:16px;margin-bottom:14px"></div><h3>16px</h3><p>보조 버튼, 작은 박스</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#ECF3FF;border-radius:30px;margin-bottom:14px"></div><h3>30px</h3><p><strong>카드 기본값</strong></p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#ECF3FF;border-radius:40px;margin-bottom:14px"></div><h3>40px</h3><p>대형 섹션 블록</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#3E88FF;border-radius:9999px;margin-bottom:14px"></div><h3>9999px</h3><p><strong>버튼·GNB</strong> 완전 알약</p></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><span class="card__k">Signature Shadow</span><h3>파란 글로우</h3>
+      <div style="height:60px;background:#fff;border-radius:30px;box-shadow:0 10px 30px 8px rgba(62,136,255,.1);margin:14px 4px"></div>
+      <p><code>0 10px 30px 8px rgba(62,136,255,.1)</code> — 이 사이트의 정체성. spread를 8px 주어 빛이 번지는 효과를 냅니다.</p></div>
+    <div class="card"><span class="card__k">Variants</span><h3>보조 그림자</h3>
+      <div style="height:60px;background:#fff;border-radius:30px;box-shadow:0 0 40px rgba(59,163,250,.1);margin:14px 4px"></div>
+      <p><code>0 0 40px rgba(59,163,250,.1)</code> — 방향 없는 앰비언트 글로우.<br>
+      다크/글래스 요소에는 <code>inset 0 0 2px rgba(255,255,255,.12)</code>를 더해 유리 질감을 냅니다.</p></div>
+  </div>
+</div></section>
+
+<!-- 5 -->
+<section class="sec" id="comp"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">05</span><h2>컴포넌트</h2></div>
+
+  <div class="canvas" style="margin-bottom:16px;background:linear-gradient(#F9FFFF,#EAF3FF)">
+    <span class="canvas__label">Floating GNB — 흰 알약 + 블루 글로우</span>
+    <div class="cd-nav" style="width:100%">
+      <strong style="font-size:22px;color:#171717">c<span style="color:#3E88FF">o</span>dle</strong>
+      <a href="#comp">기능</a><a href="#comp">콘텐츠</a><a href="#comp">요금</a><a href="#comp">가이드</a>
+      <span style="margin-left:auto"></span>
+      <button class="cd-btn cd-btn--primary" style="padding:12px 24px;font-size:16px">입장하기</button>
+    </div>
+  </div>
+
+  <div class="canvas" style="margin-bottom:16px">
+    <span class="canvas__label">Buttons</span>
+    <button class="cd-btn cd-btn--primary">입장하기</button>
+    <button class="cd-btn cd-btn--grad">무료로 시작하기</button>
+    <button class="cd-btn cd-btn--soft">학운위 서류 받기</button>
+    <button class="cd-btn cd-btn--text">더 알아보기</button>
+  </div>
+
+  <div class="canvas" style="margin-bottom:16px;background:linear-gradient(90deg,#3E88FF 10%,#0045B3 90%);border-color:transparent">
+    <span class="canvas__label" style="color:rgba(255,255,255,.6)">On Blue — 흰 버튼 + #0145B3 텍스트</span>
+    <button class="cd-btn cd-btn--white" style="padding:26px 40px;font-size:24px">무료로 수업 시작하기</button>
+    <span style="color:#fff;font-size:24px;font-weight:500">지금 바로 사용해 보세요</span>
+  </div>
+
+  <span class="canvas__label" style="display:block;margin-bottom:10px">Cards — radius 30px + 블루 글로우</span>
+  <div class="grid g3">
+    <div class="cd-card"><h4>AI 문항 생성</h4><p>교과 단원만 고르면 난이도별 문항을 자동으로 만들어 줍니다.</p></div>
+    <div class="cd-card"><h4>자동 평가</h4><p>제출과 동시에 채점하고 오답 유형을 분석합니다.</p></div>
+    <div class="cd-card" style="background:#ECF3FF;box-shadow:none"><h4 style="color:#0145B3">학습 리포트</h4><p style="color:#0145B3;opacity:.75">학생별 성장 곡선을 한눈에 확인하세요.</p></div>
+  </div>
+</div></section>
+
+<!-- 6 -->
+<section class="sec" id="rule"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">06</span><h2>체크리스트</h2></div>
+  <ol style="font-size:14.5px;line-height:1.9;padding-left:20px;max-width:78ch">
+    <li>모든 그림자는 <strong>블루 알파</strong>로. 검정 그림자를 쓰지 않는다.</li>
+    <li>버튼·GNB는 radius 9999px, 카드는 30px — 두 값만 기억하면 된다.</li>
+    <li>강조 텍스트 = <strong>#0145B3</strong>, 배경/버튼 = <strong>#3E88FF</strong>로 역할을 분리.</li>
+    <li>자간은 건드리지 않는다(normal). 여백은 line-height 1.4~1.8로 만든다.</li>
+    <li>36px 이상 헤드라인만 NanumSquareNeo, 나머지는 Pretendard.</li>
+    <li>본문 색은 검정이 아니라 <strong>#363636 / #425968</strong>.</li>
+    <li>배경은 흰색 ↔ #F7FAFE ↔ #ECF3FF 세 톤을 번갈아 섹션을 구분.</li>
+  </ol>
+</div></section>
+
+<!-- 7 -->
+<section class="sec" id="token"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">07</span><h2>복사용 CSS 토큰</h2></div>
+<pre class="code"><span class="c">/* ---- Codle Design Tokens ---- */</span>
+:root {
+  <span class="c">/* 사이트 실제 :root 변수 */</span>
+  <span class="p">--background</span>: <span class="v">#fff</span>;
+  <span class="p">--foreground</span>: <span class="v">#171717</span>;
+  <span class="p">--gray1</span>:      <span class="v">#333D4B</span>;
+  <span class="p">--gray2</span>:      <span class="v">#363636</span>;
+  <span class="p">--primary</span>:    <span class="v">#3E88FF</span>;
+  <span class="p">--primary2</span>:   <span class="v">#0145B3</span>;
+  <span class="p">--gradient-primary</span>: <span class="v">linear-gradient(90deg,#3E88FF 10%,#0045B3 90%)</span>;
+
+  <span class="c">/* 실측 보강 토큰 */</span>
+  <span class="p">--primary-hover</span>: <span class="v">#4084F4</span>;
+  <span class="p">--blue-tint</span>:    <span class="v">#ECF3FF</span>;
+  <span class="p">--blue-mist</span>:    <span class="v">#F7FAFE</span>;
+  <span class="p">--sky</span>:           <span class="v">#C8E3FF</span>;
+  <span class="p">--text-sub</span>:     <span class="v">#425968</span>;
+  <span class="p">--text-muted</span>:   <span class="v">#6B7684</span>;
+  <span class="p">--surface</span>:      <span class="v">#F4F6F9</span>;
+  <span class="p">--surface2</span>:     <span class="v">#F8F8F8</span>;
+  <span class="p">--grad-hero</span>:    <span class="v">linear-gradient(#F9FFFF 0%, #C8E3FF 100%)</span>;
+
+  <span class="c">/* Radius */</span>
+  <span class="p">--r-sm</span>: <span class="v">16px</span>; <span class="p">--r-md</span>: <span class="v">30px</span>;
+  <span class="p">--r-lg</span>: <span class="v">40px</span>; <span class="p">--r-pill</span>: <span class="v">9999px</span>;
+
+  <span class="c">/* Elevation — 파란 글로우 */</span>
+  <span class="p">--glow</span>:     <span class="v">0 10px 30px 8px rgba(62,136,255,.1)</span>;
+  <span class="p">--glow-flat</span>:<span class="v">0 0 40px rgba(59,163,250,.1)</span>;
+  <span class="p">--glass</span>:    <span class="v">inset 0 0 2px rgba(255,255,255,.12)</span>;
+
+  <span class="c">/* Type */</span>
+  <span class="p">--font</span>:         <span class="v">pretendard, sans-serif</span>;
+  <span class="p">--font-display</span>: <span class="v">NanumSquareNeoExtraBold, pretendard, sans-serif</span>;
+  <span class="p">--font-heavy</span>:   <span class="v">NanumSquareNeoHeavy, pretendard, sans-serif</span>;
+  <span class="p">--font-num</span>:     <span class="v">Montserrat, sans-serif</span>;
+}
+
+body { font-family: var(--font); font-size: 18px; font-weight: 500;
+       line-height: 1.56; color: var(--text-sub); background: var(--background); }
+
+.hero    { font: 900 70px/1.25 var(--font-heavy);   color: var(--gray2); }
+.display { font: 800 56px/1.4  var(--font-display); color: var(--gray2); }
+.h1      { font: 800 44px/1.3  var(--font-display); color: var(--gray2); }
+.h2      { font: 800 36px/1.11 var(--font-display); color: var(--primary2); }
+.lead    { font: 400 24px/1.5  var(--font);         color: var(--gray2); }
+.caption { font: 400 12px/1.33 var(--font); letter-spacing: .6px; color: var(--text-muted); }
+
+.btn       { background: var(--primary); color: #fff; border: 0;
+             border-radius: var(--r-pill); padding: 16px 28px;
+             font: 600 18px/1 var(--font); }
+.btn-grad  { background: var(--gradient-primary); }
+.btn-white { background: #fff; color: var(--primary2); box-shadow: var(--glow); }
+.btn-soft  { background: var(--blue-tint); color: var(--primary2); border-radius: var(--r-sm); }
+
+.card { background: #fff; border-radius: var(--r-md);
+        padding: 30px; box-shadow: var(--glow); }
+.gnb  { background: #fff; border-radius: var(--r-pill);
+        padding: 14px 18px 14px 28px; box-shadow: var(--glow); }
+</pre>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  SOURCE — ai.codle.io/kr · computed style 추출 · 2026.08 &nbsp;·&nbsp; <a href="index.html">← 전체 목록</a>
+</div></footer>
+
+<script src="assets/copy.js"></script>
+</body>
+</html>

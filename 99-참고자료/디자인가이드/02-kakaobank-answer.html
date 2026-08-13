@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>카카오뱅크 앤써(answer) · 디자인 가이드</title>
+<link rel="stylesheet" href="assets/guide.css">
+<style>
+  :root { --brand:#FFC801; --brand-ink:#222; --brand-soft:#FFE795; }
+  .an-tag { display:inline-block; background:#222; color:#fff; border-radius:99px; padding:7px 16px; font-size:14px; font-weight:500; letter-spacing:-0.02em; }
+  .an-tag--ghost { background:#EEE; color:#222; }
+  .an-tag--soft  { background:rgba(0,0,0,.06); color:#444; }
+  .an-pill { border:0; cursor:pointer; font-family:var(--sans); background:#333; color:#fff; border-radius:99px; padding:14px 28px; font-size:16px; font-weight:600; letter-spacing:-0.02em; }
+  .an-pill--y { background:#FFC801; color:#222; }
+  .an-pill--o { background:#3B3B3B; color:#fff; }
+  .an-pill--line { background:transparent; color:#222; border:1px solid #333; }
+  .an-nav { display:inline-flex; background:#F6F6F6; border-radius:99px; padding:6px; gap:2px; }
+  .an-nav button { border:0; background:transparent; border-radius:99px; padding:10px 22px; font-size:16px; font-weight:600; color:#888; cursor:pointer; font-family:var(--sans); }
+  .an-nav button[aria-selected="true"] { background:#222; color:#fff; }
+  .an-card { border-radius:30px; padding:30px; min-height:220px; display:flex; flex-direction:column; gap:10px; }
+  .an-card h4 { margin:6px 0 0; font-size:24px; font-weight:600; letter-spacing:-0.02em; line-height:1.4; color:#222; }
+  .an-card p { margin:0; font-size:14px; color:#666; letter-spacing:-0.02em; }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar__in">
+  <a class="topbar__home" href="index.html">← Index</a>
+  <span class="topbar__dot"></span>
+  <span class="topbar__title">카카오뱅크 앤써</span>
+  <nav class="topbar__nav">
+    <a href="#mood">무드</a><a href="#color">컬러</a><a href="#dark">다크모드</a><a href="#type">타이포</a>
+    <a href="#shape">형태</a><a href="#comp">컴포넌트</a><a href="#rule">규칙</a><a href="#token">토큰</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">02 / Brand Content · Editorial Blog</div>
+  <h1>KakaoBank <mark>answer</mark><br>파스텔 매거진</h1>
+  <p class="hero__desc">
+    같은 카카오뱅크지만 본사이트와 완전히 다른 얼굴입니다. 채도를 낮춘 골드(#FFC801)를 쓰고,
+    카드마다 <strong>연한 파스텔 배경</strong>을 깔아 콘텐츠를 구분합니다. 회색 계열 이름이
+    <code>--black100 = #fff</code>처럼 <strong>반전 네이밍</strong>으로 되어 있는 게 핵심 —
+    라이트/다크 모드를 변수 값만 뒤집어 전환하기 위한 구조입니다.
+  </p>
+  <div class="hero__meta">
+    <span class="chip chip--brand">#FFC801 Primary</span>
+    <span class="chip">Pretendard Variable</span>
+    <span class="chip">Dark Mode 지원</span>
+    <span class="chip">Radius 12 / 30 / 99px</span>
+    <a class="chip chip--link" href="https://blog.kakaobank.com/brand" target="_blank" rel="noopener">원본 사이트 ↗</a>
+  </div>
+</div></header>
+
+<!-- 1 -->
+<section class="sec" id="mood"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">01</span><h2>디자인 무드</h2></div>
+  <p class="sec__sub">"읽는 금융". 은행 사이트가 아니라 잡지에 가깝게, 카드가 곧 콘텐츠 단위입니다.</p>
+  <div class="grid g4">
+    <div class="card"><span class="card__k">Tone</span><h3>차분한 골드</h3><p>본사이트의 형광 옐로우(#FFE300)보다 한 톤 낮춘 #FFC801. 서브로 #FFE795를 함께 써서 부드럽게 번지게 합니다.</p></div>
+    <div class="card"><span class="card__k">Surface</span><h3>#F6F6F6 캔버스</h3><p>흰 배경이 아니라 아주 옅은 회색 판 위에 흰/파스텔 카드를 올립니다. 카드 자체가 목록의 리듬을 만듭니다.</p></div>
+    <div class="card"><span class="card__k">Accent</span><h3>파스텔 카드</h3><p>#FFD3BA(살구), #C5BDFF(라벤더) 같은 저채도 파스텔을 카테고리별 카드 배경으로 순환 배치합니다.</p></div>
+    <div class="card"><span class="card__k">Shape</span><h3>큰 알약, 큰 라운드</h3><p>태그·버튼은 99px 완전 알약, 콘텐츠 카드는 30px. 각진 모서리가 거의 없습니다.</p></div>
+  </div>
+</div></section>
+
+<!-- 2 -->
+<section class="sec" id="color"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">02</span><h2>컬러 시스템</h2></div>
+  <p class="sec__sub">스와치를 클릭하면 HEX가 복사됩니다.</p>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Brand</h3>
+  <div class="swatches" style="margin-bottom:30px">
+    <button class="sw" data-hex="#FFC801"><span class="sw__chip" style="background:#FFC801"></span><span class="sw__body"><span class="sw__name">Primary</span><span class="sw__hex">#FFC801</span><span class="sw__use">브랜드 골드. 강조 텍스트·하이라이트</span></span></button>
+    <button class="sw" data-hex="#FFE795"><span class="sw__chip" style="background:#FFE795"></span><span class="sw__body"><span class="sw__name">Second</span><span class="sw__hex">#FFE795</span><span class="sw__use">배경 하이라이트, 형광펜 효과</span></span></button>
+    <button class="sw" data-hex="#0083D1"><span class="sw__chip" style="background:#0083D1"></span><span class="sw__body"><span class="sw__name">Link Text</span><span class="sw__hex">#0083D1</span><span class="sw__use">본문 인라인 링크</span></span></button>
+    <button class="sw" data-hex="#4CA9FD"><span class="sw__chip" style="background:#4CA9FD"></span><span class="sw__body"><span class="sw__name">App Link BG</span><span class="sw__hex">#4CA9FD</span><span class="sw__use">앱 연결 배너/버튼 배경</span></span></button>
+  </div>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Pastel Card Backgrounds</h3>
+  <div class="swatches" style="margin-bottom:30px">
+    <button class="sw" data-hex="#FFD3BA"><span class="sw__chip" style="background:#FFD3BA"></span><span class="sw__body"><span class="sw__name">Apricot</span><span class="sw__hex">#FFD3BA</span><span class="sw__use">시리즈 카드 배경</span></span></button>
+    <button class="sw" data-hex="#C5BDFF"><span class="sw__chip" style="background:#C5BDFF"></span><span class="sw__body"><span class="sw__name">Lavender</span><span class="sw__hex">#C5BDFF</span><span class="sw__use">시리즈 카드 배경</span></span></button>
+    <button class="sw" data-hex="#FFF1EC"><span class="sw__chip" style="background:#FFF1EC"></span><span class="sw__body"><span class="sw__name">Apricot Tint</span><span class="sw__hex">#FFF1EC</span><span class="sw__use">대형 히어로 카드 (10% 농도)</span></span></button>
+    <button class="sw" data-hex="#F6F6F6"><span class="sw__chip" style="background:#F6F6F6;border-bottom:1px solid #e5e5e5"></span><span class="sw__body"><span class="sw__name">Canvas</span><span class="sw__hex">#F6F6F6</span><span class="sw__use"><strong>페이지 기본 캔버스</strong> (최다 사용)</span></span></button>
+  </div>
+
+  <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px">Neutral — 반전 네이밍 주의</h3>
+  <div class="ramp" style="margin-bottom:14px">
+    <div style="background:#222;color:#fff">10</div><div style="background:#333;color:#fff">20</div>
+    <div style="background:#444;color:#fff">30</div><div style="background:#666;color:#fff">40</div>
+    <div style="background:#888;color:#fff">60</div><div style="background:#999;color:#fff">50</div>
+    <div style="background:#ccc;color:#555">70</div><div style="background:#eee;color:#666">80</div>
+    <div style="background:#f6f6f6;color:#888">90</div><div style="background:#fff;color:#888">100</div>
+  </div>
+
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>토큰</th><th>Light 값</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">--black10</td><td class="mono">#222222</td><td>가장 진한 텍스트 / 태그 배경</td></tr>
+      <tr><td class="mono">--black20</td><td class="mono">#333333</td><td>버튼 배경, 박스 라인</td></tr>
+      <tr><td class="mono">--black30</td><td class="mono">#444444</td><td><strong>본문 텍스트 기본값</strong></td></tr>
+      <tr><td class="mono">--black40</td><td class="mono">#666666</td><td>보조 설명</td></tr>
+      <tr><td class="mono">--black60</td><td class="mono">#888888</td><td>캡션·메타(날짜·조회수)</td></tr>
+      <tr><td class="mono">--black70</td><td class="mono">#CCCCCC</td><td>구분선, 비활성</td></tr>
+      <tr><td class="mono">--black80</td><td class="mono">#EEEEEE</td><td>태그 hover 배경</td></tr>
+      <tr><td class="mono">--black90</td><td class="mono">#F6F6F6</td><td>페이지 캔버스</td></tr>
+      <tr><td class="mono">--black100</td><td class="mono">#FFFFFF</td><td>⚠️ 이름은 black인데 값은 흰색 — 카드 표면</td></tr>
+      <tr><td class="mono">--white100</td><td class="mono">#000000</td><td>⚠️ 이름은 white인데 값은 검정 — 반전 페어</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<!-- 3 DARK -->
+<section class="sec" id="dark"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">03</span><h2>다크 모드 구조</h2></div>
+  <p class="sec__sub">GNB 우측에 달/해 토글이 있고, 색 이름은 그대로 두고 <strong>값만 뒤집는</strong> 방식입니다. 컴포넌트 CSS를 한 줄도 고치지 않아도 됩니다.</p>
+  <div class="grid g2">
+    <div class="card" style="background:#F6F6F6;border-color:#e2e2e2">
+      <span class="card__k">Light</span>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <span class="an-tag">Tag</span><span class="an-tag--ghost an-tag">Hover</span>
+      </div>
+      <div style="background:#fff;border-radius:20px;padding:18px">
+        <div style="font-size:16px;font-weight:600;color:#222">카카오뱅크 잘 쓰기</div>
+        <div style="font-size:14px;color:#888;margin-top:4px">--black100 = #FFF 표면</div>
+      </div>
+    </div>
+    <div class="card" style="background:#111;border-color:#2a2a2a">
+      <span class="card__k" style="color:#666">Dark</span>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <span class="an-tag" style="background:#EEE;color:#222">Tag</span>
+        <span class="an-tag" style="background:#3B3B3B;color:#fff">Hover</span>
+      </div>
+      <div style="background:#1C1C1C;border-radius:20px;padding:18px">
+        <div style="font-size:16px;font-weight:600;color:#EEE">카카오뱅크 잘 쓰기</div>
+        <div style="font-size:14px;color:#888;margin-top:4px">--black100 → #1C1C1C 로 재정의</div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><span class="card__k">Overlay 토큰</span>
+    <h3>투명 레이어로 두 모드를 동시에 커버</h3>
+    <p><code>--bg-badge: rgba(255,255,255,.1)</code> · <code>--card-badge: rgba(0,0,0,.1)</code> · <code>--card-black60: rgba(0,0,0,.6)</code> — 이미지 위 배지처럼 배경을 예측할 수 없는 자리는 불투명 색 대신 알파 레이어를 씁니다.</p>
+  </div>
+</div></section>
+
+<!-- 4 TYPE -->
+<section class="sec" id="type"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">04</span><h2>타이포그래피</h2></div>
+  <p class="sec__sub">Pretendard Variable. 본사이트보다 <strong>한 단계 작게</strong> 씁니다 — 기본 본문이 16px이 아니라 <strong>14px</strong>이고, 굵기 500이 압도적으로 많습니다. 읽기용 사이트인 만큼 큰 헤드라인을 자제합니다.</p>
+
+  <div class="card" style="padding:8px 26px 18px; margin-bottom:26px">
+    <div class="spec"><div class="spec__meta">H1 / Page<br>32px / 600<br>ls −0.02em</div>
+      <div class="spec__demo" style="font-size:32px;font-weight:600;line-height:1.35;letter-spacing:-0.02em">답이 되는 금융이야기</div></div>
+    <div class="spec"><div class="spec__meta">H2 / Section<br>28px / 600</div>
+      <div class="spec__demo" style="font-size:28px;font-weight:600;line-height:1.4;letter-spacing:-0.02em">카카오뱅크 잘 쓰기</div></div>
+    <div class="spec"><div class="spec__meta">Card Title<br>24px / 600<br>ls −0.48px</div>
+      <div class="spec__demo" style="font-size:24px;font-weight:600;line-height:1.4;letter-spacing:-0.02em">모임통장으로 회비 관리하는 법</div></div>
+    <div class="spec"><div class="spec__meta">Sub Title<br>22px / 600</div>
+      <div class="spec__demo" style="font-size:22px;font-weight:600;line-height:1.45;letter-spacing:-0.02em">이런 분께 추천해요</div></div>
+    <div class="spec"><div class="spec__meta">Lead<br>18px / 500</div>
+      <div class="spec__demo" style="font-size:18px;font-weight:500;line-height:1.6;letter-spacing:-0.02em">카카오뱅크의 상품과 서비스, 이렇게 써 보면 더 좋아요.</div></div>
+    <div class="spec"><div class="spec__meta">Body (기본)<br>16px / 500<br>ls −0.32px</div>
+      <div class="spec__demo" style="font-size:16px;font-weight:500;line-height:1.6;letter-spacing:-0.02em;color:#444">본문 기본은 #444입니다. 완전한 검정 대신 살짝 눌러 장문 가독성을 확보합니다.</div></div>
+    <div class="spec"><div class="spec__meta">Caption / Meta<br>14px / 500<br>color #888</div>
+      <div class="spec__demo" style="font-size:14px;font-weight:500;color:#888;letter-spacing:-0.02em">2026.08.11 · 읽는 데 3분</div></div>
+  </div>
+
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>역할</th><th>Size</th><th>Weight</th><th>Color</th><th>Letter-spacing</th></tr></thead>
+    <tbody>
+      <tr><td>H1</td><td class="mono">32px</td><td class="mono">600</td><td class="mono">#222</td><td class="mono">−0.02em</td></tr>
+      <tr><td>H2</td><td class="mono">28px</td><td class="mono">600</td><td class="mono">#222</td><td class="mono">−0.02em</td></tr>
+      <tr><td>Card Title</td><td class="mono">24px</td><td class="mono">600</td><td class="mono">#222</td><td class="mono">−0.48px</td></tr>
+      <tr><td>Lead</td><td class="mono">18px</td><td class="mono">500</td><td class="mono">#444</td><td class="mono">−0.34px</td></tr>
+      <tr><td>Body</td><td class="mono">16px</td><td class="mono">500</td><td class="mono">#444</td><td class="mono">−0.32px</td></tr>
+      <tr><td>Caption</td><td class="mono">14px</td><td class="mono">500</td><td class="mono">#888</td><td class="mono">−0.3px</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<!-- 5 SHAPE -->
+<section class="sec" id="shape"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">05</span><h2>형태 · 라운드</h2></div>
+  <div class="grid g4">
+    <div class="card" style="text-align:center"><div style="height:70px;background:#F6F6F6;border-radius:12px;margin-bottom:14px"></div><h3>12px</h3><p>썸네일, 인풋, 작은 박스</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#F6F6F6;border-radius:20px;margin-bottom:14px"></div><h3>20px</h3><p>내부 서브 카드</p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#FFF1EC;border-radius:30px;margin-bottom:14px"></div><h3>30px</h3><p><strong>콘텐츠 카드 기본값</strong></p></div>
+    <div class="card" style="text-align:center"><div style="height:70px;background:#222;border-radius:99px;margin-bottom:14px"></div><h3>99px</h3><p><strong>태그·버튼·GNB</strong> (최다 사용)</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><span class="card__k">Elevation</span><h3>그림자 없음 · 테두리 최소</h3><p>본사이트와 동일하게 box-shadow를 쓰지 않습니다. 깊이는 <code>#F6F6F6</code> 캔버스 ↔ <code>#FFF</code> 카드의 명도 차로만 표현합니다. 필요한 경우에만 <code>--box-line: #333</code> 1px 아웃라인.</p></div>
+</div></section>
+
+<!-- 6 COMP -->
+<section class="sec" id="comp"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">06</span><h2>컴포넌트</h2></div>
+
+  <div class="canvas" style="margin-bottom:16px;background:#F6F6F6">
+    <span class="canvas__label">Pill Buttons — radius 99px</span>
+    <button class="an-pill">구독하기</button>
+    <button class="an-pill an-pill--y">앱에서 열기</button>
+    <button class="an-pill an-pill--o">옵션</button>
+    <button class="an-pill an-pill--line">공유</button>
+  </div>
+
+  <div class="canvas" style="margin-bottom:16px;background:#F6F6F6">
+    <span class="canvas__label">Tags — #222 배경 / hover 시 #EEE 반전</span>
+    <span class="an-tag">저축</span><span class="an-tag">모임통장</span>
+    <span class="an-tag an-tag--ghost">hover 상태</span>
+    <span class="an-tag an-tag--soft">Series</span>
+  </div>
+
+  <div class="canvas" style="margin-bottom:16px;background:#F6F6F6">
+    <span class="canvas__label">GNB Segment — 트랙 흰색, 선택 시 #222 알약</span>
+    <div class="an-nav" style="background:#fff">
+      <button aria-selected="true">Home</button><button>Money</button><button>Brand</button>
+    </div>
+  </div>
+
+  <span class="canvas__label" style="display:block;margin-bottom:10px">Content Cards — radius 30px + 파스텔 배경 순환</span>
+  <div class="grid g3">
+    <div class="an-card" style="background:#FFF1EC"><span class="an-tag an-tag--soft" style="align-self:flex-start">Series</span><h4>카카오뱅크 잘 쓰기</h4><p>상품과 서비스, 이렇게 써 보면 더 좋아요.</p></div>
+    <div class="an-card" style="background:#EFEBFF"><span class="an-tag an-tag--soft" style="align-self:flex-start">Money</span><h4>26주 적금 완주 팁</h4><p>작게 시작해서 끝까지 가는 방법</p></div>
+    <div class="an-card" style="background:#fff;border:1px solid #EEE"><span class="an-tag an-tag--soft" style="align-self:flex-start">Brand</span><h4>답이 되는 금융이야기</h4><p>2026.08.11 · 읽는 데 3분</p></div>
+  </div>
+</div></section>
+
+<!-- 7 RULE -->
+<section class="sec" id="rule"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">07</span><h2>체크리스트</h2></div>
+  <div class="grid g2">
+    <div class="dd dd--do"><h4>✓ Do</h4><ul>
+      <li>페이지 배경은 흰색이 아니라 <strong>#F6F6F6</strong>에서 시작한다.</li>
+      <li>본문 텍스트는 #000이 아니라 <strong>#444</strong>.</li>
+      <li>모든 태그·버튼은 radius 99px 완전 알약.</li>
+      <li>카드 배경 파스텔은 채도를 낮춘 톤으로 3~4색만 순환 사용.</li>
+      <li>색 변수는 값이 아니라 <strong>역할 이름</strong>으로 참조해 다크모드 대응.</li>
+    </ul></div>
+    <div class="dd dd--no"><h4>✗ Don't</h4><ul>
+      <li>본사이트의 형광 #FFE300을 그대로 가져오기 (여기선 #FFC801).</li>
+      <li>파스텔 배경 위에 회색(#888) 본문 — 대비 부족.</li>
+      <li>카드에 그림자 추가.</li>
+      <li>헤드라인을 40px 이상으로 키우기 — 읽기 흐름이 끊긴다.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- 8 TOKEN -->
+<section class="sec" id="token"><div class="wrap">
+  <div class="sec__head"><span class="sec__num">08</span><h2>복사용 CSS 토큰</h2></div>
+<pre class="code"><span class="c">/* ---- KakaoBank answer Design Tokens ---- */</span>
+:root {
+  <span class="p">--primary</span>: <span class="v">#FFC801</span>;
+  <span class="p">--second</span>:  <span class="v">#FFE795</span>;
+  <span class="p">--link-text-color</span>: <span class="v">#0083D1</span>;
+  <span class="p">--app-link-bg</span>:     <span class="v">#4CA9FD</span>;
+
+  <span class="c">/* Neutral — 이름은 고정, 값만 모드별로 교체 */</span>
+  <span class="p">--black10</span>: <span class="v">#222</span>;   <span class="p">--black20</span>: <span class="v">#333</span>;
+  <span class="p">--black30</span>: <span class="v">#444</span>;   <span class="p">--black40</span>: <span class="v">#666</span>;
+  <span class="p">--black50</span>: <span class="v">#999</span>;   <span class="p">--black60</span>: <span class="v">#888</span>;
+  <span class="p">--black70</span>: <span class="v">#ccc</span>;   <span class="p">--black80</span>: <span class="v">#eee</span>;
+  <span class="p">--black90</span>: <span class="v">#f6f6f6</span>;<span class="p">--black100</span>: <span class="v">#fff</span>;
+  <span class="p">--white100</span>: <span class="v">#000</span>;
+  <span class="p">--white50</span>: <span class="v">hsla(0,0%,100%,.5)</span>;
+  <span class="p">--white40</span>: <span class="v">hsla(0,0%,100%,.4)</span>;
+  <span class="p">--white30</span>: <span class="v">hsla(0,0%,100%,.3)</span>;
+  <span class="p">--white20</span>: <span class="v">hsla(0,0%,100%,.2)</span>;
+
+  <span class="c">/* Component */</span>
+  <span class="p">--TagBg</span>: <span class="v">#222</span>;  <span class="p">--TagText</span>: <span class="v">#fff</span>;  <span class="p">--TagBgHover</span>: <span class="v">#eee</span>;
+  <span class="p">--Color-Button-Pill-black</span>: <span class="v">#333</span>;
+  <span class="p">--Color-Button-Pill-black-text</span>: <span class="v">#fff</span>;
+  <span class="p">--optionBtn</span>: <span class="v">#3b3b3b</span>;  <span class="p">--optionBtnHover</span>: <span class="v">#ddd</span>;
+  <span class="p">--box-line</span>: <span class="v">#333</span>;
+  <span class="p">--bg-badge</span>:   <span class="v">hsla(0,0%,100%,.1)</span>;
+  <span class="p">--card-badge</span>: <span class="v">rgba(0,0,0,.1)</span>;
+  <span class="p">--card-black60</span>: <span class="v">rgba(0,0,0,.6)</span>;
+
+  <span class="c">/* Radius */</span>
+  <span class="p">--r-sm</span>: <span class="v">12px</span>; <span class="p">--r-md</span>: <span class="v">20px</span>;
+  <span class="p">--r-lg</span>: <span class="v">30px</span>; <span class="p">--r-pill</span>: <span class="v">99px</span>;
+}
+
+body { background: var(--black90); color: var(--black30);
+       font-family: "Pretendard Variable", system-ui, sans-serif;
+       font-size: 16px; font-weight: 500; letter-spacing: -0.02em; }
+
+.tag  { background: var(--TagBg); color: var(--TagText);
+        border-radius: var(--r-pill); padding: 7px 16px; font-size: 14px; }
+.card { background: var(--black100); border-radius: var(--r-lg); padding: 30px; }
+</pre>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  SOURCE — blog.kakaobank.com/brand · computed style 추출 · 2026.08 &nbsp;·&nbsp; <a href="index.html">← 전체 목록</a>
+</div></footer>
+
+<script src="assets/copy.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>문의 접수 완료 — AI 빌더 그룹 | 목업 v22 P-09</title>
+<meta name="description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-builder-group-pearl.vercel.app/submit.html">
+<meta property="og:title" content="문의 접수 완료 — AI 빌더 그룹">
+<meta property="og:description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:image" content="https://ai-builder-group-pearl.vercel.app/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AI 빌더 그룹">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.done { text-align: center; padding: 124px 0 104px; }
+.check { width: 92px; height: 92px; margin: 0 auto 34px; }
+.check circle { fill: none; stroke: var(--lime); stroke-width: 5; stroke-dasharray: 260; stroke-dashoffset: 260;
+  animation: circ .7s ease-out forwards; }
+.check path { fill: none; stroke: var(--ink); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 60; stroke-dashoffset: 60; animation: tick .45s .5s ease-out forwards; }
+@keyframes circ { to { stroke-dashoffset: 0; } }
+@keyframes tick { to { stroke-dashoffset: 0; } }
+.done .k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .26em; color: var(--muted-2);
+  text-transform: uppercase; display: block; margin-bottom: 18px; }
+.done h1 { margin: 0 0 16px; font-size: clamp(30px, 4.2vw, 48px); font-weight: 800; letter-spacing: -0.045em; }
+.done h1 .w300 { font-weight: 300; }
+.done p { margin: 0 0 8px; color: var(--muted); font-size: 16px; }
+.done .note { font-family: var(--mono); font-size: 12px; color: var(--muted-2); }
+.next { display: grid; grid-template-columns: repeat(2, minmax(0, 330px)); gap: 16px; justify-content: center; margin: 52px 0 44px; }
+.ncard { border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); padding: 26px 28px;
+  text-align: left; text-decoration: none; transition: border-color .15s, transform .2s; }
+.ncard:hover { border-color: var(--ink); transform: translateY(-3px); }
+.ncard .k2 { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--muted-2); text-transform: uppercase; }
+.ncard b { display: block; margin-top: 10px; font-size: 16px; letter-spacing: -0.025em; line-height: 1.5; }
+.ga-note { margin-top: 60px; font-family: var(--mono); font-size: 11.5px; color: var(--muted-2); letter-spacing: .05em; }
+@media (max-width: 700px) { .next { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="gnb scrolled">
+  <div class="gnb__in">
+    <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+    <button class="gnb__burger" aria-label="메뉴">☰</button>
+    <nav><a href="index.html">Home</a><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></nav>
+    <!-- 이미 문의했으므로 이 페이지에서만 GNB CTA 숨김 (P-09 스펙) -->
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap done">
+    <svg class="check" viewBox="0 0 88 88" aria-hidden="true">
+      <circle cx="44" cy="44" r="40"/>
+      <path d="M28 45 L40 57 L61 34"/>
+    </svg>
+    <h1><span class="w300">문의가</span> 정상적으로 접수되었습니다</h1>
+    <p>담당자가 확인 후 남겨주신 연락처로 연락드리겠습니다.</p>
+
+    <div class="next">
+      <a class="ncard" href="insight-detail.html">
+        <b>바이브 코딩 외주, 잘하는 곳과 못하는 곳의 차이</b>
+      </a>
+      <a class="ncard" href="content.html">
+        <b>영상으로 보는 우리의 작업 →</b>
+      </a>
+    </div>
+
+    <a class="btn btn--ghost" href="index.html">홈으로 돌아가기</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft6">
+      <div class="ft6__brand">
+        <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+        <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
+      </div>
+      <div class="col"><b>Service</b><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></div>
+      <div class="col"><b>Company</b><a href="index.html#how">일하는 방식</a><a href="index.html#faq">FAQ</a><span class="soon">채용 (준비 중)</span></div>
+      <div class="col"><b>Contact</b><a href="contact.html">프로젝트 문의</a><a href="mailto:contact@example.com">contact@_______</a></div>
+      <div class="col"><b>Social</b><a href="content.html">YouTube</a><span class="soon">Instagram (예정)</span><span class="soon">LinkedIn (예정)</span></div>
+    </div>
+    <p class="ft__legal"><b>AI 빌더 그룹</b> · 사업자 정보는 사이트 오픈과 함께 게재됩니다.<br>이메일 문의는 pluug 장애 대비 대체 경로입니다.</p>
+    <div class="ft__bottom"><span>© 2026 AI Builder Group</span><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+/* ★ 전환 측정 지점 — 가짜 전환 방어: src=pluug 토큰 확인 (검증 통과 시에만 발화) */
+(function () {
+  if (new URLSearchParams(location.search).get('src') === 'pluug') {
+    window.track('contact_submit', { verified: true });
+  }
+})();
+</script>
+</body>
+</html>

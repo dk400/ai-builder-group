@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insight — AI 빌더 그룹 | 목업 v22 P-04</title>
+<meta name="description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-builder-group-pearl.vercel.app/insight.html">
+<meta property="og:title" content="Insight — AI 빌더 그룹">
+<meta property="og:description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:image" content="https://ai-builder-group-pearl.vercel.app/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AI 빌더 그룹">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.ins { display: grid; grid-template-columns: 230px 1fr; gap: 60px; padding: 84px 0 76px; align-items: start; }
+.cats { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 2px; }
+.page-head p { font-size: 18px; }
+.cats .k { font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2);
+  text-transform: uppercase; padding: 0 14px; margin-bottom: 12px; }
+.cats button { text-align: left; background: none; border: 0; font-family: var(--sans); font-size: 16px; font-weight: 600;
+  color: var(--muted); padding: 10px 14px; border-radius: 11px; cursor: pointer; transition: .15s;
+  display: flex; justify-content: space-between; align-items: baseline; }
+.cats button:hover { color: var(--ink); background: var(--paper-2); }
+.cats button.on { color: var(--ink); background: var(--paper-3); font-weight: 700; }
+.cats .cnt { font-family: var(--mono); font-size: 12px; color: var(--muted-2); }
+.arow { display: grid; grid-template-columns: 190px 1fr; gap: 28px; padding: 28px 8px; border-bottom: 1px solid var(--line);
+  text-decoration: none; transition: background .15s, padding-left .15s; align-items: center; }
+.arow:first-of-type { border-top: 1px solid var(--line-2); }
+.arow:hover { background: var(--paper-2); padding-left: 18px; }
+.arow .ph { aspect-ratio: 16/10; border-radius: 14px; }
+.arow .athumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 14px; display: block;
+  border: 1px solid var(--line); }
+.arow .cat { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); }
+.arow h3 { margin: 8px 0 6px; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.35; }
+.arow:hover h3 { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+.arow p { margin: 0 0 10px; font-size: 16px; color: var(--muted); word-break: keep-all; }
+.arow .meta { font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .06em; }
+@media (max-width: 900px) {
+  .ins { grid-template-columns: 1fr; gap: 8px; }
+  .cats { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
+  .cats .k { display: none; }
+  .cats button { white-space: nowrap; gap: 6px; }
+  .arow { grid-template-columns: 1fr; }
+}
+
+/* v19: 이음새 리본 (서브 페이지 슬림 버전) */
+.ribbon-sep { position: relative; height: 0; z-index: 6; pointer-events: none; }
+.ribbon-sep svg { position: absolute; left: 0; right: 0; top: -96px; width: 100%; height: 200px;
+  display: block; overflow: visible; filter: drop-shadow(0 12px 24px rgba(14,14,12,.14)); }
+.ribbon-sep .edge { fill: none; stroke: var(--ink); stroke-width: 44; stroke-linecap: round; }
+.ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 38; stroke-linecap: round; }
+.ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .1em;
+  fill: var(--ink); dominant-baseline: middle; }
+@media (max-width: 960px) { .ribbon-sep svg { top: -108px; height: 150px; filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="gnb scrolled">
+  <div class="gnb__in">
+    <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+    <button class="gnb__burger" aria-label="메뉴">☰</button>
+    <nav><a href="index.html">Home</a><a href="work.html">Work</a><a href="insight.html" class="active">Insight</a><a href="content.html">콘텐츠</a></nav>
+    <a class="btn btn--lime btn--sm btn--pulse" href="contact.html" data-track="cta_click" data-location="gnb">문의하기</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <h1><span class="w300">우리의</span> 생각</h1>
+      <p>파트너 똑똑한개발자의 실제 인사이트를 함께 발행합니다.</p>
+    </div>
+  </div>
+
+  <!-- v19: 이음새 리본 — 페이지 헤드 ↔ 목록 -->
+  <div class="ribbon-sep" aria-hidden="true">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+      <path id="rsI" d="M -80,90 C 280,130 560,70 860,110 C 1160,150 1360,90 1700,120" fill="none"/>
+      <use href="#rsI" class="edge"/>
+      <use href="#rsI" class="lane"/>
+      <text dy="6">
+        <textPath href="#rsI" data-wflow data-unit="4" data-speed="0.02">발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ 발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ 발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ 발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ 발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ </textPath>
+      </text>
+    </svg>
+  </div>
+
+  <div class="wrap ins">
+    <!-- 카테고리: 전환 시 URL 경로 변경 (실서비스: /insight/[category]) -->
+    <nav class="cats" aria-label="카테고리">
+      <button class="on" data-cat="all">전체 <span class="cnt">08</span></button>
+      <button data-cat="ai-ax">AI · AX <span class="cnt">04</span></button>
+      <button data-cat="guide">발주 가이드 <span class="cnt">02</span></button>
+      <button data-cat="how">일하는 방식 <span class="cnt">01</span></button>
+      <button data-cat="project">프로젝트 <span class="cnt">01</span></button>
+    </nav>
+
+    <div data-list>
+      <a class="arow" href="insight-detail.html" data-c="ai-ax">
+        <img class="athumb" src="assets/img/ins/ins-poc.jpg" alt="" loading="lazy">
+        <div><h3>AI PoC란? 기업 AI 도입 전 반드시 필요한 'PoC' 알아보기</h3>
+          <span class="cat">AI · AX</span>
+          <p>기업 AI 도입, 전면 구축 전에 PoC로 먼저 검증해야 하는 이유.</p>
+          <span class="meta">똑똑한개발자 · 2026.08.03</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="ai-ax">
+        <img class="athumb" src="assets/img/ins/ins-agent.jpg" alt="" loading="lazy">
+        <div><h3>우리 회사에도 AI 에이전트가 필요할까? 5분 체크리스트</h3>
+          <span class="cat">AI · AX</span>
+          <p>도입이 필요한 조직의 신호 — 5분 만에 자가진단해 보세요.</p>
+          <span class="meta">똑똑한개발자 · 2026.07.22</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="guide">
+        <img class="athumb" src="assets/img/ins/ins-quote.jpg" alt="" loading="lazy">
+        <div><h3>500만 원 vs 2,000만 원, 개발 외주 견적 비교 제대로 하는 법</h3>
+          <span class="cat">발주 가이드</span>
+          <p>같은 앱인데 견적이 4배 차이 나는 이유를 뜯어봅니다.</p>
+          <span class="meta">똑똑한개발자 · 2026.07.03</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="guide">
+        <img class="athumb" src="assets/img/ins/ins-turnkey.jpg" alt="" loading="lazy">
+        <div><h3>외주개발, 왜 올인원 턴키 팀과 함께 해야 할까?</h3>
+          <span class="cat">발주 가이드</span>
+          <p>기획·디자인·개발을 따로 맡기면 실패하는 구조적 이유.</p>
+          <span class="meta">똑똑한개발자 · 2026.07.03</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="ai-ax">
+        <img class="athumb" src="assets/img/ins/ins-ax.jpg" alt="" loading="lazy">
+        <div><h3>AI 도입과 AX는 다르다 — 성과를 만드는 업무 설계 3가지</h3>
+          <span class="cat">AI · AX</span>
+          <p>도입했는데 성과가 없다면, AX와의 결정적 차이를 봐야 합니다.</p>
+          <span class="meta">똑똑한개발자 · 2026.07.16</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="project">
+        <img class="athumb" src="assets/img/ins/ins-toss.jpg" alt="" loading="lazy">
+        <div><h3>토스 안에서 미니게임을? 똑똑한개발자 × 앱인토스</h3>
+          <span class="cat">프로젝트</span>
+          <p>토스와 함께 미니게임을 만든 프로젝트 비하인드.</p>
+          <span class="meta">똑똑한개발자 · 2026.07.03</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="how">
+        <img class="athumb" src="assets/img/ins/ins-native.jpg" alt="" loading="lazy">
+        <div><h3>기획·디자인·개발을 하나로 — AI 네이티브 에이전시 운영법</h3>
+          <span class="cat">일하는 방식</span>
+          <p>'프로덕트 빌더'로 팀을 운영하는 방식, 빌더 조쉬와의 대화.</p>
+          <span class="meta">똑똑한개발자 · 2026.04.22</span></div>
+      </a>
+      <a class="arow" href="insight-detail.html" data-c="ai-ax">
+        <img class="athumb" src="assets/img/ins/ins-gov.jpg" alt="" loading="lazy">
+        <div><h3>기업용 AI 도입, 왜 거버넌스가 먼저 필요할까?</h3>
+          <span class="cat">AI · AX</span>
+          <p>데이터 유출·통제 불능을 막는 AI 거버넌스 설계법.</p>
+          <span class="meta">똑똑한개발자 · 2026.07.14</span></div>
+      </a>
+
+      <div class="empty" data-empty hidden style="margin-top:24px">
+        <h3>이 주제의 첫 글을 준비 중입니다</h3>
+        <p>다른 카테고리의 글을 먼저 읽어보세요.</p>
+      </div>
+
+      <div style="text-align:center;margin-top:40px"><button class="btn btn--ghost">더 보기</button></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft6">
+      <div class="ft6__brand">
+        <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+        <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
+      </div>
+      <div class="col"><b>Service</b><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></div>
+      <div class="col"><b>Company</b><a href="index.html#how">일하는 방식</a><a href="index.html#faq">FAQ</a><span class="soon">채용 (준비 중)</span></div>
+      <div class="col"><b>Contact</b><a href="contact.html">프로젝트 문의</a><a href="mailto:contact@example.com">contact@_______</a></div>
+      <div class="col"><b>Social</b><a href="content.html">YouTube</a><span class="soon">Instagram (예정)</span><span class="soon">LinkedIn (예정)</span></div>
+    </div>
+    <p class="ft__legal"><b>AI 빌더 그룹</b> · 사업자 정보는 사이트 오픈과 함께 게재됩니다.<br>이메일 문의는 pluug 장애 대비 대체 경로입니다.</p>
+    <div class="ft__bottom"><span>© 2026 AI Builder Group</span><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+
+<!-- 플로팅 CTA 독 — 히어로 CTA와 화면상 비중복 (히어로/최종CTA 노출 시 숨김) -->
+<div class="dock" data-dock>
+  <div class="dock__txt"><b>검증된 바이브 코딩</b><span>무료 문의 — 부담 없이 남겨보세요</span></div>
+  <a class="btn btn--lime btn--sm" href="contact.html" data-track="cta_click" data-location="floating">프로젝트 문의 <span class="arr">→</span></a>
+  <button class="dock__x" aria-label="닫기" data-dock-x>✕</button>
+</div>
+<button class="dock-open" data-dock-open aria-label="문의 바 다시 열기">💬</button>
+
+<script src="assets/app.js"></script>
+<script>
+/* v19.5 이음새 리본 — 문구 덱 로테이션(페이드 전환) + 곡선 흐름 */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DECKS = {
+    rsI: [
+      '발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ ',
+      'READ BEFORE YOU BUILD ✳ 외주 전 필독 ✳ ',
+      '실패하는 발주에는 패턴이 있다 ✳ INSIGHT WEEKLY ✳ ',
+      'AI BUILDER GROUP ✳ 우리의 생각을 공개합니다 ✳ '
+    ]
+  };
+  var ROT = { rsI: 5500 };
+  var flows = [];
+  document.querySelectorAll('[data-wflow]').forEach(function (tp) {
+    var pid = tp.getAttribute('href').slice(1);
+    var path = document.getElementById(pid);
+    if (!path) return;
+    var decks = DECKS[pid] || [tp.textContent];
+    var pathLen = path.getTotalLength();
+    var txt = tp.parentNode;
+    txt.style.transition = 'opacity .45s ease';
+    var f = { tp: tp, di: 0, off: 0, unit: 10,
+      speed: parseFloat(tp.dataset.speed || '0.022') * (tp.dataset.dir === 'rev' ? -1 : 1) };
+    function setDeck(i) {
+      f.di = i;
+      var phrase = decks[i];
+      tp.textContent = phrase;
+      var one = Math.max(1, tp.getComputedTextLength());
+      var n = Math.max(2, Math.ceil(pathLen * 1.5 / one) + 1);
+      tp.textContent = new Array(n + 1).join(phrase);
+      f.unit = one / pathLen * 100;
+      f.off = -f.unit / 2;
+    }
+    setDeck(0);
+    flows.push(f);
+    /* 문구 로테이션 — 2.6초 첫 전환 후 기본 주기 반복. 백그라운드 탭에서는 전환 건너뜀 */
+    if (!reduce && decks.length > 1) {
+      var period = ROT[pid] || 5000;
+      var swap = function () {
+        if (document.hidden) return;
+        txt.style.opacity = 0;
+        setTimeout(function () { setDeck((f.di + 1) % decks.length); txt.style.opacity = 1; }, 470);
+      };
+      setTimeout(function () { swap(); setInterval(swap, period); }, 2600);
+    }
+  });
+  if (reduce || !flows.length) return;
+  (function loop() {
+    flows.forEach(function (f) {
+      f.off -= f.speed;
+      if (f.off <= -f.unit) f.off += f.unit;
+      if (f.off > 0) f.off -= f.unit;
+      f.tp.setAttribute('startOffset', f.off + '%');
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+<script>
+(function () {
+  var rows = document.querySelectorAll('[data-list] .arow');
+  var empty = document.querySelector('[data-empty]');
+  document.querySelectorAll('.cats button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.cats button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      var cat = b.dataset.cat, n = 0;
+      rows.forEach(function (r) {
+        var show = cat === 'all' || r.dataset.c === cat;
+        r.style.display = show ? '' : 'none'; if (show) n++;
+      });
+      empty.hidden = n > 0;
+      history.replaceState(null, '', cat === 'all' ? '#' : '#' + cat);
+    });
+  });
+})();
+</script>
+
+<script>
+/* 플로팅 독 — 스크롤 진입 후 표시, 최종 CTA·푸터 근처/닫기 시 숨김 */
+(function () {
+  var dock = document.querySelector('[data-dock]');
+  if (!dock) return;
+  var closed = false;
+  try { closed = sessionStorage.getItem('dock') === '1'; } catch (e) {}
+  var xbtn = document.querySelector('[data-dock-x]');
+  var reopen = document.querySelector('[data-dock-open]');
+  function syncReopen() { if (reopen) reopen.classList.toggle('show', closed); }
+  xbtn.addEventListener('click', function () {
+    closed = true; dock.classList.remove('show');
+    try { sessionStorage.setItem('dock', '1'); } catch (e) {}
+    syncReopen();
+  });
+  if (reopen) reopen.addEventListener('click', function () {
+    closed = false;
+    try { sessionStorage.removeItem('dock'); } catch (e) {}
+    syncReopen(); upd();
+  });
+  /* 서브 페이지: 히어로 CTA가 없으므로 얕은 스크롤에도 표시, 문서 최하단 근처에서만 숨김 */
+  function upd() {
+    if (closed) return;
+    var nearEnd = window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 140;
+    dock.classList.toggle('show', window.scrollY > 220 && !nearEnd);
+  }
+  window.addEventListener('scroll', upd, { passive: true }); upd(); syncReopen();
+})();
+</script>
+</body>
+</html>

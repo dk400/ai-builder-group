@@ -1,0 +1,40 @@
+.art-head { padding: 64px 0 44px; text-align: center; }
+/* v21: 뒤로가기 링크 — 중앙 정렬 헤드에서 좌측 고정 */
+.backlink { display: flex; width: fit-content; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700;
+  color: var(--muted); text-decoration: none; margin: 0 0 34px; transition: color var(--hover); }
+.backlink::before { content: "←"; font-family: var(--mono); transition: transform var(--hover); }
+.backlink:hover { color: var(--ink); }
+.backlink:hover::before { transform: translateX(-4px); }
+.art-head h1 { margin: 0 auto 20px; font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; letter-spacing: -0.045em;
+  line-height: 1.22; max-width: 21ch; }
+.art-head .meta { font-size: 16px; color: var(--muted); }
+.art-head .meta b { color: var(--ink); }
+.art-body { display: grid; grid-template-columns: minmax(0, 720px) 220px; gap: 68px; justify-content: center; padding: 44px 0 76px; }
+.art { font-size: 16.5px; line-height: 1.9; color: var(--ink-2); }
+.art .ph { margin: 0 0 40px; }
+.art h2 { font-size: 25px; letter-spacing: -0.035em; margin: 50px 0 16px; scroll-margin-top: 96px; color: var(--ink); }
+.art p { margin: 0 0 19px; word-break: keep-all; }
+.art blockquote { margin: 32px 0; padding: 24px 30px; border-left: 3px solid var(--lime); background: var(--paper-2);
+  border-radius: 0 18px 18px 0; font-weight: 700; color: var(--ink); font-size: 18px; letter-spacing: -0.02em; }
+.art .yt { position: relative; border-radius: 18px; overflow: hidden; background: var(--ink); aspect-ratio: 16/9; margin: 32px 0 10px; cursor: pointer; }
+.art .yt::before { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(80% 90% at 30% 20%, rgba(216,255,61,.22), transparent 58%),
+              linear-gradient(200deg, transparent 50%, rgba(0,0,0,.5)); }
+.art .yt .play { position: absolute; inset: 0; display: grid; place-items: center; }
+.art .yt .play i { width: 62px; height: 62px; border-radius: 50%; background: var(--lime); color: var(--ink);
+  display: grid; place-items: center; font-size: 18px; transition: transform .3s; box-shadow: 0 12px 40px rgba(216,255,61,.25); }
+.art .yt:hover .play i { transform: scale(1.12); }
+.art .yt-link { font-size: 14.5px; margin: 0 0 30px; }
+.toc { position: sticky; top: 96px; font-size: 15px; align-self: start; }
+.toc b { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2); margin-bottom: 14px; text-transform: uppercase; }
+.toc a { display: block; text-decoration: none; color: var(--muted); padding: 8px 0 8px 15px; border-left: 2px solid var(--line); transition: .15s; line-height: 1.5; }
+.toc a.now { color: var(--ink); border-left-color: var(--ink); font-weight: 700; }
+.tags { display: flex; gap: 8px; margin: 40px 0 0; }
+.rel-h { font-size: 24px; margin: 0 0 18px; letter-spacing: -0.03em; }
+.relrow { display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: baseline;
+  padding: 20px 8px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .15s, padding-left .15s; }
+.relrow:first-of-type { border-top: 1px solid var(--line-2); }
+.relrow:hover { background: var(--paper-2); padding-left: 16px; }
+.relrow .c { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--muted-2); text-transform: uppercase; }
+.relrow .t { font-size: 18px; font-weight: 700; letter-spacing: -0.025em; }
+@media (max-width: 1000px) { .art-body { grid-template-columns: 1fr; padding-inline: 0; } .toc { display: none; } .relrow { grid-template-columns: 1fr; gap: 4px; } }

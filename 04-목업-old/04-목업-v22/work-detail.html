@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 상담 챗봇 구축 — Work | 목업 v22 P-03</title>
+<meta name="description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-builder-group-pearl.vercel.app/work-detail.html">
+<meta property="og:title" content="AI 상담 챗봇 구축 — Work">
+<meta property="og:description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:image" content="https://ai-builder-group-pearl.vercel.app/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AI 빌더 그룹">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* significa식 케이스 스터디 — 서술과 스크린샷의 교차 리듬 */
+.wd-head { padding: 88px 0 40px; }
+/* v21: 뒤로가기 링크 */
+.backlink { display: inline-flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700;
+  color: var(--muted); text-decoration: none; margin-bottom: 26px; transition: color var(--hover); }
+.backlink::before { content: "←"; font-family: var(--mono); transition: transform var(--hover); }
+.backlink:hover { color: var(--ink); }
+.backlink:hover::before { transform: translateX(-4px); }
+.wd-head .tags { display: flex; gap: 8px; margin: 20px 0 20px; }
+.wd-head h1 { margin: 0 0 14px; font-size: clamp(36px, 5vw, 60px); font-weight: 800; letter-spacing: -0.05em; line-height: 1.08; }
+.wd-head .sum { color: var(--muted); font-size: 17px; margin: 0; max-width: 56ch; word-break: keep-all; }
+.wd-cover .slot { aspect-ratio: 21/10; border-radius: 24px; }
+.wd-body { display: grid; grid-template-columns: 1fr 300px; gap: 60px; padding: 56px 0 60px; align-items: start; }
+.wd-art h2 { font-size: 25px; margin: 52px 0 14px; letter-spacing: -0.035em; display: flex; align-items: baseline; gap: 14px; }
+.wd-art h2 .no { font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .14em; font-weight: 500; }
+.wd-art h2:first-child { margin-top: 0; }
+.wd-art p { color: var(--ink-2); font-size: 16px; line-height: 1.85; margin: 0 0 18px; max-width: 66ch; word-break: keep-all; }
+.wd-art .shot { margin: 32px 0; }
+.wd-art .shot .slot { aspect-ratio: 16/9; }
+.wd-art .shot figcaption { margin-top: 10px; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--muted-2); }
+.wd-art .shot--pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.wd-art .shot--pair .slot { aspect-ratio: 4/5; }
+.wd-art blockquote { margin: 34px 0; padding: 24px 30px; border-left: 3px solid var(--lime); background: var(--paper-2);
+  border-radius: 0 18px 18px 0; font-weight: 700; color: var(--ink); font-size: 18px; letter-spacing: -0.02em; }
+.wd-art blockquote cite { display: block; margin-top: 10px; font-family: var(--mono); font-size: 12.5px;
+  letter-spacing: .12em; color: var(--muted-2); font-style: normal; font-weight: 400; }
+.aside { position: sticky; top: 96px; border: 1px solid var(--line-2); border-radius: 20px; background: var(--paper-2); overflow: hidden; }
+.aside__head { padding: 13px 22px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11px;
+  letter-spacing: .2em; color: var(--muted-2); display: flex; justify-content: space-between; text-transform: uppercase; }
+.aside dl { margin: 0; padding: 8px 0; }
+.aside .row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 12px 22px; border-bottom: 1px dashed var(--line); }
+.aside .row:last-child { border-bottom: 0; }
+.aside dt { font-size: 13.5px; color: var(--muted); font-weight: 500; flex: none; }
+.aside dd { margin: 0; font-size: 14.5px; font-weight: 700; text-align: right; letter-spacing: -0.01em; }
+.aside .b-chip { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px 5px 5px; border: 1px solid var(--line-2);
+  border-radius: 999px; font-size: 13px; font-weight: 600; margin: 3px 0 0 4px; background: var(--paper); }
+.aside .b-chip i { width: 20px; height: 20px; border-radius: 50%; background: var(--paper-3); border: 1px solid var(--line); }
+.aside a.b-chip { transition: border-color var(--hover), transform var(--hover); }
+.aside a.b-chip:hover { border-color: var(--ink); transform: translateY(-1px); }
+.aside .note { margin: 0; padding: 14px 22px; border-top: 1px solid var(--line); font-family: var(--mono);
+  font-size: 12px; color: var(--muted-2); line-height: 1.7; }
+/* significa식 "다음 프로젝트" 전환 푸터 */
+.next-proj { display: block; text-decoration: none; border-top: 1px solid var(--line); margin-top: 40px; }
+.next-proj .in { display: grid; grid-template-columns: 1fr 340px; gap: 44px; align-items: center;
+  padding: 64px 0; transition: background var(--hover); }
+.next-proj:hover .in { background: var(--paper-2); }
+.next-proj .k { font-family: var(--mono); font-size: 12px; letter-spacing: .24em; color: var(--muted-2); text-transform: uppercase; display: block; margin-bottom: 16px; }
+.next-proj h3 { margin: 0 0 8px; font-size: clamp(26px, 3.4vw, 40px); font-weight: 800; letter-spacing: -0.045em; }
+.next-proj:hover h3 { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 3px; }
+.next-proj p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.next-proj .slot { aspect-ratio: 16/10; }
+@media (max-width: 900px) {
+  .wd-body { grid-template-columns: 1fr; } .aside { position: static; order: -1; }
+  .wd-art .shot--pair { grid-template-columns: 1fr; }
+  .next-proj .in { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="gnb scrolled">
+  <div class="gnb__in">
+    <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+    <button class="gnb__burger" aria-label="메뉴">☰</button>
+    <nav><a href="index.html">Home</a><a href="work.html" class="active">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></nav>
+    <a class="btn btn--lime btn--sm btn--pulse" href="contact.html" data-track="cta_click" data-location="gnb">문의하기</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap wd-head">
+    <a class="backlink" href="work.html">Work 목록으로</a>
+    <h1>AI 상담 챗봇 구축</h1>
+    <p class="sum">반복 문의에 지친 고객센터를 위해, 2주 만에 검증한 상담 자동화 프로토타입</p>
+    <div class="tags"><span class="tag">AI Service</span><span class="tag">Next.js</span><span class="tag num">2026</span></div>
+  </div>
+
+  <div class="wrap wd-cover">
+    <div class="slot mask">
+      <div class="bf"><div class="bf__bar"><i></i><i></i><i></i><span class="url">consult-bot.app</span></div>
+        <div class="bf__body"><div class="row"><div class="bl" style="width:22%;height:12px"></div><div class="bl bl--lime" style="width:70px;height:12px;border-radius:999px"></div></div>
+          <div class="bl" style="width:52%;height:26px"></div>
+          <div class="row" style="margin-top:auto"><div class="bl" style="flex:3;height:96px"></div><div class="bl bl--soft" style="flex:2;height:96px"></div></div></div></div>
+      <div class="slot__spec"><b>Asset — Case Hero</b><span>실서비스 대표 화면 · 최고 퀄리티 1장</span><em>2100×1000px · 21:10 @2x</em></div>
+    </div>
+  </div>
+
+  <div class="wrap wd-body">
+    <article class="wd-art">
+      <h2><span class="no">01</span>문제</h2>
+      <p>클라이언트의 고객센터는 하루 문의의 70%가 동일한 유형의 반복 질문이었습니다. 상담 인력은 이미 포화 상태였고, 응대 품질은 시간대에 따라 크게 흔들렸습니다. AI 도입을 검토했지만 "우리 데이터로 정말 되는지"를 확인할 방법이 없어 결정을 미루고 있었습니다.</p>
+
+      <h2><span class="no">02</span>해결</h2>
+      <p>전면 도입 대신 2주짜리 PoC를 제안했습니다. 실제 상담 로그 중 빈도 상위 유형만 추려 지식 베이스를 만들고, 답변 정확도를 사람이 검수하는 구조로 붙였습니다.</p>
+
+      <!-- 서술 사이에 끼어드는 스크린샷 (significa 리듬) -->
+      <figure class="shot">
+        <div class="slot mask">
+          <div class="bf"><div class="bf__bar"><i></i><i></i><i></i><span class="url">consult-bot.app/chat</span></div>
+            <div class="bf__body"><div class="bl" style="width:40%;height:16px;border-radius:10px 10px 10px 3px"></div>
+              <div class="bl bl--soft" style="width:52%;height:24px;border-radius:10px 10px 3px 10px;margin-left:auto"></div>
+              <div class="bl" style="width:46%;height:20px;border-radius:10px 10px 10px 3px"></div>
+              <div class="row" style="margin-top:auto"><div class="bl" style="flex:1;height:18px;border-radius:999px"></div><div class="bl bl--lime" style="width:40px;height:18px;border-radius:999px"></div></div></div></div>
+          <div class="slot__spec"><b>Asset — 상담 플로우</b><span>실제 대화 화면 (개인정보 마스킹)</span><em>1440×810px · 16:9</em></div>
+        </div>
+        <figcaption>FIG.01 — 상담 플로우. 애매한 질문은 자동으로 상담사에게 이관된다.</figcaption>
+      </figure>
+
+      <p>애매한 질문은 자동으로 상담사에게 넘어가도록 경계를 명확히 설계했습니다. AI가 다 하는 것처럼 보이게 만드는 것이 아니라, AI가 잘하는 범위를 정직하게 긋는 것이 이 프로젝트의 핵심 판단이었습니다.</p>
+
+      <figure class="shot shot--pair">
+        <div class="slot mask">
+          <div class="bf"><div class="bf__bar"><i></i><i></i><i></i><span class="url">console — 검수 큐</span></div>
+            <div class="bf__body"><div class="bl" style="width:56%;height:12px"></div>
+              <div class="bl" style="width:100%;height:16px"></div><div class="bl bl--soft" style="width:100%;height:16px"></div><div class="bl" style="width:100%;height:16px"></div><div class="bl" style="width:74%;height:16px"></div></div></div>
+          <div class="slot__spec"><b>Asset — 검수 콘솔</b><span>답변 검수 큐 화면</span><em>800×1000px · 4:5</em></div>
+        </div>
+        <div class="slot mask">
+          <div class="bf"><div class="bf__bar"><i></i><i></i><i></i><span class="url">console — 지표</span></div>
+            <div class="bf__body"><div class="row"><div class="bl bl--lime" style="flex:1;height:34px"></div><div class="bl" style="flex:1;height:34px"></div></div>
+              <div class="bl" style="width:100%;height:52px;margin-top:8px"></div>
+              <div class="bl" style="width:48%;height:10px;margin-top:auto"></div></div></div>
+          <div class="slot__spec"><b>Asset — 지표 대시보드</b><span>정확도·이관율 차트 화면</span><em>800×1000px · 4:5</em></div>
+        </div>
+      </figure>
+
+      <h2><span class="no">03</span>결과</h2>
+      <p>2주 후 클라이언트는 실데이터 기반의 판단 근거를 얻었고, 반복 유형 응대를 자동화 전환하는 다음 단계 프로젝트로 이어졌습니다.</p>
+
+      <blockquote>"도입할지 말지를 2주 만에 데이터로 결정할 수 있었던 게 가장 컸습니다."
+        <cite>— 클라이언트 담당자 인터뷰</cite></blockquote>
+
+    </article>
+
+    <aside class="aside">
+      <div class="aside__head"><span>Project Sheet</span><span>W—001</span></div>
+      <dl>
+        <div class="row"><dt>기간</dt><dd class="num">2주 (PoC)</dd></div>
+        <div class="row"><dt>연도</dt><dd class="num">2026</dd></div>
+        <div class="row"><dt>범위</dt><dd>챗봇 · 관리 콘솔</dd></div>
+        <div class="row"><dt>기술</dt><dd>Next.js · Supabase · LLM API</dd></div>
+        <div class="row" style="flex-direction:column;align-items:flex-start;gap:6px"><dt>참여 빌더</dt><dd style="text-align:left">
+          <a class="b-chip" href="builder.html?b=yuna" style="text-decoration:none"><i style="background-image:url(assets/img/av-yuna.jpg);background-size:cover"></i>빌더 유나 · 개발</a>
+          <a class="b-chip" href="builder.html?b=josh" style="text-decoration:none"><i style="background-image:url(assets/img/av-josh.jpg);background-size:cover"></i>빌더 조쉬 · 설계</a>
+        </dd></div>
+      </dl>
+      <p class="note">빌더 칩을 누르면 프로필과 작업물로 이동합니다.</p>
+    </aside>
+  </div>
+
+  <section style="padding-top:0;padding-bottom:0">
+    <div class="wrap">
+      <div class="cta-banner">
+        <div>
+          <h3>비슷한 프로젝트를 계획 중이신가요?</h3>
+          <p>지금 상황을 알려주시면, 맞는 빌더와 진행 방식을 제안드립니다.</p>
+        </div>
+        <a class="btn btn--lime" href="contact.html" data-track="cta_click" data-location="work_detail">프로젝트 문의 <span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 다음 프로젝트 전환 (significa) -->
+  <a class="next-proj" href="work-detail.html" data-cursor="NEXT →">
+    <div class="wrap in">
+      <div>
+        <h3>콘텐츠 관리 플랫폼</h3>
+        <p>비개발자도 운영 가능한 관리자·에디터 구축 · Platform · 6wks</p>
+      </div>
+      <div class="slot">
+        <div class="bf"><div class="bf__bar"><i></i><i></i><i></i><span class="url">cms.studio.io</span></div>
+          <div class="bf__body"><div class="row" style="height:100%"><div style="width:52px;display:flex;flex-direction:column;gap:5px"><div class="bl" style="height:9px"></div><div class="bl bl--lime" style="height:9px"></div><div class="bl" style="height:9px"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px"><div class="bl" style="height:11px;width:52%"></div><div class="bl" style="flex:1"></div></div></div></div></div>
+        <div class="slot__spec"><b>Asset — Next 썸네일</b><span>다음 프로젝트 커버</span><em>1520×950px</em></div>
+      </div>
+    </div>
+  </a>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft6">
+      <div class="ft6__brand">
+        <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+        <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
+      </div>
+      <div class="col"><b>Service</b><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></div>
+      <div class="col"><b>Company</b><a href="index.html#how">일하는 방식</a><a href="index.html#faq">FAQ</a><span class="soon">채용 (준비 중)</span></div>
+      <div class="col"><b>Contact</b><a href="contact.html">프로젝트 문의</a><a href="mailto:contact@example.com">contact@_______</a></div>
+      <div class="col"><b>Social</b><a href="content.html">YouTube</a><span class="soon">Instagram (예정)</span><span class="soon">LinkedIn (예정)</span></div>
+    </div>
+    <p class="ft__legal"><b>AI 빌더 그룹</b> · 사업자 정보는 사이트 오픈과 함께 게재됩니다.<br>이메일 문의는 pluug 장애 대비 대체 경로입니다.</p>
+    <div class="ft__bottom"><span>© 2026 AI Builder Group</span><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>window.track('work_detail_view', { slug: 'ai-상담챗봇', category: 'ai' });</script>
+</body>
+</html>

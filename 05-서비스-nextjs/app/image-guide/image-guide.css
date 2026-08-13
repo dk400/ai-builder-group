@@ -1,0 +1,25 @@
+.ig-head { padding: 88px 0 48px; border-bottom: 1px solid var(--line); }
+.ig-head h1 { margin: 0 0 14px; font-size: clamp(34px, 4.8vw, 56px); font-weight: 800; letter-spacing: -0.05em; line-height: 1.08; }
+.ig-head h1 mark { background: var(--lime); padding: 0 .08em; border-radius: 8px; }
+.ig-head p { margin: 0; color: var(--muted); font-size: 16px; max-width: 66ch; word-break: keep-all; }
+.howto { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
+.howto .h { border: 1px solid var(--line); border-radius: 16px; background: var(--paper-2); padding: 18px 20px; font-size: 13px; }
+.howto .h b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--muted-2); text-transform: uppercase; margin-bottom: 8px; }
+section.blk { padding: 60px 0; border-bottom: 1px solid var(--line); }
+h2 { font-size: 26px; }
+.tblw { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 860px; }
+th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); font-weight: 500; }
+tbody tr:last-child td { border-bottom: 0; }
+td.m { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+td b { letter-spacing: -0.02em; }
+td .p { font-family: var(--mono); font-size: 11px; background: var(--paper-3); border-radius: 999px; padding: 3px 9px; color: var(--muted); white-space: nowrap; }
+td .p--must { background: var(--lime); color: var(--ink); }
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.rl { border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); padding: 22px 24px; }
+.rl h4 { margin: 0 0 12px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }
+.rl.ok h4 { color: #4A7A00; } .rl.no h4 { color: #C0392B; }
+.rl ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+.rl li { margin-bottom: 8px; line-height: 1.6; color: var(--ink-2); word-break: keep-all; }
+@media (max-width: 900px) { .howto, .rules { grid-template-columns: 1fr; } }

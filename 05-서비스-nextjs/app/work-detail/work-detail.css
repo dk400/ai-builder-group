@@ -1,0 +1,56 @@
+/* significa식 케이스 스터디 — 서술과 스크린샷의 교차 리듬 */
+.wd-head { padding: 88px 0 40px; }
+/* v21: 뒤로가기 링크 */
+.backlink { display: inline-flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700;
+  color: var(--muted); text-decoration: none; margin-bottom: 26px; transition: color var(--hover); }
+.backlink::before { content: "←"; font-family: var(--mono); transition: transform var(--hover); }
+.backlink:hover { color: var(--ink); }
+.backlink:hover::before { transform: translateX(-4px); }
+.wd-head .tags { display: flex; gap: 8px; margin: 20px 0 20px; }
+.wd-head h1 { margin: 0 0 14px; font-size: clamp(36px, 5vw, 60px); font-weight: 800; letter-spacing: -0.05em; line-height: 1.08; }
+.wd-head .sum { color: var(--muted); font-size: 17px; margin: 0; max-width: 56ch; word-break: keep-all; }
+.wd-cover .slot { aspect-ratio: 21/10; border-radius: 24px; }
+.wd-body { display: grid; grid-template-columns: 1fr 300px; gap: 60px; padding: 56px 0 60px; align-items: start; }
+.wd-art h2 { font-size: 25px; margin: 52px 0 14px; letter-spacing: -0.035em; display: flex; align-items: baseline; gap: 14px; }
+.wd-art h2 .no { font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .14em; font-weight: 500; }
+.wd-art h2:first-child { margin-top: 0; }
+.wd-art p { color: var(--ink-2); font-size: 16px; line-height: 1.85; margin: 0 0 18px; max-width: 66ch; word-break: keep-all; }
+.wd-art .shot { margin: 32px 0; }
+.wd-art .shot .slot { aspect-ratio: 16/9; }
+.wd-art .shot figcaption { margin-top: 10px; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--muted-2); }
+.wd-art .shot--pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.wd-art .shot--pair .slot { aspect-ratio: 4/5; }
+.wd-art blockquote { margin: 34px 0; padding: 24px 30px; border-left: 3px solid var(--lime); background: var(--paper-2);
+  border-radius: 0 18px 18px 0; font-weight: 700; color: var(--ink); font-size: 18px; letter-spacing: -0.02em; }
+.wd-art blockquote cite { display: block; margin-top: 10px; font-family: var(--mono); font-size: 12.5px;
+  letter-spacing: .12em; color: var(--muted-2); font-style: normal; font-weight: 400; }
+.aside { position: sticky; top: 96px; border: 1px solid var(--line-2); border-radius: 20px; background: var(--paper-2); overflow: hidden; }
+.aside__head { padding: 13px 22px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11px;
+  letter-spacing: .2em; color: var(--muted-2); display: flex; justify-content: space-between; text-transform: uppercase; }
+.aside dl { margin: 0; padding: 8px 0; }
+.aside .row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 12px 22px; border-bottom: 1px dashed var(--line); }
+.aside .row:last-child { border-bottom: 0; }
+.aside dt { font-size: 13.5px; color: var(--muted); font-weight: 500; flex: none; }
+.aside dd { margin: 0; font-size: 14.5px; font-weight: 700; text-align: right; letter-spacing: -0.01em; }
+.aside .b-chip { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px 5px 5px; border: 1px solid var(--line-2);
+  border-radius: 999px; font-size: 13px; font-weight: 600; margin: 3px 0 0 4px; background: var(--paper); }
+.aside .b-chip i { width: 20px; height: 20px; border-radius: 50%; background: var(--paper-3); border: 1px solid var(--line); }
+.aside a.b-chip { transition: border-color var(--hover), transform var(--hover); }
+.aside a.b-chip:hover { border-color: var(--ink); transform: translateY(-1px); }
+.aside .note { margin: 0; padding: 14px 22px; border-top: 1px solid var(--line); font-family: var(--mono);
+  font-size: 12px; color: var(--muted-2); line-height: 1.7; }
+/* significa식 "다음 프로젝트" 전환 푸터 */
+.next-proj { display: block; text-decoration: none; border-top: 1px solid var(--line); margin-top: 40px; }
+.next-proj .in { display: grid; grid-template-columns: 1fr 340px; gap: 44px; align-items: center;
+  padding: 64px 0; transition: background var(--hover); }
+.next-proj:hover .in { background: var(--paper-2); }
+.next-proj .k { font-family: var(--mono); font-size: 12px; letter-spacing: .24em; color: var(--muted-2); text-transform: uppercase; display: block; margin-bottom: 16px; }
+.next-proj h3 { margin: 0 0 8px; font-size: clamp(26px, 3.4vw, 40px); font-weight: 800; letter-spacing: -0.045em; }
+.next-proj:hover h3 { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 3px; }
+.next-proj p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.next-proj .slot { aspect-ratio: 16/10; }
+@media (max-width: 900px) {
+  .wd-body { grid-template-columns: 1fr; } .aside { position: static; order: -1; }
+  .wd-art .shot--pair { grid-template-columns: 1fr; }
+  .next-proj .in { grid-template-columns: 1fr; }
+}

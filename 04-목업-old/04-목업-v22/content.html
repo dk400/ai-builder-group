@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>콘텐츠 — AI 빌더 그룹 | 목업 v22 P-06</title>
+<meta name="description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-builder-group-pearl.vercel.app/content.html">
+<meta property="og:title" content="콘텐츠 — AI 빌더 그룹">
+<meta property="og:description" content="AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.">
+<meta property="og:image" content="https://ai-builder-group-pearl.vercel.app/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AI 빌더 그룹">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* 다크 지면 페이지 (시안 B 크래프트) */
+body { color: var(--paper);
+  background:
+    radial-gradient(1000px 640px at 96% -8%, rgba(216,255,61,.09), transparent 55%),
+    radial-gradient(1200px 800px at -6% 110%, rgba(216,255,61,.05), transparent 55%),
+    var(--ink);
+  background-attachment: fixed; }
+body::after { opacity: .05; }
+.gnb.scrolled { background: color-mix(in srgb, var(--ink) 86%, transparent); border-bottom-color: var(--d-line); }
+.gnb nav a { color: var(--paper); opacity: .5; } .gnb nav a:hover { opacity: 1; }
+.gnb nav a.active { opacity: 1; } .gnb nav a.active::after { background: var(--lime); }
+.logo { color: var(--paper); }
+.page-head { border-bottom-color: var(--d-line); }
+.page-head p { color: var(--d-mut); }
+.crumb { color: var(--d-mut2); }
+/* v19: 이음새 리본 (다크 페이지 — 라임 발광) */
+.ribbon-sep { position: relative; height: 0; z-index: 6; pointer-events: none; }
+.ribbon-sep svg { position: absolute; left: 0; right: 0; top: -120px; width: 100%; height: 200px;
+  display: block; overflow: visible; filter: drop-shadow(0 12px 28px rgba(0,0,0,.4)); }
+.ribbon-sep .edge { fill: none; stroke: #000; stroke-width: 44; stroke-linecap: round; }
+.ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 38; stroke-linecap: round; }
+.ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .1em;
+  fill: var(--ink); dominant-baseline: middle; }
+@media (max-width: 960px) { .ribbon-sep svg { top: -108px; height: 150px; filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); } }
+.vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f;
+  transition: transform .35s cubic-bezier(.2,.6,.2,1); display: block; text-decoration: none; }
+.vcell:hover { transform: scale(1.018); }
+.vcell .thumb { position: absolute; inset: 0;
+  background: radial-gradient(80% 90% at 28% 18%, rgba(216,255,61,.24), transparent 58%),
+              radial-gradient(90% 90% at 82% 88%, rgba(244,241,234,.1), transparent 55%),
+              linear-gradient(200deg, transparent 50%, rgba(0,0,0,.5)); }
+.vcell .dur { position: absolute; top: 16px; right: 16px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .1em; background: rgba(0,0,0,.55); color: rgba(244,241,234,.8); padding: 5px 10px; border-radius: 999px; }
+.vcell .play { position: absolute; inset: 0; display: grid; place-items: center; }
+.vcell .play i { width: 60px; height: 60px; border-radius: 50%; background: var(--lime); color: var(--ink);
+  display: grid; place-items: center; font-size: 18px; transition: transform .3s; box-shadow: 0 12px 40px rgba(216,255,61,.22); }
+.vcell:hover .play i { transform: scale(1.14); }
+.vcell .cap { position: absolute; left: 22px; bottom: 18px; right: 22px; }
+.vcell .cap b { display: block; font-size: 16.5px; letter-spacing: -0.025em; font-weight: 700; }
+.vcell .cap span { font-family: var(--mono); font-size: 11px; color: var(--d-mut); letter-spacing: .12em; text-transform: uppercase; }
+.feat { aspect-ratio: 21/9; margin-bottom: 20px; }
+.feat .cap b { font-size: 24px; letter-spacing: -0.035em; }
+.vg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.vg .vcell { aspect-ratio: 16/9; }
+.sub-banner { position: relative; overflow: hidden; margin: 68px 0 0; border: 1px solid var(--d-line); border-radius: 26px;
+  padding: 44px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.sub-banner::before { content: "✳"; position: absolute; right: -20px; bottom: -54px; font-size: 180px;
+  line-height: 1; color: var(--lime); opacity: .1; pointer-events: none; }
+.sub-banner .k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--d-mut2); display: block; margin-bottom: 10px; }
+.sub-banner h3 { margin: 0 0 4px; font-size: 23px; font-weight: 800; letter-spacing: -0.035em; }
+.sub-banner p { margin: 0; color: var(--d-mut); font-size: 14px; }
+footer { background: #131310; border-top-color: var(--d-line); }
+.ft__top { border-bottom-color: var(--d-line); }
+.ft__brand p, .ft__nav a, .ft__biz, .ft__bottom { color: var(--d-mut2); }
+.ft__biz b { color: var(--d-mut); }
+.ft__nav a:hover, .ft__bottom a:hover { color: var(--paper); }
+@media (max-width: 900px) { .vg { grid-template-columns: 1fr; } .feat { aspect-ratio: 16/9; } }
+.vcell .vimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.vcell .vshade { position: absolute; inset: 0; background: linear-gradient(200deg, rgba(0,0,0,.04) 40%, rgba(0,0,0,.72)); }
+.vcell .cap b { text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+.chbadge { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(0,0,0,.6); color: #fff;
+  font-size: 11.5px; font-weight: 700; padding: 5px 11px; border-radius: 999px; letter-spacing: -0.01em; }
+</style>
+</head>
+<body class="dark">
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="gnb scrolled">
+  <div class="gnb__in">
+    <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+    <button class="gnb__burger" aria-label="메뉴">☰</button>
+    <nav><a href="index.html">Home</a><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html" class="active">콘텐츠</a></nav>
+    <a class="btn btn--lime btn--sm btn--pulse" href="contact.html" data-track="cta_click" data-location="gnb">문의하기</a>
+  </div>
+</header>
+
+<main id="main" class="grain">
+  <div class="page-head">
+    <div class="wrap">
+      <h1><span class="w300">영상으로 보는</span><br>우리의 작업</h1>
+      <p>김이솝의 AI 가이드 · 똑똑한개발자 · AI 서대표 — 세 채널의 실전 콘텐츠</p>
+    </div>
+  </div>
+
+  <!-- v19: 이음새 리본 — 페이지 헤드 ↔ 영상 그리드 (다크 위 라임) -->
+  <div class="ribbon-sep" aria-hidden="true">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+      <path id="rsC" d="M -80,110 C 300,70 560,140 880,100 C 1200,60 1400,130 1700,95" fill="none"/>
+      <use href="#rsC" class="edge"/>
+      <use href="#rsC" class="lane"/>
+      <text dy="6">
+        <textPath href="#rsC" data-wflow data-unit="4" data-speed="0.02">YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ </textPath>
+      </text>
+    </svg>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <!-- 피처드 (관리자 지정 1건) -->
+      <a class="vcell feat" href="#" data-yt data-utm="featured">
+        <img class="vimg" src="https://i.ytimg.com/vi/0dBSo3eDE-E/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">똑똑한개발자</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">15:47</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>2025 똑똑한개발자 상반기 워크샵</b><span>오피셜 · Featured</span></div>
+      </a>
+
+      <div class="vg">
+        <a class="vcell" href="#" data-yt data-utm="grid">
+        <img class="vimg" src="https://i.ytimg.com/vi/kkbtjKvnS-Q/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">김이솝의 AI 가이드</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">11:11</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>미친 무료기능 총집합! 제미나이 10분만에 마스터</b><span>조회 44만</span></div>
+      </a>
+        <a class="vcell" href="#" data-yt data-utm="grid">
+        <img class="vimg" src="https://i.ytimg.com/vi/ZIn53VIic14/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">김이솝의 AI 가이드</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">7:57</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>AI 동물 인터뷰 쇼츠 만들기 7분만에 끝!</b><span>조회 36만</span></div>
+      </a>
+        <a class="vcell" href="#" data-yt data-utm="grid">
+        <img class="vimg" src="https://i.ytimg.com/vi/8uif-Wf65SI/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">김이솝의 AI 가이드</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">18:38</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>12시간씩 클로드 코드 쓰고 깨달은 핵심 꿀팁 20가지</b><span>조회 5.1천 · NEW</span></div>
+      </a>
+        <a class="vcell" href="#" data-yt data-utm="grid">
+        <img class="vimg" src="https://i.ytimg.com/vi/TP6ArUCnt8c/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">똑똑한개발자</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">15:47</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>잘봐 이게 컨퍼런스다 — 똑똑한개발자 × 원티드</b><span>브이로그</span></div>
+      </a>
+        <a class="vcell" href="#" data-yt data-utm="grid">
+        <img class="vimg" src="https://i.ytimg.com/vi/LjrO4urq5gI/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">AI 서대표</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">23:40</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>10년차 IT 에이전시 대표가 푸는 개발 외주의 모든 것</b><span>예산·견적·계약</span></div>
+      </a>
+        <a class="vcell" href="#" data-yt data-utm="grid">
+        <img class="vimg" src="https://i.ytimg.com/vi/gtZPILhrnl8/hqdefault.jpg" alt="">
+        <div class="vshade"></div>
+        <span class="chbadge">AI 서대표</span>
+        <span class="dur" style="position:absolute;top:14px;right:14px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;background:rgba(0,0,0,.55);color:rgba(244,241,234,.85);padding:5px 10px;border-radius:999px">13:48</span>
+        <div class="play"><i>▶</i></div>
+        <div class="cap"><b>오르카(Orca) 설치부터 AI 블로그 자동화 세팅까지</b><span>NEW</span></div>
+      </a>
+      </div>
+
+      <div class="sub-banner">
+        <div>
+          <h3>채널을 구독하면 새 영상을 놓치지 않아요</h3>
+          <p>매주 실전 바이브 코딩 콘텐츠가 올라옵니다.</p>
+        </div>
+        <a class="btn btn--lime" href="#" data-yt data-utm="subscribe">유튜브 채널 가기 <span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft6">
+      <div class="ft6__brand">
+        <a class="logo" href="index.html"><em>✳</em>AI빌더그룹</a>
+        <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
+      </div>
+      <div class="col"><b>Service</b><a href="work.html">Work</a><a href="insight.html">Insight</a><a href="content.html">콘텐츠</a></div>
+      <div class="col"><b>Company</b><a href="index.html#how">일하는 방식</a><a href="index.html#faq">FAQ</a><span class="soon">채용 (준비 중)</span></div>
+      <div class="col"><b>Contact</b><a href="contact.html">프로젝트 문의</a><a href="mailto:contact@example.com">contact@_______</a></div>
+      <div class="col"><b>Social</b><a href="content.html">YouTube</a><span class="soon">Instagram (예정)</span><span class="soon">LinkedIn (예정)</span></div>
+    </div>
+    <p class="ft__legal"><b>AI 빌더 그룹</b> · 사업자 정보는 사이트 오픈과 함께 게재됩니다.<br>이메일 문의는 pluug 장애 대비 대체 경로입니다.</p>
+    <div class="ft__bottom"><span>© 2026 AI Builder Group</span><a href="privacy.html">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+
+<!-- 플로팅 CTA 독 — 히어로 CTA와 화면상 비중복 (히어로/최종CTA 노출 시 숨김) -->
+<div class="dock" data-dock>
+  <div class="dock__txt"><b>검증된 바이브 코딩</b><span>무료 문의 — 부담 없이 남겨보세요</span></div>
+  <a class="btn btn--lime btn--sm" href="contact.html" data-track="cta_click" data-location="floating">프로젝트 문의 <span class="arr">→</span></a>
+  <button class="dock__x" aria-label="닫기" data-dock-x>✕</button>
+</div>
+<button class="dock-open" data-dock-open aria-label="문의 바 다시 열기">💬</button>
+
+<script src="assets/app.js"></script>
+<script>
+/* v19.5 이음새 리본 — 문구 덱 로테이션(페이드 전환) + 곡선 흐름 */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DECKS = {
+    rsC: [
+      'YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ ',
+      'NEW VIDEO EVERY WEEK ✳ 실전 바이브 코딩 ✳ ',
+      '8.4만 크리에이터 ✳ WATCH, THEN BUILD ✳ ',
+      '보는 것에서 만드는 것으로 ✳ AI BUILDER GROUP ✳ '
+    ]
+  };
+  var ROT = { rsC: 5000 };
+  var flows = [];
+  document.querySelectorAll('[data-wflow]').forEach(function (tp) {
+    var pid = tp.getAttribute('href').slice(1);
+    var path = document.getElementById(pid);
+    if (!path) return;
+    var decks = DECKS[pid] || [tp.textContent];
+    var pathLen = path.getTotalLength();
+    var txt = tp.parentNode;
+    txt.style.transition = 'opacity .45s ease';
+    var f = { tp: tp, di: 0, off: 0, unit: 10,
+      speed: parseFloat(tp.dataset.speed || '0.022') * (tp.dataset.dir === 'rev' ? -1 : 1) };
+    function setDeck(i) {
+      f.di = i;
+      var phrase = decks[i];
+      tp.textContent = phrase;
+      var one = Math.max(1, tp.getComputedTextLength());
+      var n = Math.max(2, Math.ceil(pathLen * 1.5 / one) + 1);
+      tp.textContent = new Array(n + 1).join(phrase);
+      f.unit = one / pathLen * 100;
+      f.off = -f.unit / 2;
+    }
+    setDeck(0);
+    flows.push(f);
+    /* 문구 로테이션 — 2.6초 첫 전환 후 기본 주기 반복. 백그라운드 탭에서는 전환 건너뜀 */
+    if (!reduce && decks.length > 1) {
+      var period = ROT[pid] || 5000;
+      var swap = function () {
+        if (document.hidden) return;
+        txt.style.opacity = 0;
+        setTimeout(function () { setDeck((f.di + 1) % decks.length); txt.style.opacity = 1; }, 470);
+      };
+      setTimeout(function () { swap(); setInterval(swap, period); }, 2600);
+    }
+  });
+  if (reduce || !flows.length) return;
+  (function loop() {
+    flows.forEach(function (f) {
+      f.off -= f.speed;
+      if (f.off <= -f.unit) f.off += f.unit;
+      if (f.off > 0) f.off -= f.unit;
+      f.tp.setAttribute('startOffset', f.off + '%');
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+<script>
+/* 유튜브 직행 + UTM (목업: 이동 대신 UTM 표시 + 콘솔 기록) */
+document.querySelectorAll('[data-yt]').forEach(function (v) {
+  v.addEventListener('click', function (e) {
+    e.preventDefault();
+    var utm = '?utm_source=builder-group&utm_medium=content&utm_content=' + v.dataset.utm;
+    window.track('youtube_outbound', { utm: utm });
+  });
+});
+</script>
+
+<script>
+/* 플로팅 독 — 스크롤 진입 후 표시, 최종 CTA·푸터 근처/닫기 시 숨김 */
+(function () {
+  var dock = document.querySelector('[data-dock]');
+  if (!dock) return;
+  var closed = false;
+  try { closed = sessionStorage.getItem('dock') === '1'; } catch (e) {}
+  var xbtn = document.querySelector('[data-dock-x]');
+  var reopen = document.querySelector('[data-dock-open]');
+  function syncReopen() { if (reopen) reopen.classList.toggle('show', closed); }
+  xbtn.addEventListener('click', function () {
+    closed = true; dock.classList.remove('show');
+    try { sessionStorage.setItem('dock', '1'); } catch (e) {}
+    syncReopen();
+  });
+  if (reopen) reopen.addEventListener('click', function () {
+    closed = false;
+    try { sessionStorage.removeItem('dock'); } catch (e) {}
+    syncReopen(); upd();
+  });
+  /* 서브 페이지: 히어로 CTA가 없으므로 얕은 스크롤에도 표시, 문서 최하단 근처에서만 숨김 */
+  function upd() {
+    if (closed) return;
+    var nearEnd = window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 140;
+    dock.classList.toggle('show', window.scrollY > 220 && !nearEnd);
+  }
+  window.addEventListener('scroll', upd, { passive: true }); upd(); syncReopen();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+/* ── 빌더 프로필 히어로 — 포트레이트 + 팩트시트 2단 ── */
+.bp-hero { padding: 76px 0 0; }
+.bp-hero .crumb { margin-bottom: 26px; }
+.bp-grid { display: grid; grid-template-columns: 400px 1fr; gap: 60px; align-items: start; }
+.bp-photo.slot { aspect-ratio: 4/5; border-radius: 24px; position: sticky; top: 96px; }
+.bp-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.bp-photo .lv { position: absolute; top: 16px; left: 16px; z-index: 3; font-family: var(--mono); font-size: 11.5px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink); padding: 8px 14px; border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--line); }
+.bp-photo .lv--lead { background: var(--lime); border-color: var(--ink); font-weight: 700; }
+.bp-photo .lv--new { background: var(--ink); color: var(--lime); border-color: var(--ink); font-weight: 700; }
+.bp-info h1 { margin: 14px 0 8px; font-size: clamp(36px, 4.6vw, 56px); font-weight: 800; letter-spacing: -0.05em; line-height: 1.08; }
+.bp-info .bp-role { margin: 0 0 18px; font-size: 17px; font-weight: 600; color: var(--muted); }
+.bp-info .bp-bio { margin: 0 0 30px; font-size: 16.5px; line-height: 1.8; color: var(--ink-2); max-width: 56ch; word-break: keep-all; }
+.bp-facts { margin: 0 0 30px; border: 1px solid var(--line-2); border-radius: 20px; background: var(--paper-2); overflow: hidden; }
+.bp-facts .fhead { padding: 12px 22px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11px;
+  letter-spacing: .2em; color: var(--muted-2); text-transform: uppercase; display: flex; justify-content: space-between; }
+.bp-facts .row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+  padding: 13px 22px; border-bottom: 1px dashed var(--line); }
+.bp-facts .row:last-child { border-bottom: 0; }
+.bp-facts dt { font-size: 13.5px; color: var(--muted); font-weight: 500; flex: none; }
+.bp-facts dd { margin: 0; font-size: 14.5px; font-weight: 700; text-align: right; letter-spacing: -0.01em; }
+.bp-facts dd .tag { margin-left: 4px; }
+.bp-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.bp-cta [hidden] { display: none !important; }
+/* ── 일하는 원칙 3열 ── */
+.bp-pr { padding: 84px 0 0; }
+.bp-pr .g3 { gap: 20px; }
+.pr-card { border-top: 2px solid var(--ink); padding: 20px 4px 0; }
+.pr-card .no { font-family: var(--mono); font-size: 12px; letter-spacing: .18em; color: var(--muted-2); }
+.pr-card b { display: block; margin: 10px 0 8px; font-size: 18px; font-weight: 800; letter-spacing: -0.03em; }
+.pr-card p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.7; word-break: keep-all; }
+/* ── 수행 프로젝트 그리드 ── */
+.bp-work { padding: 96px 0 30px; }
+.bp-work .note { margin: 10px 0 0; font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; color: var(--muted-2); }
+.bp-work .g2 { gap: 26px; margin-top: 36px; }
+.bp-work .slot { aspect-ratio: 16/10; }
+.bp-work .cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.head-cnt { font-family: var(--mono); font-size: 13px; letter-spacing: .16em; color: var(--muted-2); }
+/* ── 다른 빌더 스트립 ── */
+.bp-others { padding: 70px 0 40px; }
+.bp-others .g3 { gap: 16px; margin-top: 26px; }
+.ocard { display: flex; align-items: center; gap: 16px; text-decoration: none; border: 1px solid var(--line);
+  border-radius: 18px; background: var(--paper-2); padding: 16px 20px 16px 16px;
+  transition: transform .25s var(--ease-in), border-color var(--hover); }
+.ocard:hover { transform: translateY(-4px); border-color: var(--ink); }
+.ocard img { width: 60px; height: 60px; border-radius: 16px; object-fit: cover; border: 1.5px solid var(--ink); flex: none; }
+.ocard b { display: block; font-size: 16px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); }
+.ocard span { display: block; font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.ocard .arr { margin-left: auto; font-family: var(--mono); color: var(--muted-2); transition: transform var(--hover), color var(--hover); }
+.ocard:hover .arr { transform: translateX(4px); color: var(--ink); }
+@media (max-width: 900px) {
+  .bp-grid { grid-template-columns: 1fr; gap: 34px; }
+  .bp-photo.slot { position: static; max-width: 420px; }
+  .bp-work .g2 { grid-template-columns: 1fr; }
+}
