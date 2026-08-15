@@ -92,7 +92,9 @@
   .hero p { order: 3; margin: 0 32px 26px; }
   .streamwrap { order: 4; }
   .hero-ctas { order: 6; margin: 28px 32px 0; }
-  .hero p.hero-proof { order: 7; margin: 16px 32px 36px; }
+  /* 아래 여백은 리본이 이음새 위로 올라오는 만큼(--rib-rise) 확보해야 한다.
+     36px 고정이던 탓에 리본(61px)이 신뢰 지표 줄을 28px 덮고 있었다. */
+  .hero p.hero-proof { order: 7; margin: 16px 32px calc(var(--rib-rise) + 22px); }
   .h1-over, .hero h1, .hero p, .hero-ctas { position: relative; z-index: 2; }
   .hero__scroll { display: none; }
   .streamwrap { position: relative; inset: auto; display: block; height: 44vh; min-height: 320px; max-height: 440px;
@@ -116,7 +118,7 @@
   .hero-ctas { margin: 24px 20px 0; flex-wrap: nowrap; gap: 16px; }
   .hero-ctas .btn--ink { padding: 12px 20px; font-size: 14.5px; flex: none; }
   .cta-sub { font-size: 14px; }
-  .hero p.hero-proof { margin: 14px 20px 32px; font-size: 13px; gap: 10px; }
+  .hero p.hero-proof { margin: 14px 20px calc(var(--rib-rise) + 20px); font-size: 13px; gap: 10px; }
 }
 
 /* ── v19: 섹션 이음새 리본 — 히어로는 비우고, 섹션 경계를 곡선 리본이 가로지름 ── */
