@@ -65,9 +65,10 @@ export default function ContactView() {
                 <img src="/assets/img/av-josh.jpg" alt="빌더 조쉬" />
                 <img src="/assets/img/av-ria.jpg" alt="빌더 리아" />
                 <img src="/assets/img/av-yuna.jpg" alt="빌더 유나" />
-                <span className="more">+4</span>
+                {/* 아바타 3장 + 나머지. 합이 Work 의 빌더 수(10)와 맞아야 한다 */}
+                <span className="more">+7</span>
               </div>
-              <p><b>검증된 빌더 7인</b>이<br />다음 프로젝트를 기다리고 있어요</p>
+              <p><b>검증된 빌더 10인</b>이<br />다음 프로젝트를 기다리고 있어요</p>
             </div>
           </div>
 

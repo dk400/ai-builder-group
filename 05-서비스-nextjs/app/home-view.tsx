@@ -335,7 +335,7 @@ export default function HomeView() {
               <Link className="btn btn--ink btn--pulse" href="/contact" data-track="cta_click" data-location="hero">프로젝트 문의 <span className="arr">→</span></Link>
               <Link className="cta-sub" href="/work" data-track="cta_click" data-location="hero_secondary">작업물 먼저 보기 <span className="arr">→</span></Link>
             </div>
-            <p className="st st3 hero-proof"><a className="proof-link" href="#builders">검증된 빌더 <b className="num">7</b>인</a><i></i><a className="proof-link" href="#work">공개 프로젝트 <b className="num">9</b>건</a><i></i><a className="proof-link" href="#system"><b>검수 시스템</b> 운영</a></p>
+            <p className="st st3 hero-proof"><a className="proof-link" href="#builders">검증된 빌더 <b className="num">10</b>인</a><i></i><a className="proof-link" href="#work">공개 프로젝트 <b className="num">9</b>건</a><i></i><a className="proof-link" href="#system"><b>검수 시스템</b> 운영</a></p>
           </div>
           <div className="hero__scroll">SCROLL</div>
         </section>

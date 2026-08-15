@@ -10,6 +10,15 @@ import type { Metadata } from 'next'
    그래서 여기서 openGraph 를 통째로 조립하고, 각 페이지는 제목·경로만 넘긴다. */
 
 export const SITE = 'AI 빌더 그룹'
+
+/* 배포 주소. 코드에 박지 않고 Vercel 이 넣어주는 프로덕션 도메인을 쓴다.
+   실도메인이 정해지면 NEXT_PUBLIC_SITE_URL 하나만 채우면 metadataBase · sitemap · robots 가
+   모두 따라온다. layout · sitemap · robots 가 같은 값을 봐야 세 곳이 어긋나지 않는다. */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000')
 export const DEFAULT_DESC =
   'AI 시대에 최적화된 개발자가 바이브 코딩으로 외주를 해드립니다. 기획부터 개발, 검수까지 검증된 빌더가 끝까지 맡습니다.'
 
