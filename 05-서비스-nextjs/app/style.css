@@ -228,10 +228,23 @@ body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-c
 .wcard .builders { margin-top: 10px; font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .04em; }
 
 /* ---------- FAQ (홈 프리뷰 S9 · /faq 공용) ---------- */
+/* 주제 탭과 '모두 펼치기'를 한 줄에 — 탭은 왼쪽, 전체 토글은 오른쪽 끝 */
+.faq-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap; margin-bottom: 30px; }
+.faq-bar .topics { margin-bottom: 0; }
+.faq-all { display: inline-flex; align-items: center; gap: 7px; background: none; cursor: pointer;
+  border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 16px;
+  font-family: var(--mono); font-size: 12.5px; font-weight: 700; letter-spacing: .06em; color: var(--ink);
+  transition: border-color var(--hover), background var(--hover); }
+.faq-all:hover { border-color: var(--ink); background: var(--paper-3); }
+.faq-all i { font-style: normal; color: var(--muted-2); transition: color var(--hover); }
+.faq-all:hover i { color: var(--ink); }
 .topics { display: inline-flex; background: var(--paper-3); border-radius: 999px; padding: 5px; gap: 2px; margin-bottom: 40px; }
 .topic { border: 0; background: transparent; padding: 11px 26px; border-radius: 999px; font-family: var(--sans);
   font-size: 15px; font-weight: 600; color: var(--muted); cursor: pointer; transition: var(--hover); }
-.topic[aria-selected="true"] { background: var(--ink); color: var(--paper); font-weight: 700; }
+/* 활성 탭 — 라임 배경 + 잉크 글자. 히어로 mark · 스탯 숫자와 같은 시그니처 처리다.
+   (라임을 글자색으로 쓰면 크림 위에서 대비가 안 난다 — 늘 배경으로만) */
+.topic[aria-selected="true"] { background: var(--lime); color: var(--ink); font-weight: 800; }
 .faq-item { border-bottom: 1px solid var(--line); }
 .faq-item:first-of-type { border-top: 1px solid var(--line-2); }
 .faq-q { width: 100%; text-align: left; background: none; border: 0; font-family: var(--sans); cursor: pointer;

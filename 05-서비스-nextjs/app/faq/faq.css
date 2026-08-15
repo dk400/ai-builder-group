@@ -5,7 +5,7 @@
 .page-head .wrap { max-width: 880px; }
 .faqpage { padding: 48px 0 96px; }
 .faqpage .wrap { max-width: 880px; }
-.faqpage .topics { margin-bottom: 30px; }
+.faqpage .faq-bar { margin-bottom: 30px; }
 
 /* 문항을 카드로 — 경계선 목록보다 질문 하나하나가 또렷하게 떨어진다 */
 .faqpage .faq-item { border: 1px solid var(--line); border-radius: 18px; background: var(--paper);
@@ -13,13 +13,25 @@
 .faqpage .faq-item:first-of-type { border-top: 1px solid var(--line); }
 .faqpage .faq-item:last-of-type { border-bottom: 1px solid var(--line); }
 .faqpage .faq-item:hover { border-color: var(--line-2); background: var(--paper-2); }
+/* 펼쳐진 문항은 왼쪽에 라임 띠로 표시한다 — 어느 답을 보고 있는지가 한눈에 잡힌다.
+   + 아이콘을 라임으로 칠하면 크림 위 작은 글리프라 오히려 안 보인다. 면으로 준다. */
+.faqpage .faq-item { position: relative; }
+.faqpage .faq-item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: var(--lime); opacity: 0; transition: opacity .3s var(--ease-in); }
+.faqpage .faq-item:has(.faq-q[aria-expanded="true"])::before { opacity: 1; }
+.faqpage .faq-item:has(.faq-q[aria-expanded="true"]) { border-color: var(--line-2); background: var(--paper-2); }
 .faqpage .faq-q { padding: 23px 58px 23px 24px; font-size: 17.5px; }
 .faqpage .faq-q::after { right: 24px; }
 .faqpage .faq-a p { padding: 0 24px 24px; }
 
-.faq-cta { margin-top: 64px; display: flex; align-items: center; justify-content: space-between;
+/* 하단 CTA — 콘텐츠 페이지의 구독 배너와 같은 어휘로 라임 ✳ 워터마크를 깐다 */
+.faq-cta { position: relative; overflow: hidden;
+  margin-top: 64px; display: flex; align-items: center; justify-content: space-between;
   gap: 24px; flex-wrap: wrap; padding: 34px 38px; border-radius: 26px;
   background: var(--paper-2); border: 1px solid var(--line); }
+.faq-cta::before { content: "✳"; position: absolute; right: -16px; bottom: -52px; font-size: 158px;
+  line-height: 1; color: var(--lime); opacity: .55; pointer-events: none; }
+.faq-cta > * { position: relative; z-index: 1; }
 .faq-cta b { display: block; font-size: 21px; font-weight: 800; letter-spacing: -0.03em; }
 .faq-cta span { display: block; margin-top: 6px; color: var(--muted); font-size: 15px; }
 
