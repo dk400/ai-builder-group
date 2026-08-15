@@ -612,7 +612,11 @@ export default function HomeView() {
                 <div className="meta">
                   <div className="mrow"><span className="tag">Landing</span><span className="yr num">2026 · 3wks</span></div>
                   <h3>수주용 브랜드 랜딩</h3>
-                  <p>전환 트래킹 설계 포함 · 빌더 2인</p>
+                  {/* 세 장의 구조를 맞춘다: 설명 한 줄 + 팀·스택 칩.
+                      전에는 '… · 빌더 2인' 처럼 인원이 설명 문장에 섞여 있어 장마다 형태가 달랐다.
+                      인원은 칩으로 빼되, 없는 기술 정보를 지어내지는 않는다. */}
+                  <p>전환 트래킹 설계 포함.</p>
+                  <div className="builders"><span>빌더 2인</span></div>
                 </div>
               </Link>
               <Link className="wcard" href="/work-detail" data-cursor="VIEW →">
@@ -624,7 +628,8 @@ export default function HomeView() {
                 <div className="meta">
                   <div className="mrow"><span className="tag">Platform</span><span className="yr num">2026 · 6wks</span></div>
                   <h3>콘텐츠 관리 플랫폼</h3>
-                  <p>비개발자도 운영 가능한 관리자·에디터. 발행 워크플로와 권한 설계 포함 · 빌더 3인</p>
+                  <p>비개발자도 운영 가능한 관리자·에디터. 발행 워크플로와 권한 설계 포함.</p>
+                  <div className="builders"><span>빌더 3인</span></div>
                 </div>
               </Link>
             </div>
