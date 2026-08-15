@@ -136,9 +136,9 @@ h2 .w300, h1 .w300 { font-weight: 300; letter-spacing: -0.035em; }
 
 /* ---------- 섹션 — 여백 리듬 차등 (진단 06) ---------- */
 main { padding-top: 72px; }
-section { padding: 116px 0; }
-section.tight { padding: 60px 0; }      /* S4 등 압축 구간 */
-section.roomy { padding: 150px 0; }     /* S10 등 확장 구간 */
+section { padding: 136px 0; }
+section.tight { padding: 72px 0; }      /* S4 등 압축 구간 */
+section.roomy { padding: 176px 0; }     /* S10 등 확장 구간 */
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
 .more-link { font-size: 15px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .more-link::after { content: " →"; font-family: var(--mono); }
@@ -281,14 +281,14 @@ body.dark .logo { color: var(--paper); }
 @media (max-width: 1000px) { .ft6 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 900px) {
   .g3, .g2 { grid-template-columns: 1fr; }
-  section { padding: 76px 0; }
-  section.roomy { padding: 96px 0; }
+  section { padding: 88px 0; }
+  section.roomy { padding: 112px 0; }
 }
 /* v22: 소형 모바일 — 컨테이너 여백·푸터·CTA 배너 압축 */
 @media (max-width: 640px) {
   .wrap { padding: 0 20px; }
   .gnb__in { padding: 0 20px; }
-  section { padding: 64px 0; }
+  section { padding: 74px 0; }
   .page-head { padding: 72px 0 40px; }
   .cta-banner { padding: 40px 28px; }
   .ft6 { grid-template-columns: 1fr 1fr; gap: 26px; }
