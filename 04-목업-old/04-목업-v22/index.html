@@ -625,7 +625,11 @@
 .s8 { background: var(--ink); color: var(--paper); border-block: 1px solid var(--line); }
 .s8 h2 { color: var(--paper); } .s8 .t-lead { color: var(--d-mut); }
 .s8 .more-link { color: var(--lime); }
-@media (min-width: 721px){ .s8 .sec-head h2 { white-space: nowrap; } }
+.s8 .sec-head h2 { white-space: nowrap; }
+@media (max-width: 720px){
+  .s8 .sec-head { display: grid; justify-content: start; gap: 12px; }
+  .s8 .sec-head h2 { font-size: clamp(24px, 7vw, 32px); letter-spacing: -.045em; }
+}
 .vgrid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; }
 .vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f; aspect-ratio: 16/9;
   transition: transform .4s var(--ease-in); }
