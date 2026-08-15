@@ -129,8 +129,8 @@
 /* --rib-fall = 띠가 이음새 아래로 내려오는 양. 헤드리스로 세 폭에서 재서 1차식으로 뽑았다
    (리본 B 기준 — 획이 더 두꺼워 더 많이 내려온다). 1600px 아래로는 slice 배율이 1 로
    묶여서 상수 30px 이 된다. 히어로 높이와 다음 섹션 여백이 이 값을 함께 쓴다. */
-:root { --rib-fall: max(37px, calc(5.33vw - 48px)); }
-@media (max-width: 960px) { :root { --rib-fall: 30px; } }
+:root { --rib-fall: max(37px, calc(5.33vw - 48px)); --rib-rise: max(89px, calc(2.58vw + 48px)); }
+@media (max-width: 960px) { :root { --rib-fall: 30px; --rib-rise: 61px; } }
 .ribbon-sep { --rib-h: max(220px, 11.8vw); --rib-mid: -48px;
   position: relative; height: 0; z-index: 6; pointer-events: none; }
 .ribbon-sep svg { position: absolute; left: 0; right: 0;
@@ -441,8 +441,12 @@
 
 /* 히어로 — 실물 인증 배지 */
 /* z-index 는 리본(.ribbon-sep, 6)보다 높아야 한다. 같은 6 이면 DOM 순서상 뒤에 오는 리본이
-   위에 얹혀서, 화면이 넓어져 리본이 커질수록 배지 오른쪽을 크림색 외곽선이 잘라 먹는다. */
-.hero-real { position: absolute; right: 300px; bottom: 52px; z-index: 7; display: inline-flex; align-items: center; gap: 10px;
+   위에 얹혀서, 화면이 넓어져 리본이 커질수록 배지 오른쪽을 크림색 외곽선이 잘라 먹는다.
+
+   bottom 은 52px 고정이었는데 리본은 이음새 위로 92~114px 까지 올라온다(폭에 비례).
+   그래서 넓은 화면일수록 배지가 리본 위에 겹쳐 앉았다 — 리본 높이에 연동해 그만큼 띄운다. */
+.hero-real { position: absolute; right: 300px; bottom: calc(var(--rib-rise) + 18px);
+  z-index: 7; display: inline-flex; align-items: center; gap: 10px;
   background: var(--ink); color: var(--paper); font-weight: 800; font-size: 16.5px; letter-spacing: -0.02em;
   padding: 14px 24px 14px 16px; border-radius: 999px; transform: rotate(-2deg);
   box-shadow: 0 18px 40px rgba(14,14,12,.3); }
