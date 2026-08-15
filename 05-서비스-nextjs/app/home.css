@@ -630,19 +630,33 @@
 
 /* ---- S6 Work 프리뷰 ---- */
 /* 전에는 nth-child 로 7/5/5 칸을 잡고 두 번째만 align-self:end 로 내렸고, 썸네일 비율도
-   16/11 · 16/12 · 16/9 로 제각각이었다. 그래서 세 카드의 캡션이 전부 다른 높이에서 시작해
-   정렬이 무너져 보였다. 3단 균등으로 바꾸면 평범해지니 위계를 명시적으로 나눈다 —
-   왼쪽 대표작 한 장이 오른쪽 두 장의 높이를 통째로 받는다.
-   행 높이는 오른쪽 카드가 정하고 왼쪽은 stretch 로 따라가므로 위아래 모서리가 정확히 맞는다. */
-.wg { counter-reset: wg; display: grid; grid-template-columns: 1.34fr 1fr; gap: 24px; }
-.wg .wcard { position: relative; display: flex; flex-direction: column; min-width: 0; }
-.wg .wcard:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
-.wg .wcard:nth-child(2) { grid-column: 2; grid-row: 1; }
-.wg .wcard:nth-child(3) { grid-column: 2; grid-row: 2; }
-.wg .wcard:nth-child(n+2) .slot { aspect-ratio: 16/10; }
-.wg .wcard:nth-child(1) .slot { flex: 1; min-height: 340px; }
-.wg .wcard:nth-child(1) h3 { font-size: 26px; }
-.wg .wcard .meta { margin-top: auto; }
+   16/11 · 16/12 · 16/9 로 제각각이라 세 카드의 캡션이 전부 다른 높이에서 시작했다.
+   가로 아코디언으로 간다 — 한 줄에 세 장이 같은 높이로 서고, 올린 장만 펼쳐진다.
+   높이가 하나로 고정되니 정렬 문제가 아예 생기지 않고, 3단 균등처럼 평범해지지도 않는다. */
+.wg { counter-reset: wg; display: flex; align-items: stretch; gap: 14px;
+  height: clamp(440px, 38vw, 552px); }
+.wg .wcard { position: relative; display: flex; flex-direction: column;
+  flex: 1 1 0; min-width: 0; transition: flex-grow .6s var(--ease-spread); }
+.wg .wcard.open { flex-grow: 2.9; }
+/* 슬롯 높이를 카드의 고정 비율로 잡는다. flex:1 로 두면 캡션 줄 수가 다른 만큼
+   썸네일 아래 모서리가 장마다 어긋난다 (펼친 장은 설명이 3줄, 접힌 장은 1줄). */
+.wg .wcard .slot { flex: none; height: 62%; aspect-ratio: auto; }
+.wg .wcard .meta { flex: none; padding-top: 15px; }
+/* 접혔을 때는 화면의 왼쪽을 보여준다 — 좁은 틀에서 가운데를 잘라내면 로고도 헤드라인도
+   없는 중간 토막만 남는다. 펼쳐질 때 가운데로 미끄러지면서 팬 효과가 난다. */
+.wg .wcard .shot { object-position: left top; transition: object-position .6s var(--ease-spread); }
+.wg .wcard.open .shot { object-position: center top; }
+.wg .wcard h3 { font-size: 18px; transition: font-size .5s var(--ease-spread);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.wg .wcard.open h3 { font-size: 26px; }
+/* 접힌 장은 제목만 남긴다 — 펼칠 때 설명이 따라 나오는 게 아코디언의 값이다 */
+.wg .wcard p, .wg .wcard .builders { opacity: 0; max-height: 0; margin-top: 0; overflow: hidden;
+  transition: opacity .3s var(--ease-in), max-height .5s var(--ease-spread); }
+.wg .wcard.open p { opacity: 1; max-height: 4.4em; }
+.wg .wcard.open .builders { opacity: 1; max-height: 2.2em; margin-top: 10px; }
+@media (prefers-reduced-motion: reduce) {
+  .wg .wcard, .wg .wcard h3, .wg .wcard p, .wg .wcard .builders { transition: none; }
+}
 
 /* 개성 — 카드마다 인덱스 번호를 얹는다. 마크업을 건드리지 않으려고 CSS 카운터로 매겨서,
    나중에 카드를 더하거나 순서를 바꿔도 번호가 알아서 따라온다. */
@@ -661,12 +675,19 @@
 @media (prefers-reduced-motion: reduce) { .wg .wcard .bf { transition: none; } }
 /* v22: 모바일 — Work 프리뷰: 대표작 1장 크게 + 아래 2단 그리드 */
 @media (max-width: 900px) {
-  .wg { grid-template-columns: 1fr 1fr; gap: 26px 14px; }
-  /* 데스크톱의 행 스팬·flex 슬롯을 되돌린다 — 여기선 대표작 1장 + 아래 2단 */
-  .wg .wcard:nth-child(1) { grid-column: 1 / -1; grid-row: auto; }
-  .wg .wcard:nth-child(2) { grid-column: auto; grid-row: auto; }
-  .wg .wcard:nth-child(3) { grid-column: auto; grid-row: auto; }
-  .wg .wcard:nth-child(1) .slot { flex: none; min-height: 0; aspect-ratio: 16/10; }
+  /* 아코디언은 포인터가 있어야 뜻이 있다. 터치에서는 카드가 링크라 탭하면 바로 이동하므로
+     여기선 아코디언을 풀고 대표작 1장 + 아래 2단으로 되돌린다. */
+  .wg { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 14px; height: auto; }
+  .wg .wcard { flex: none; }
+  .wg .wcard:nth-child(1) { grid-column: 1 / -1; }
+  .wg .wcard .slot { flex: none; aspect-ratio: 4/3; }
+  .wg .wcard:nth-child(1) .slot { aspect-ratio: 16/10; }
+  .wg .wcard h3 { font-size: 15.5px; }
+  .wg .wcard.open h3 { font-size: 19px; }
+  .wg .wcard:nth-child(1) h3 { font-size: 19px; }
+  /* 접힘 연출도 해제 — 세 장 모두 설명이 보인다 */
+  .wg .wcard p, .wg .wcard .builders { opacity: 1; max-height: none; overflow: visible; }
+  .wg .wcard .builders { margin-top: 10px; }
   .wg .wcard::before { top: 10px; left: 10px; font-size: 10px; padding: 4px 9px; }
   .wg .wcard:nth-child(2) .slot, .wg .wcard:nth-child(3) .slot { aspect-ratio: 4/3; }
   .wg .wcard:nth-child(1) h3 { font-size: 19px; }

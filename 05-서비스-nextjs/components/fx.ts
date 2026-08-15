@@ -111,6 +111,33 @@ export function useRibbonFlow(DECKS: Record<string, string[]>, ROT: Record<strin
   }, [])
 }
 
+/* 가로 아코디언 — 포인터가 올라간(또는 포커스된) 장을 펼치고 나머지를 접는다. 기본은 첫 장.
+   CSS :has() 로도 되지만 "호버 중엔 전부 접고 그 장만 편다"를 특이도로 풀어야 해서
+   선택자가 금세 읽기 어려워진다. 상태를 클래스 하나로 두는 편이 낫다.
+   터치 기기에서는 카드가 링크라 탭하면 그대로 이동하므로, 펼침은 데스크톱 폭에서만
+   시각적으로 의미가 있다 (CSS 쪽에서 미디어 쿼리로 막는다). */
+export function useAccordion(containerSel: string, itemSel: string, cls = 'open') {
+  useEffect(() => {
+    const box = document.querySelector<HTMLElement>(containerSel)
+    if (!box) return
+    const items = Array.from(box.querySelectorAll<HTMLElement>(itemSel))
+    if (!items.length) return
+    const open = (i: number) => items.forEach((el, n) => el.classList.toggle(cls, n === i))
+    open(0)
+    const offs: (() => void)[] = []
+    items.forEach((el, i) => {
+      const on = () => open(i)
+      el.addEventListener('pointerenter', on)
+      el.addEventListener('focusin', on)
+      offs.push(() => { el.removeEventListener('pointerenter', on); el.removeEventListener('focusin', on) })
+    })
+    const reset = () => open(0)
+    box.addEventListener('pointerleave', reset)
+    offs.push(() => box.removeEventListener('pointerleave', reset))
+    return () => offs.forEach(f => f())
+  }, [containerSel, itemSel, cls])
+}
+
 /* 화면에 들어올 때마다 클래스를 다시 붙였다 뗀다.
    SiteFx 의 .rv 리빌은 한 번 보이면 unobserve 라 되돌아와도 다시 재생되지 않는다.
    스테퍼처럼 '볼 때마다 순서대로 켜지는' 연출은 그래서 따로 관찰해야 한다. */

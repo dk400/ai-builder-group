@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, type CSSProperties } from 'react'
-import { useRibbonFlow, useReplayOnView } from '@/components/fx'
+import { useRibbonFlow, useReplayOnView, useAccordion } from '@/components/fx'
 
 /* 스테퍼 점등 순서를 CSS 변수로 넘긴다 (CSS 커스텀 속성이라 캐스트가 필요하다) */
 const step = (i: number) => ({ '--i': i }) as CSSProperties
@@ -138,6 +138,7 @@ export default function HomeView() {
   /* 0.85 — 스테퍼가 화면에 거의 다 들어왔을 때 시작한다. 낮게 잡으면 아직 화면 끄트머리에
      있을 때 재생이 끝나서, 정작 눈이 갔을 땐 이미 다 켜져 있다. */
   useReplayOnView('[data-stepflow]', 'lit', 0.85)
+  useAccordion('.wg', '.wcard')
 
   /* S2 스크롤 연동 · S3 자동 순환 · S5 탭 · 모바일 캐러셀 · S6 패럴랙스 · S8 퍼짐 전환 · S9 FAQ */
   useEffect(() => {
