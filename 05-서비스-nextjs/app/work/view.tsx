@@ -158,7 +158,7 @@ export default function WorkView() {
                 <h2>수행 프로젝트 <span className="head-cnt num" data-cnt>( 09 )</span></h2>
                 <p className="panel__sub">비슷한 결과물을 먼저 찾으세요 — 담당 빌더가 함께 보입니다.</p>
               </div>
-              <div className="panel__side">고르기 어렵다면 → <a href="#match">02 빠른 매칭 ↓</a></div>
+              <div className="panel__side"><span>고르기 어렵다면</span><a href="#match">02 빠른 매칭 <i>↓</i></a></div>
             </div>
 
             {/* role="tablist" 였는데 자식이 role="tab" 도 aria-selected 도 없어서 보조기기에
@@ -206,7 +206,7 @@ export default function WorkView() {
                 <h2>딱 맞는 빌더를 찾아드려요</h2>
                 <p className="panel__sub">세 번만 고르면 프로젝트에 맞는 빌더 2명을 추천해 드립니다.</p>
               </div>
-              <div className="panel__side">직접 고르고 싶다면 → <a href="#works">01 작업물 탐색 ↑</a></div>
+              <div className="panel__side"><span>직접 고르고 싶다면</span><a className="up" href="#works">01 작업물 탐색 <i>↑</i></a></div>
             </div>
 
             <div className="quiz">
@@ -263,7 +263,7 @@ export default function WorkView() {
                 <h2>검증된 빌더 <span className="head-cnt num">( 10 )</span></h2>
                 <p className="panel__sub">카드를 누르면 빌더의 프로필과 수행한 작업물을 볼 수 있습니다.</p>
               </div>
-              <div className="panel__side">누구에게 맡길지 고민된다면 → <a href="#match">02 빠른 매칭 ↑</a></div>
+              <div className="panel__side"><span>누구에게 맡길지 고민된다면</span><a className="up" href="#match">02 빠른 매칭 <i>↑</i></a></div>
             </div>
             <div className="bld__grid">
               {BUILDERS.map(b => (

@@ -45,13 +45,27 @@
 .panel--sand { background: var(--paper-3); border: 1px solid var(--line-2); }
 .panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
   flex-wrap: wrap; margin-bottom: 30px; }
-.panel__no { font-family: var(--mono); font-size: 12px; letter-spacing: .18em; color: var(--muted);
-  text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+/* 섹션 번호 옆 카테고리 — 12px muted 라 라임 번호 배지 옆에서 존재감이 없었다.
+   굵기와 명도를 올려 배지와 무게를 맞춘다 (h2 보다는 작게 둬서 위계는 유지). */
+.panel__no { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .17em;
+  color: var(--ink-2); text-transform: uppercase; display: flex; align-items: center; gap: 11px;
+  margin-bottom: 14px; }
 .panel__no i { font-style: normal; background: var(--ink); color: var(--lime); border-radius: 8px;
   padding: 3px 9px; font-weight: 700; letter-spacing: .06em; }
 .panel__head h2 { font-size: clamp(24px, 3vw, 32px); margin: 0 0 4px; }
 .panel__sub { color: var(--muted); font-size: 16px; margin: 0; word-break: keep-all; }
-.panel__side { font-size: 14.5px; color: var(--muted); padding-top: 38px; white-space: nowrap; }
+/* 보조 이동 링크 — '고르기 어렵다면 → 02 빠른 매칭 ↓' 이 전부 본문 글자라 링크인지
+   안 보였다. 안내 문구는 뒤로 빼고 목적지를 눌리는 알약으로 만든다. */
+.panel__side { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  font-size: 14px; color: var(--muted); padding-top: 30px; }
+.panel__side a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--ink);
+  border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 16px; white-space: nowrap;
+  transition: border-color var(--hover), background var(--hover); }
+.panel__side a:hover { border-color: var(--ink); background: var(--paper-3); }
+.panel__side a i { font-style: normal; color: var(--muted-2); transition: transform var(--hover), color var(--hover); }
+.panel__side a:hover i { color: var(--ink); transform: translateY(2px); }
+.panel__side a.up:hover i { transform: translateY(-2px); }
 .panel__side a { color: var(--ink); font-weight: 700; }
 @media (max-width: 760px) { .panel__side { padding-top: 0; } }
 
