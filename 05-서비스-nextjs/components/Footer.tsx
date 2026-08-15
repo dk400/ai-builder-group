@@ -35,10 +35,6 @@ export default function Footer() {
             <span className="soon">LinkedIn (예정)</span>
           </div>
         </div>
-        <p className="ft__legal">
-          <b>AI 빌더 그룹</b> · 사업자 정보는 사이트 오픈과 함께 게재됩니다.<br />
-          이메일 문의는 pluug 장애 대비 대체 경로입니다.
-        </p>
         <div className="ft__bottom">
           <span>© 2026 AI Builder Group</span>
           <Link href="/privacy">개인정보처리방침</Link>
