@@ -3,9 +3,16 @@
 import Link from 'next/link'
 import FaqList from '@/components/FaqList'
 import { FAQ } from '@/app/_faq'
-import { useDock } from '@/components/fx'
+import { useDock, useRibbonFlow } from '@/components/fx'
 
 export default function FaqView() {
+  useRibbonFlow({
+    rsF: [
+      '무엇이든 물어보세요 ✳ 상담·견적 무료 ✳ 24시간 내 회신 ✳ ',
+      'ASK ANYTHING ✳ NDA 가능 ✳ 부담 없이 남겨보세요 ✳ ',
+      '기획부터 검수까지 ✳ ONE TEAM ✳ AI BUILDER GROUP ✳ ',
+    ],
+  }, { rsF: 5000 })
   useDock('sub')
 
   return (
@@ -17,6 +24,18 @@ export default function FaqView() {
             <h1><span className="w300">자주 묻는</span> 질문</h1>
             <p>문의 전에 가장 많이 받는 질문을 모았습니다. 여기서 답을 못 찾으셨다면 바로 물어봐 주세요.</p>
           </div>
+        </div>
+
+        {/* 이음새 리본 — 제목단 ↔ 문항. 다른 서브 페이지와 같은 규칙 (근거는 home.css 주석) */}
+        <div className="ribbon-sep" aria-hidden="true">
+          <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+            <path id="rsF" d="M -80,100 C 220,185 480,15 780,100 C 1080,185 1340,15 1700,100" fill="none" />
+            <use href="#rsF" className="edge2" />
+            <use href="#rsF" className="lane2" />
+            <text className="t2">
+              <textPath href="#rsF" data-wflow data-unit="4" data-speed="0.022">무엇이든 물어보세요 ✳ 상담·견적 무료 ✳ 24시간 내 회신 ✳ 무엇이든 물어보세요 ✳ 상담·견적 무료 ✳ 24시간 내 회신 ✳ </textPath>
+            </text>
+          </svg>
         </div>
 
         <section className="faqpage">

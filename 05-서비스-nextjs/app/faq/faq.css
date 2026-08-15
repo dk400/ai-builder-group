@@ -3,7 +3,27 @@
    (홈 프리뷰는 목록형 그대로 — 프리뷰와 전용 페이지의 위계를 남겨둔다) */
 /* 제목단도 같은 폭으로 — 헤딩만 1280 단이면 카드 왼쪽 모서리와 시작선이 어긋난다 */
 .page-head .wrap { max-width: 880px; }
-.faqpage { padding: 48px 0 96px; }
+
+/* 이음새 리본 — work · insight · content 와 같은 규칙. 획·경로·변수 모두 동일하게 맞췄다.
+   경로는 위상만 뒤집어 앞뒤 페이지와 파형이 겹쳐 보이지 않게 했다. */
+:root { --rib-rise: calc(3.29vw + 20px); --rib-fall: calc(3.29vw - 20px); }
+@media (max-width: 960px) { :root { --rib-rise: 73px; --rib-fall: 7px; } }
+.page-head { padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
+.ribbon-sep { --rib-h: max(200px, 7vw); --rib-mid: -20px;
+  position: relative; height: 0; z-index: 6; pointer-events: none; }
+.ribbon-sep svg { position: absolute; left: 0; right: 0;
+  top: calc(var(--rib-mid) - var(--rib-h) / 2); width: 100%; height: var(--rib-h);
+  display: block; overflow: visible; filter: drop-shadow(0 12px 24px rgba(14,14,12,.14)); }
+.ribbon-sep .edge2 { fill: none; stroke: var(--paper); stroke-width: 56; stroke-linecap: round; }
+.ribbon-sep .lane2 { fill: none; stroke: var(--ink); stroke-width: 50; stroke-linecap: round; }
+.ribbon-sep text.t2 { font-family: var(--sans); font-size: 15px; font-weight: 700; letter-spacing: .15em;
+  word-spacing: .46em; fill: var(--lime); dominant-baseline: central; }
+@media (max-width: 960px) {
+  .ribbon-sep { --rib-h: 150px; --rib-mid: -33px; }
+  .ribbon-sep svg { filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); }
+}
+
+.faqpage { padding: calc(var(--rib-fall) + var(--rib-gap-bottom)) 0 96px; }
 .faqpage .wrap { max-width: 880px; }
 .faqpage .faq-bar { margin-bottom: 30px; }
 
