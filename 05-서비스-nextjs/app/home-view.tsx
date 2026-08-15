@@ -135,7 +135,9 @@ export default function HomeView() {
       '대충 만든 결과물은 통과 못 함 ✳ QUALITY GATE: ON ✳ 검수 통과분만 전달 ✳ ',
     ],
   }, { rsepA: 5200, rsepB: 4500 })
-  useReplayOnView('[data-stepflow]')
+  /* 0.85 — 스테퍼가 화면에 거의 다 들어왔을 때 시작한다. 낮게 잡으면 아직 화면 끄트머리에
+     있을 때 재생이 끝나서, 정작 눈이 갔을 땐 이미 다 켜져 있다. */
+  useReplayOnView('[data-stepflow]', 'lit', 0.85)
 
   /* S2 스크롤 연동 · S3 자동 순환 · S5 탭 · 모바일 캐러셀 · S6 패럴랙스 · S8 퍼짐 전환 · S9 FAQ */
   useEffect(() => {
