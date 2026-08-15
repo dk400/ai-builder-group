@@ -629,21 +629,45 @@
 .mcard:hover .plus, .mcard.open .plus { background: var(--lime); color: var(--ink); border-color: var(--lime); transform: rotate(45deg); }
 
 /* ---- S6 Work 프리뷰 ---- */
-.wg { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
-.wg .wcard:nth-child(1) { grid-column: span 7; }
-.wg .wcard:nth-child(2) { grid-column: span 5; align-self: end; }
-.wg .wcard:nth-child(3) { grid-column: 3 / span 5; }
-.wg .wcard:nth-child(1) .slot { aspect-ratio: 16/11; }
-.wg .wcard:nth-child(2) .slot { aspect-ratio: 16/12; }
-.wg .wcard:nth-child(3) .slot { aspect-ratio: 16/9; }
-.wg .wcard:nth-child(1) h3 { font-size: 24px; }
+/* 전에는 nth-child 로 7/5/5 칸을 잡고 두 번째만 align-self:end 로 내렸고, 썸네일 비율도
+   16/11 · 16/12 · 16/9 로 제각각이었다. 그래서 세 카드의 캡션이 전부 다른 높이에서 시작해
+   정렬이 무너져 보였다. 3단 균등으로 바꾸면 평범해지니 위계를 명시적으로 나눈다 —
+   왼쪽 대표작 한 장이 오른쪽 두 장의 높이를 통째로 받는다.
+   행 높이는 오른쪽 카드가 정하고 왼쪽은 stretch 로 따라가므로 위아래 모서리가 정확히 맞는다. */
+.wg { counter-reset: wg; display: grid; grid-template-columns: 1.34fr 1fr; gap: 24px; }
+.wg .wcard { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.wg .wcard:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
+.wg .wcard:nth-child(2) { grid-column: 2; grid-row: 1; }
+.wg .wcard:nth-child(3) { grid-column: 2; grid-row: 2; }
+.wg .wcard:nth-child(n+2) .slot { aspect-ratio: 16/10; }
+.wg .wcard:nth-child(1) .slot { flex: 1; min-height: 340px; }
+.wg .wcard:nth-child(1) h3 { font-size: 26px; }
+.wg .wcard .meta { margin-top: auto; }
+
+/* 개성 — 카드마다 인덱스 번호를 얹는다. 마크업을 건드리지 않으려고 CSS 카운터로 매겨서,
+   나중에 카드를 더하거나 순서를 바꿔도 번호가 알아서 따라온다. */
+.wg .wcard::before { counter-increment: wg; content: counter(wg, decimal-leading-zero);
+  position: absolute; top: 14px; left: 14px; z-index: 5;
+  font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .12em;
+  color: var(--lime); background: rgba(14,14,12,.68); padding: 5px 11px; border-radius: 999px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+/* 모션 — 대표작부터 순서대로 열리고(.mask 리빌), 호버하면 화면이 살짝 당겨진다.
+   .slot 이 overflow:hidden 이라 확대분은 프레임 안에서 잘린다. */
+.wg .wcard:nth-child(2) .slot.mask { transition-delay: .12s; }
+.wg .wcard:nth-child(3) .slot.mask { transition-delay: .24s; }
+.wg .wcard .bf { transition: transform .55s var(--ease-in); }
+.wg .wcard:hover .bf { transform: scale(1.045); }
+@media (prefers-reduced-motion: reduce) { .wg .wcard .bf { transition: none; } }
 /* v22: 모바일 — Work 프리뷰: 대표작 1장 크게 + 아래 2단 그리드 */
 @media (max-width: 900px) {
   .wg { grid-template-columns: 1fr 1fr; gap: 26px 14px; }
-  .wg .wcard:nth-child(1) { grid-column: 1 / -1; }
-  .wg .wcard:nth-child(2) { grid-column: auto; align-self: stretch; }
-  .wg .wcard:nth-child(3) { grid-column: auto; }
-  .wg .wcard:nth-child(1) .slot { aspect-ratio: 16/10; }
+  /* 데스크톱의 행 스팬·flex 슬롯을 되돌린다 — 여기선 대표작 1장 + 아래 2단 */
+  .wg .wcard:nth-child(1) { grid-column: 1 / -1; grid-row: auto; }
+  .wg .wcard:nth-child(2) { grid-column: auto; grid-row: auto; }
+  .wg .wcard:nth-child(3) { grid-column: auto; grid-row: auto; }
+  .wg .wcard:nth-child(1) .slot { flex: none; min-height: 0; aspect-ratio: 16/10; }
+  .wg .wcard::before { top: 10px; left: 10px; font-size: 10px; padding: 4px 9px; }
   .wg .wcard:nth-child(2) .slot, .wg .wcard:nth-child(3) .slot { aspect-ratio: 4/3; }
   .wg .wcard:nth-child(1) h3 { font-size: 19px; }
   /* 태그·기간을 이미지 위 오버레이 배지로 */
