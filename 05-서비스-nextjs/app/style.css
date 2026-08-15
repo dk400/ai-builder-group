@@ -429,11 +429,16 @@ body.dark .logo { color: var(--paper); }
   padding: 8px 10px; line-height: 1; transition: color .15s; }
 .dock__x:hover { color: var(--paper); }
 @media (max-width: 760px) {
-  .dock { left: 12px; right: 12px; transform: translateY(160%); border-radius: 20px; flex-wrap: wrap;
-    gap: 10px; padding: 16px; white-space: normal; }
+  /* 좁은 화면에서는 세로로 쌓는다. 문구는 가운데 정렬하고, 닫기(×)는 흐름에서 빼
+     우상단 모서리에 둔다 — 버튼 옆에 두면 버튼 폭을 갉아먹고 오조작도 잦다. */
+  .dock { left: 12px; right: 12px; transform: translateY(160%); border-radius: 20px;
+    flex-wrap: wrap; gap: 12px; padding: 18px 16px 16px; white-space: normal;
+    position: fixed; }
   .dock.show { transform: translateY(0); }
-  .dock__txt { flex: 1 1 100%; }
-  .dock .btn--sm { flex: 1; justify-content: center; }
+  .dock__txt { flex: 1 1 100%; text-align: center; padding: 0 26px; }
+  .dock__txt b::before { margin-right: 6px; }
+  .dock .btn--sm { flex: 1 1 100%; justify-content: center; }
+  .dock__x { position: absolute; top: 8px; right: 8px; padding: 10px 12px; font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .dock .btn--sm { animation: none; } }
 
