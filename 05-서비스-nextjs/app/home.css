@@ -763,7 +763,8 @@
   .s8 .sec-head { display: grid; justify-content: start; gap: 12px; }
   .s8 .sec-head h2 { font-size: clamp(24px, 7vw, 32px); letter-spacing: -.045em; }
 }
-.vgrid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; }
+.vgrid { display: grid; grid-template-columns: 1.6fr 1fr; align-items: stretch; gap: 20px; }
+.vgrid > .vcell { aspect-ratio: auto; min-height: 0; }
 .vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f; aspect-ratio: 16/9;
   transition: transform .4s var(--ease-in); }
 .vcell:hover { transform: scale(1.018); }
@@ -811,6 +812,7 @@
   .step { scroll-snap-align: start; }
   .s3__bar, .s3__cnt { display: none; }
   .vgrid { grid-template-columns: 1fr; }
+  .vgrid > .vcell { aspect-ratio: 16/9; }
   /* v22: 영상 — 대표 1개 풀폭 + 아래 2단 (PC 위계를 모바일로 접기) */
   .vcell .cap b { font-size: 16px; }
   .vcell .cap span { font-size: 13px; letter-spacing: .06em; margin-top: 3px; display: inline-block; }
