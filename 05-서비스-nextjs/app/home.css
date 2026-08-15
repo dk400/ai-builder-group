@@ -129,17 +129,20 @@
 /* --rib-fall = 띠가 이음새 아래로 내려오는 양. 헤드리스로 세 폭에서 재서 1차식으로 뽑았다
    (리본 B 기준 — 획이 더 두꺼워 더 많이 내려온다). 1600px 아래로는 slice 배율이 1 로
    묶여서 상수 30px 이 된다. 히어로 높이와 다음 섹션 여백이 이 값을 함께 쓴다. */
-:root { --rib-fall: max(30px, calc(4.88vw - 48px)); }
-@media (max-width: 960px) { :root { --rib-fall: 22px; } }
-.ribbon-sep { --rib-h: max(220px, 11vw); --rib-mid: -48px;
+:root { --rib-fall: max(37px, calc(5.33vw - 48px)); }
+@media (max-width: 960px) { :root { --rib-fall: 30px; } }
+.ribbon-sep { --rib-h: max(220px, 11.8vw); --rib-mid: -48px;
   position: relative; height: 0; z-index: 6; pointer-events: none; }
 .ribbon-sep svg { position: absolute; left: 0; right: 0;
   top: calc(var(--rib-mid) - var(--rib-h) / 2); width: 100%; height: var(--rib-h);
   display: block; overflow: visible; filter: drop-shadow(0 14px 28px rgba(14,14,12,.16)); }
 .ribbon-sep .edge { fill: none; stroke: var(--ink); stroke-width: 56; stroke-linecap: round; }
 .ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 48; stroke-linecap: round; }
-.ribbon-sep .edge2 { fill: none; stroke: var(--paper); stroke-width: 50; stroke-linecap: round; }
-.ribbon-sep .lane2 { fill: none; stroke: var(--ink); stroke-width: 44; stroke-linecap: round; }
+/* A(히어로 이음새)는 잉크 띠 44 + 크림 외곽선 50 이었다. 크림 외곽선은 크림 배경 위에서
+   안 보이므로 눈에 들어오는 두께가 44 뿐이라, 잉크 외곽선까지 56 으로 읽히는 B 보다 얇아 보였다.
+   보이는 두께를 B(56)에 맞춘다. */
+.ribbon-sep .edge2 { fill: none; stroke: var(--paper); stroke-width: 62; stroke-linecap: round; }
+.ribbon-sep .lane2 { fill: none; stroke: var(--ink); stroke-width: 56; stroke-linecap: round; }
 /* central = 글자 셀(어센트~디센트)의 한가운데를 path 에 맞춘다. middle 은 x-height 기준이라
    한글이 아래로 처지는데, 거기에 dy 까지 더해 두 번 내려가 있었다 (띠 높이의 10%).
    dy 는 마크업에서 걷어냈다 — 세로 정렬은 이 줄 하나로만 결정된다.

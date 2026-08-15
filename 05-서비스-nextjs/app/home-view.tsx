@@ -332,7 +332,7 @@ export default function HomeView() {
         {/* v19: 이음새 리본 A — 히어로 ↔ 검수 시스템 (잉크 리본 · 서비스 키워드) */}
         <div className="ribbon-sep" aria-hidden="true">
           <svg viewBox="0 0 1600 220" preserveAspectRatio="xMidYMid slice">
-            <path id="rsepA" d="M -80,150 C 240,90 420,190 720,150 C 1020,110 1220,170 1420,120 C 1520,95 1600,100 1700,80" fill="none" />
+            <path id="rsepA" d="M -80,132 C 220,20 480,244 780,132 C 1080,20 1340,244 1700,132" fill="none" />
             <use href="#rsepA" className="edge2" />
             <use href="#rsepA" className="lane2" />
             <text className="t2">
@@ -654,7 +654,7 @@ export default function HomeView() {
         {/* v19: 이음새 리본 B — 인사이트 ↔ 콘텐츠(다크) (라임 리본 · 브랜드 문구) */}
         <div className="ribbon-sep" aria-hidden="true">
           <svg viewBox="0 0 1600 220" preserveAspectRatio="xMidYMid slice">
-            <path id="rsepB" d="M -80,80 C 220,130 460,60 760,110 C 1060,160 1260,80 1460,130 C 1550,152 1620,140 1700,160" fill="none" />
+            <path id="rsepB" d="M -80,128 C 220,240 480,16 780,128 C 1080,240 1340,16 1700,128" fill="none" />
             <use href="#rsepB" className="edge" />
             <use href="#rsepB" className="lane" />
             <text>
