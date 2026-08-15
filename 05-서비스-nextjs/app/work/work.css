@@ -3,7 +3,13 @@
 .head-stats b { display: block; font-family: var(--mono); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
 .head-stats span { font-size: 14px; color: var(--muted); }
 
-.panels { padding: 34px 0 8px; }
+/* 리본이 이음새 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측 (근거는 insight.css 주석).
+   여기는 실제로 겹쳐 있었다: 1600px 에서 −4px, 2400px 에서 −20px 로 리본이 제목단 글씨를
+   덮고 있었다. 아래 목록(.panels)도 34px 고정이라 넓은 화면에서 리본에 물렸다. */
+:root { --rib-rise: calc(2vw + 20px); --rib-fall: calc(2.82vw - 20px); }
+@media (max-width: 960px) { :root { --rib-rise: 57px; --rib-fall: 1px; } }
+.page-head { padding-bottom: calc(var(--rib-rise) + 40px); }
+.panels { padding: calc(var(--rib-fall) + 56px) 0 8px; }
 .panel { border-radius: 30px; padding: clamp(28px, 4vw, 52px); margin-top: 26px; scroll-margin-top: 96px; }
 .panel--tint { background: var(--paper-2); border: 1px solid var(--line); }
 .panel--sand { background: var(--paper-3); border: 1px solid var(--line-2); }

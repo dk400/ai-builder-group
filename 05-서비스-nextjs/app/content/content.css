@@ -15,9 +15,10 @@ body::after { opacity: .05; }
 .gnb nav a.active { opacity: 1; background: var(--paper); color: var(--ink); }
 .gnb nav a.active::after { background: var(--lime); }
 .logo { color: var(--paper); }
-/* 리본이 이음새 위로 (3.125vw − 20)px 올라온다. 아래 여백이 고정 48px 이라
-   넓은 화면에서 설명문이 리본에 깔렸다. */
-.page-head { border-bottom-color: var(--d-line); padding-bottom: calc(3.125vw + 32px); }
+/* 리본이 이음새 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측 (근거는 insight.css 주석) */
+:root { --rib-rise: calc(2.17vw + 20px); --rib-fall: calc(2.19vw - 20px); }
+@media (max-width: 960px) { :root { --rib-rise: 59px; --rib-fall: 0px; } }
+.page-head { border-bottom-color: var(--d-line); padding-bottom: calc(var(--rib-rise) + 40px); }
 .page-head p { color: var(--d-mut); }
 .crumb { color: var(--d-mut2); }
 /* v19: 이음새 리본 (다크 페이지 — 라임 발광) */

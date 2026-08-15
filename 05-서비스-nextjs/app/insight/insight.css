@@ -1,12 +1,11 @@
-/* 제목단 압축 — h1 을 줄이고 위 여백을 걷어 목록이 첫 화면에 더 들어오게 한다.
-   아래 여백만은 반대로 폭에 비례해 잡는다: 리본이 이음새 위로 (2.3vw − 4)px 올라오기
-   때문에, 고정값으로 두면 넓은 화면에서 설명문이 리본에 깔린다. */
-.page-head { padding: 48px 0 calc(2.3vw + 32px); }
-.page-head h1 { font-size: clamp(30px, 3.4vw, 44px); margin-bottom: 8px; }
-.page-head p { font-size: 15.5px; }
-/* 목록 시작점도 리본이 내려오는 만큼(3.25vw + 4px) 비켜준다 */
+/* 리본이 이음새(page-head 아래 경계) 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측해 뽑았다.
+   slice 확대율이 폭에 비례하므로 vw 항이 붙는다. 960px 이하는 리본 높이가 150px 로 고정이라
+   확대율도 고정 → vw 항 없이 상수. 이 값에 원하는 여백만 더하면 리본에 안 깔린다. */
+:root { --rib-rise: calc(2vw - 4px); --rib-fall: calc(2.9vw + 4px); }
+@media (max-width: 960px) { :root { --rib-rise: 57px; --rib-fall: 2px; } }
+.page-head { padding-bottom: calc(var(--rib-rise) + 40px); }
 .ins { display: grid; grid-template-columns: 230px 1fr; gap: 60px;
-  padding: calc(3.25vw + 40px) 0 76px; align-items: start; }
+  padding: calc(var(--rib-fall) + 56px) 0 76px; align-items: start; }
 .cats { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 2px; }
 .cats .k { font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2);
   text-transform: uppercase; padding: 0 14px; margin-bottom: 12px; }
