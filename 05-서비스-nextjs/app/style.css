@@ -130,10 +130,16 @@ h2 .w300, h1 .w300 { font-weight: 300; letter-spacing: -0.035em; }
   transition: transform var(--hover), box-shadow var(--hover), background var(--hover); }
 .btn--lime:hover { background: #E4FF6B; transform: translateY(-2px);
   box-shadow: 0 4px 0 rgba(14,14,12,.12), 0 14px 30px rgba(178,224,17,.5); }
-.btn--pulse { position: relative; }
-.btn--pulse::after { content: ""; position: absolute; inset: -4px; border-radius: 999px;
-  border: 2px solid var(--lime); opacity: 0; pointer-events: none; animation: ctaRing 2.8s ease-out infinite; }
-@keyframes ctaRing { 0% { opacity: .8; transform: scale(1); } 55% { opacity: 0; transform: scale(1.16); } 100% { opacity: 0; } }
+.btn--pulse { position: relative; isolation: isolate;
+  box-shadow: 0 2px 0 rgba(14,14,12,.14), 0 8px 20px rgba(178,224,17,.35), 0 0 0 5px rgba(178,224,17,.12); }
+.btn--pulse::after { content: ""; position: absolute; inset: -5px; border-radius: 999px;
+  border: 2px solid rgba(134,172,0,.72); box-shadow: 0 0 16px rgba(178,224,17,.34);
+  opacity: 0; pointer-events: none; animation: ctaRing 2.8s ease-out infinite; }
+@keyframes ctaRing {
+  0% { opacity: .9; transform: scale(1); }
+  58% { opacity: 0; transform: scale(1.18); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
 @media (prefers-reduced-motion: reduce) { .btn--pulse::after { animation: none; display: none; } }
 .btn--ghost { background: transparent; border: 1px solid var(--line-2); color: var(--ink); padding: 14px 29px; font-size: 15px; }
 .btn--ghost:hover { border-color: var(--ink); }
