@@ -53,7 +53,7 @@ export default function ContentView() {
       <main id="main" className="grain content-dark">
         <div className="page-head">
           <div className="wrap">
-            <h1><span className="w300">영상으로 보는</span><br />우리의 작업</h1>
+            <h1><span className="w300">영상으로 보는</span> 우리의 작업</h1>
             <p>김이솝의 AI 가이드 · 똑똑한개발자 · AI 서대표 — 세 채널의 실전 콘텐츠</p>
           </div>
         </div>
