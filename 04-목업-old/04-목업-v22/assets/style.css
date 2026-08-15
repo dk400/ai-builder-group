@@ -204,13 +204,7 @@ body.assets .slot { outline: 2px dashed var(--ink); outline-offset: 3px; }
 .asset-toggle:hover { border-color: var(--ink); color: var(--ink); }
 body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-color: var(--ink); }
 
-/* ---------- 커서 추종 "VIEW →" (cuberto — Work 카드 1곳만) ---------- */
-.cur { position: fixed; z-index: 80; pointer-events: none; left: 0; top: 0;
-  background: var(--lime); color: var(--ink); border-radius: 999px; padding: 10px 16px;
-  font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .14em;
-  transform: translate(-50%, -50%) scale(0); transition: transform .22s var(--ease-in); white-space: nowrap; }
-.cur.on { transform: translate(-50%, -50%) scale(1); }
-@media (hover: none) { .cur, .asset-toggle { display: none; } }
+@media (hover: none) { .asset-toggle { display: none; } }
 
 /* ---------- 리빌 (등장 = expo-out) ---------- */
 .rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease-in), transform .8s var(--ease-in); }
@@ -340,7 +334,6 @@ body.dark .logo { color: var(--paper); }
   html { scroll-behavior: auto; }
   .rv, .mask { opacity: 1; transform: none; clip-path: none; transition: none; }
   * { animation-duration: .01ms !important; transition-duration: .15s !important; }
-  .cur { display: none; }
 }
 .skip { position: absolute; left: -9999px; top: 0; background: var(--lime); color: var(--ink);
   padding: 10px 18px; border-radius: 0 0 12px 0; font-weight: 700; z-index: 100; }

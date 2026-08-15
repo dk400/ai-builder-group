@@ -82,25 +82,4 @@
   document.body.appendChild(tg);
   try { if (sessionStorage.getItem('assets')) { document.body.classList.add('assets'); tg.setAttribute('aria-pressed', 'true'); } } catch (e) {}
 
-  /* ── 커서 추종 "VIEW →" — [data-cursor] 요소 위에서만 (cuberto, 과용 금지) ── */
-  if (!reduced && window.matchMedia('(hover: hover)').matches) {
-    var cur = document.createElement('div');
-    cur.className = 'cur';
-    cur.textContent = 'VIEW →';
-    cur.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(cur);
-    var overTarget = false;
-    document.addEventListener('mousemove', function (e) {
-      if (overTarget) { cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; }
-    }, { passive: true });
-    document.querySelectorAll('[data-cursor]').forEach(function (el) {
-      el.addEventListener('mouseenter', function (e) {
-        overTarget = true;
-        cur.textContent = el.dataset.cursor || 'VIEW →';
-        cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
-        cur.classList.add('on');
-      });
-      el.addEventListener('mouseleave', function () { overTarget = false; cur.classList.remove('on'); });
-    });
-  }
 })();
