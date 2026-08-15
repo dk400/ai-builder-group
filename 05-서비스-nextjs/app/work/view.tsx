@@ -124,7 +124,7 @@ export default function WorkView() {
         <div className="page-head">
           <div className="wrap">
             <h1><span className="w300">만드는 사람과,</span> 만든 것들</h1>
-            <p>추천받고 싶다면 30초 매칭으로, 직접 둘러보고 싶다면 작업물부터. 두 길 모두 열어두었습니다.</p>
+            <p>추천받고 싶다면 30초 매칭으로, 직접 둘러보고 싶다면 작업물부터.</p>
             {/* 숫자는 최종 표기 그대로 둔다 — useCountUp 이 형식만 읽어 0부터 센다 */}
             <div className="head-stats rv">
               <div className="hstat"><b className="num" data-count>10</b><i className="unit">명</i><span>검증된 빌더</span></div>

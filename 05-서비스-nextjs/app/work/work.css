@@ -47,8 +47,8 @@
   flex-wrap: wrap; margin-bottom: 30px; }
 /* 섹션 번호 옆 카테고리 — 12px muted 라 라임 번호 배지 옆에서 존재감이 없었다.
    굵기와 명도를 올려 배지와 무게를 맞춘다 (h2 보다는 작게 둬서 위계는 유지). */
-.panel__no { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .17em;
-  color: var(--ink-2); text-transform: uppercase; display: flex; align-items: center; gap: 11px;
+.panel__no { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .09em;
+  color: var(--ink-2); display: flex; align-items: center; gap: 11px;
   margin-bottom: 14px; }
 .panel__no i { font-style: normal; background: var(--ink); color: var(--lime); border-radius: 8px;
   padding: 3px 9px; font-weight: 700; letter-spacing: .06em; }
@@ -59,7 +59,7 @@
 .panel__side { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   font-size: 14px; color: var(--muted); padding-top: 30px; }
 .panel__side a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-  font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--ink);
+  font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .02em; color: var(--ink);
   border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 16px; white-space: nowrap;
   transition: border-color var(--hover), background var(--hover); }
 .panel__side a:hover { border-color: var(--ink); background: var(--paper-3); }

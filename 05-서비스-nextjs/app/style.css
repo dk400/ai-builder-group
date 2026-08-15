@@ -23,7 +23,12 @@
   --line:    #DEDCD0;
   --line-2:  #C7C5B9;
   --sans: "Pretendard Variable", Pretendard, -apple-system, system-ui, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  /* JetBrains Mono 에는 한글 글리프가 없다. 그래서 mono 라벨에 한글이 섞이면
+     (직접 탐색 · 모두 펼치기 · 발주 가이드 …) 그 글자만 브라우저 기본 한글 폰트로
+     떨어져 본문과 따로 놀았다 — 전 페이지 32곳에서 발생.
+     폴백 순서에 본문 서체를 끼워 넣으면 라틴·숫자는 JetBrains Mono, 한글은 Pretendard 로
+     간다. 글자 단위로 적용되므로 규칙 하나로 32곳이 한 번에 맞는다. */
+  --mono: "JetBrains Mono", "Pretendard Variable", Pretendard, ui-monospace, Menlo, monospace;
   --maxw: 1280px;
   --d-line:  rgba(244,241,234,.14);
   --d-line2: rgba(244,241,234,.08);
@@ -234,7 +239,7 @@ body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-c
 .faq-bar .topics { margin-bottom: 0; }
 .faq-all { display: inline-flex; align-items: center; gap: 7px; background: none; cursor: pointer;
   border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 16px;
-  font-family: var(--mono); font-size: 12.5px; font-weight: 700; letter-spacing: .06em; color: var(--ink);
+  font-family: var(--mono); font-size: 12.5px; font-weight: 700; letter-spacing: .02em; color: var(--ink);
   transition: border-color var(--hover), background var(--hover); }
 .faq-all:hover { border-color: var(--ink); background: var(--paper-3); }
 .faq-all i { font-style: normal; color: var(--muted-2); transition: color var(--hover); }
