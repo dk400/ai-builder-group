@@ -244,7 +244,8 @@ body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-c
    창 폭이 바뀌어 줄 수가 달라지면 값이 어긋난다. */
 .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease-in); }
 .faq-q[aria-expanded="true"] + .faq-a { grid-template-rows: 1fr; }
-.faq-a > * { min-height: 0; overflow: hidden; }
+/* 그리드 아이템은 패딩이 없어야 0fr 에서 완전히 접힌다 — 패딩은 안쪽 p 가 갖는다 */
+.faq-a__in { min-height: 0; overflow: hidden; }
 .faq-a p { margin: 0; padding: 0 8px 28px; color: var(--muted); font-size: 15px; line-height: 1.8; max-width: 64ch; word-break: keep-all; }
 
 /* ---------- 페이지 헤더·필터·빈상태·CTA배너 ---------- */

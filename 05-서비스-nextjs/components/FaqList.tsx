@@ -44,8 +44,11 @@ export default function FaqList({ topics, defaultOpen }: { topics: FaqTopic[]; d
             >
               {it.q}
             </button>
+            {/* 안쪽 래퍼가 꼭 필요하다. 0fr 트랙은 그리드 아이템의 '자동 최소 크기'까지만
+                줄이는데, p 에 padding 이 있으면 min-height:0 으로도 그 패딩만큼(28px)이
+                남아 접었을 때 한 줄이 새어 나온다. 패딩 없는 래퍼를 아이템으로 둔다. */}
             <div className="faq-a" id={it.id} role="region">
-              <p>{it.a}</p>
+              <div className="faq-a__in"><p>{it.a}</p></div>
             </div>
           </div>
         ))}

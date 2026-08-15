@@ -738,8 +738,8 @@
 .s7 .irow { display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
   padding: 20px 8px; border-bottom: 1px solid var(--line); text-decoration: none;
   transition: background var(--hover), padding-left var(--hover); }
-.s7 .ithumb { width: 168px; height: 112px; object-fit: cover; display: block;
-  border-radius: 12px; border: 1px solid var(--line); background: var(--paper-3);
+.s7 .ithumb { width: clamp(200px, 17vw, 268px); aspect-ratio: 3/2; object-fit: cover; display: block;
+  border-radius: 14px; border: 1px solid var(--line); background: var(--paper-3);
   transition: transform var(--hover); }
 .s7 .irow:hover .ithumb { transform: scale(1.05); }
 .s7 .irow:first-of-type { border-top: 1px solid var(--line-2); }
@@ -751,7 +751,7 @@
 /* 좁은 화면 — 썸네일은 두 줄을 세로로 걸치고, 제목·메타가 그 옆에 쌓인다 */
 @media (max-width: 720px){
   .s7 .irow { grid-template-columns: auto 1fr; gap: 6px 14px; }
-  .s7 .ithumb { grid-row: 1 / span 2; width: 104px; height: 72px; }
+  .s7 .ithumb { grid-row: 1 / span 2; width: 124px; height: auto; }
 }
 
 /* ---- S8 콘텐츠·유튜브 ---- */
