@@ -564,8 +564,6 @@
   .s4x-card { scroll-snap-align: start; min-height: 400px; }
   .laurbox { padding: 6px 0 10px; min-height: 0; }
   .s4x__head { flex-direction: column; align-items: flex-start; } .s4x__head p { text-align: left; }
-  .s4x__head::after { content: "옆으로 넘겨 확인하세요 →"; font-family: var(--mono); font-size: 11px;
-    letter-spacing: .12em; color: var(--muted-2); margin-top: 6px; }
 }
 @media (max-width: 600px) {
   .s4x__grid { margin: 0 -20px; padding: 0 20px 8px; scroll-padding: 0 20px; }
