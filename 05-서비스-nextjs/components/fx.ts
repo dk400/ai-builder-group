@@ -111,6 +111,52 @@ export function useRibbonFlow(DECKS: Record<string, string[]>, ROT: Record<strin
   }, [])
 }
 
+/* 숫자 카운트업 — [data-count] 요소가 화면에 들어오면 0 에서 원래 값까지 센다.
+   마크업에는 최종 표기("10" · "09" · "4.9")를 그대로 두고 형식(자릿수·소수점)만 읽어낸다.
+   JS 가 없거나 모션을 끈 환경에서는 아무것도 안 해도 값이 제대로 보인다. */
+export function useCountUp(sel = '[data-count]') {
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce || !('IntersectionObserver' in window)) return
+    const jobs = Array.from(document.querySelectorAll<HTMLElement>(sel)).map(el => {
+      const raw = (el.textContent || '').trim()
+      const [intPart = '', decPart = ''] = raw.split('.')
+      return { el, raw, target: parseFloat(raw), dec: decPart.length, width: intPart.length }
+    }).filter(j => Number.isFinite(j.target))
+    if (!jobs.length) return
+
+    let alive = true
+    const fmt = (v: number, j: typeof jobs[number]) => {
+      const s = v.toFixed(j.dec)
+      const [i = '', d] = s.split('.')
+      return i.padStart(j.width, '0') + (d ? '.' + d : '')
+    }
+    const run = (j: typeof jobs[number]) => {
+      const t0 = performance.now()
+      const dur = 900
+      const step = (now: number) => {
+        if (!alive) return
+        const p = Math.min(1, (now - t0) / dur)
+        const eased = 1 - Math.pow(1 - p, 3)          /* easeOutCubic */
+        j.el.textContent = p < 1 ? fmt(j.target * eased, j) : j.raw
+        if (p < 1) requestAnimationFrame(step)
+      }
+      j.el.textContent = fmt(0, j)
+      requestAnimationFrame(step)
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return
+        io.unobserve(e.target)
+        const j = jobs.find(x => x.el === e.target)
+        if (j) run(j)
+      })
+    }, { threshold: 0.4 })
+    jobs.forEach(j => io.observe(j.el))
+    return () => { alive = false; io.disconnect() }
+  }, [sel])
+}
+
 /* 플로팅 독 — 스크롤 진입 후 표시, 최종 CTA·푸터 근처/닫기 시 숨김.
    mode 'main': 히어로가 있는 페이지 (한 화면 스크롤 후 표시, 최종 CTA 근처 숨김)
    mode 'sub' : 서브 페이지 (얕은 스크롤에도 표시, 문서 최하단 근처에서만 숨김) */

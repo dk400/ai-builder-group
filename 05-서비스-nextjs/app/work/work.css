@@ -1,7 +1,35 @@
 /* ── v13: 벤토 패널 구조 — 01 수행 프로젝트 / 02 빌더 프로필 / 03 빠른 매칭 (증거→사람→전환 순서) ── */
-.head-stats { display: flex; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
-.head-stats b { display: block; font-family: var(--mono); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-.head-stats span { font-size: 14px; color: var(--muted); }
+/* 제목단 스탯 — 숫자만 세 개 늘어놓으니 심심해서, 사이트가 이미 쓰는 어휘로만 살렸다:
+   라임 스와시(h1 의 mark 와 같은 처리) · ✳ 구분자(리본과 같은 기호) · mono 숫자 · rv 리빌.
+   새 색이나 서체는 쓰지 않는다. */
+.head-stats { display: flex; align-items: flex-end; gap: 22px; flex-wrap: wrap; margin-top: 34px; }
+.hstat { position: relative; }
+/* 숫자는 히어로 h1 의 mark 와 같은 처리 — 라임 블록 위에 얹는다. 이 사이트의 시그니처 동작이라
+   새 표현을 들이지 않고도 스탯이 눈에 걸린다. tabular-nums 라 카운트업 중에도 폭이 안 흔들린다. */
+.hstat b { position: relative; z-index: 0; display: inline-block; padding: 0 .14em; color: var(--ink);
+  font-family: var(--mono); font-variant-numeric: tabular-nums;
+  font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.16; }
+.hstat b::after { content: ""; position: absolute; z-index: -1; inset: .07em 0 .05em;
+  background: var(--lime); border-radius: 9px;
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform .5s var(--ease-in) .15s; }
+.rv.on .hstat b::after { transform: scaleX(1); }
+.hstat .unit { font-style: normal; font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--muted-2); margin-left: 5px; }
+.hstat span { display: block; margin-top: 12px; font-size: 13.5px; color: var(--muted); letter-spacing: -0.01em; }
+/* 라임은 이 사이트에서 늘 '어두운 글자의 배경'으로만 쓴다. 크림 위 라임 글자는 대비가 안 나와서
+   구분자는 muted 로 둔다. */
+.hstat-sep { align-self: flex-start; margin-top: 14px; color: var(--muted-2); font-size: 15px;
+  line-height: 1; user-select: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hstat b::after { transition: none; transform: scaleX(1); }
+}
+@media (max-width: 640px) {
+  .head-stats { gap: 14px; }
+  .hstat b { font-size: 30px; }
+  .hstat span { font-size: 12.5px; margin-top: 8px; }
+  .hstat-sep { margin-bottom: 18px; }
+}
 
 /* 리본이 이음새 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측 (근거는 insight.css 주석).
    여기는 실제로 겹쳐 있었다: 1600px 에서 −4px, 2400px 에서 −20px 로 리본이 제목단 글씨를
@@ -121,30 +149,26 @@
   .bcard .ct { padding: 34px 12px 9px; font-size: 9.5px; }
 }
 
-/* ── 포트폴리오 그리드 (plus-ex 리듬) ── */
-.pxg { display: grid; grid-template-columns: repeat(12, 1fr); gap: 22px; }
-.pxg .wcard:nth-child(1) { grid-column: span 8; }
-.pxg .wcard:nth-child(2) { grid-column: span 4; align-self: end; }
-.pxg .wcard:nth-child(3) { grid-column: span 4; }
-.pxg .wcard:nth-child(4) { grid-column: span 8; }
-.pxg .wcard:nth-child(5) { grid-column: span 6; }
-.pxg .wcard:nth-child(6) { grid-column: span 6; margin-top: 60px; }
-.pxg .wcard:nth-child(7) { grid-column: span 4; }
-.pxg .wcard:nth-child(8) { grid-column: span 4; margin-top: 40px; }
-.pxg .wcard:nth-child(9) { grid-column: span 4; }
-.pxg .wcard:nth-child(1) .slot { aspect-ratio: 16/10; }
-.pxg .wcard:nth-child(2) .slot { aspect-ratio: 4/5; }
-.pxg .wcard:nth-child(3) .slot { aspect-ratio: 4/5; }
-.pxg .wcard:nth-child(4) .slot { aspect-ratio: 16/10; }
-.pxg .wcard:nth-child(5) .slot, .pxg .wcard:nth-child(6) .slot { aspect-ratio: 16/11; }
-.pxg .wcard:nth-child(7) .slot, .pxg .wcard:nth-child(8) .slot, .pxg .wcard:nth-child(9) .slot { aspect-ratio: 16/12; }
-.pxg .wcard:nth-child(1) h3, .pxg .wcard:nth-child(4) h3 { font-size: 25px; }
+/* ── 포트폴리오 그리드 ──
+   전에는 nth-child 로 카드마다 칸 수·썸네일 비율·오프셋을 하드코딩했다. 두 군데가 깨졌다.
+   ① 카드마다 비율이 달라(16/10 · 4/5 · 16/11 · 16/12) 제목·설명이 행마다 다른 높이에서
+      시작한다 — 줄이 안 맞아 보이는 원인.
+   ② 카테고리 필터는 display:none 으로 거르는데 nth-child 는 숨긴 카드까지 센다. 필터를 걸면
+      남은 카드가 남의 칸 수를 물려받아 레이아웃이 통째로 어긋났다.
+   비율과 칸을 통일해 캡션 줄을 맞추고, 리듬은 오프셋 대신 호버로 준다. */
+.pxg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px 22px; align-items: start; }
+.pxg .wcard { min-width: 0; }
+.pxg .wcard .slot { aspect-ratio: 16/10; }
+.pxg .wcard .cover { transition: transform .5s var(--ease-in); }
+.pxg .wcard:hover .cover { transform: scale(1.045); }
+/* 태그는 데이터가 이미 대소문자를 갖춰 왔다(AI · AX, SaaS · Admin, O2O).
+   전역 .tag 의 uppercase + mono 를 그대로 쓰면 그 구분이 사라지고, 특히 O2O 가 020 으로 읽힌다. */
+.pxg .wcard .tag { font-family: var(--sans); text-transform: none; letter-spacing: .01em; font-weight: 700; }
 /* v22: 모바일 — 포트폴리오 2단 그리드 (스크롤 절반, 필터와 무관하게 안정) + 오버레이 태그 배지 */
 @media (max-width: 900px) {
   .pxg { grid-template-columns: 1fr 1fr; gap: 24px 14px; }
-  .pxg .wcard { grid-column: auto !important; margin-top: 0 !important; min-width: 0; }
-  .pxg .wcard:nth-child(n) .slot { aspect-ratio: 4/3; }
-  .pxg .wcard:nth-child(n) h3 { font-size: 15.5px; margin: 0 0 3px; }
+  .pxg .wcard .slot { aspect-ratio: 4/3; }
+  .pxg .wcard h3 { font-size: 15.5px; margin: 0 0 3px; }
   .pxg .wcard .bf__bar { display: none; }
   .pxg .wcard .meta { position: relative; padding: 12px 2px 0; }
   .pxg .wcard .mrow { position: absolute; left: 8px; right: 8px; bottom: calc(100% + 10px); margin: 0; z-index: 4; }

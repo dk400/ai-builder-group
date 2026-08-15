@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect } from 'react'
-import { useRibbonFlow, useDock } from '@/components/fx'
+import { useRibbonFlow, useDock, useCountUp } from '@/components/fx'
 
 /* ── 수행 프로젝트 데이터 ── */
 type Project = { c: string; tag: string; yr: string; title: string; desc: string; withTeam?: string; img: string; alt: string }
@@ -43,28 +43,39 @@ export default function WorkView() {
     ],
   }, { rsW: 5000 })
   useDock()
+  useCountUp()
 
   /* 프로젝트 필터 */
   useEffect(() => {
     const cnt = document.querySelector('[data-cnt]')
     const cards = document.querySelectorAll<HTMLElement>('[data-list] .wcard')
     const empty = document.querySelector('[data-empty]') as HTMLElement | null
-    document.querySelectorAll<HTMLElement>('.chips .chip').forEach(ch => {
-      ch.addEventListener('click', () => {
-        document.querySelectorAll('.chips .chip').forEach(c => c.classList.remove('on'))
-        ch.classList.add('on')
-        const cat = ch.dataset.cat
-        let shown = 0
-        cards.forEach(c => {
-          const show = cat === 'all' || c.dataset.c === cat
-          c.style.display = show ? '' : 'none'
-          if (show) shown++
-        })
-        if (empty) empty.hidden = shown > 0
-        if (cnt) cnt.textContent = '( 0' + shown + ' )'
-        history.replaceState(null, '', cat === 'all' ? '#' : '#category=' + cat)
+    const chips = Array.from(document.querySelectorAll<HTMLElement>('.chips .chip'))
+
+    const apply = (cat: string, push: boolean) => {
+      chips.forEach(c => {
+        const on = c.dataset.cat === cat
+        c.classList.toggle('on', on)
+        c.setAttribute('aria-pressed', String(on))   /* 토글 버튼임을 보조기기에 알린다 */
       })
-    })
+      let shown = 0
+      cards.forEach(c => {
+        const show = cat === 'all' || c.dataset.c === cat
+        c.style.display = show ? '' : 'none'
+        if (show) shown++
+      })
+      if (empty) empty.hidden = shown > 0
+      /* '( 0' + shown 은 10건이 넘으면 ( 010 ) 이 된다 — 자리수를 맞춰 채운다 */
+      if (cnt) cnt.textContent = '( ' + String(shown).padStart(2, '0') + ' )'
+      if (push) history.replaceState(null, '', cat === 'all' ? '#' : '#category=' + cat)
+    }
+
+    chips.forEach(ch => ch.addEventListener('click', () => apply(ch.dataset.cat || 'all', true)))
+
+    /* 주소에 #category=... 를 써두면서 정작 읽지는 않아서 그 링크로 들어오면
+       칩은 '전체'인데 목록만 걸러진 것처럼 보였다 — 진입 시 한 번 맞춰준다. */
+    const initial = new URLSearchParams(location.hash.replace(/^#/, '')).get('category')
+    if (initial && chips.some(c => c.dataset.cat === initial)) apply(initial, false)
   }, [])
 
   /* 빌더 매칭 위저드 — 첫 답변에 따라 추천 빌더가 달라짐 */
@@ -114,10 +125,13 @@ export default function WorkView() {
           <div className="wrap">
             <h1><span className="w300">만드는 사람과,</span> 만든 것들</h1>
             <p>추천받고 싶다면 30초 매칭으로, 직접 둘러보고 싶다면 작업물부터. 두 길 모두 열어두었습니다.</p>
-            <div className="head-stats">
-              <div><b className="num">10</b><span>검증된 빌더</span></div>
-              <div><b className="num">09</b><span>공개 프로젝트</span></div>
-              <div><b className="num">4.9</b><span>평균 만족도</span></div>
+            {/* 숫자는 최종 표기 그대로 둔다 — useCountUp 이 형식만 읽어 0부터 센다 */}
+            <div className="head-stats rv">
+              <div className="hstat"><b className="num" data-count>10</b><i className="unit">명</i><span>검증된 빌더</span></div>
+              <span className="hstat-sep" aria-hidden="true">✳</span>
+              <div className="hstat"><b className="num" data-count>09</b><i className="unit">건</i><span>공개 프로젝트</span></div>
+              <span className="hstat-sep" aria-hidden="true">✳</span>
+              <div className="hstat"><b className="num" data-count>4.9</b><i className="unit">/5</i><span>평균 만족도</span></div>
             </div>
           </div>
         </div>
