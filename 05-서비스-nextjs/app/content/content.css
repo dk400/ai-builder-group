@@ -19,7 +19,7 @@ body:has(.content-dark) .logo { color: var(--paper); }
 body:has(.content-dark) { --rib-rise: calc(3.29vw + 20px); --rib-fall: calc(3.29vw - 20px); }
 /* 모바일에선 이 리본이 이음새보다 위에서 끝난다 → fall 이 음수 (실측 −6.9px) */
 @media (max-width: 960px) { body:has(.content-dark) { --rib-rise: 73px; --rib-fall: 7px; } }
-body:has(.content-dark) .page-head { border-bottom-color: var(--d-line); padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
+body:has(.content-dark) .page-head { padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
 /* 리본 다음 섹션은 전역 section 여백(136px)을 쓰고 있어서 리본 크기와 무관했다 — 아래 갭만 119px */
 body:has(.content-dark) .ribbon-sep + section { padding-top: calc(var(--rib-fall) + var(--rib-gap-bottom)); }
 body:has(.content-dark) .page-head p { color: var(--d-mut); }

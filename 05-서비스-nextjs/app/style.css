@@ -282,6 +282,9 @@ body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-c
    제목만으로 차서 정작 볼 것(목록·썸네일)이 스크롤 아래로 밀린다.
    아래 여백은 리본이 있는 라우트에서 각자 덮어쓴다 (work · insight · content). */
 .page-head { padding: 48px 0 40px; border-bottom: 1px solid var(--line); }
+/* 리본이 뒤따르면 경계선 역할은 리본이 맡는다. 둘 다 두면 곡선 바로 아래에 직선이 하나 더
+   그어져 이음새가 두 겹으로 보인다 — 실측상 두 선의 y 가 정확히 같다 (work · insight · content · faq). */
+.page-head:has(+ .ribbon-sep) { border-bottom: 0; }
 /* text-wrap: balance — 줄 수를 유지한 채 각 줄 길이를 고르게 나눈다.
    없으면 '… 두 길 모두 / 열어두었습니다.' 처럼 마지막 줄에 한 어절만 떨어진다.
    word-break: keep-all 은 어절 중간을 안 자를 뿐, 어디서 줄을 넘길지는 정하지 않는다. */
