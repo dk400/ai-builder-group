@@ -1,12 +1,14 @@
 import Link from 'next/link'
 
+import BrandLink from './BrandLink'
+
 export default function Footer() {
   return (
     <footer>
       <div className="wrap">
         <div className="ft6">
           <div className="ft6__brand">
-            <Link className="logo" href="/"><em>✳</em>AI빌더그룹</Link>
+            <BrandLink />
             <p>AI 시대에 최적화된 바이브코딩 외주 전문 그룹</p>
           </div>
           <div className="col">

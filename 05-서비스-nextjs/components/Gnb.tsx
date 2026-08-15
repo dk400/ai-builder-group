@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import BrandLink from './BrandLink'
+
 const NAV = [
   { href: '/', label: 'Home', match: (p: string) => p === '/' },
   { href: '/work', label: 'Work', match: (p: string) => p.startsWith('/work') || p.startsWith('/builder') },
@@ -36,7 +38,7 @@ export default function Gnb() {
   return (
     <header className={`gnb${scrolled ? ' scrolled' : ''}${open ? ' menu-open' : ''}`}>
       <div className="gnb__in">
-        <Link className="logo" href="/"><em>✳</em>AI빌더그룹</Link>
+        <BrandLink onNavigate={() => setOpen(false)} />
         <button className="gnb__burger" aria-label="메뉴" onClick={() => setOpen(v => !v)}>
           {open ? '✕' : '☰'}
         </button>
