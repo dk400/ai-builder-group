@@ -599,7 +599,8 @@ export default function HomeView() {
                   <div className="mrow"><span className="tag">AI Service</span><span className="yr num">2026 · 2wks</span></div>
                   <h3>AI 상담 챗봇 구축</h3>
                   <p>반복 문의 70%가 몰리던 고객센터의 상담 자동화 — 2주 PoC로 실데이터 검증 후 전환 프로젝트로 확장.</p>
-                  <div className="builders">빌더 3인 · Next.js · LLM API</div>
+                  {/* 한 줄 텍스트였는데 테두리 칩으로 나눴다 — 항목 경계가 보여야 읽힌다 */}
+                  <div className="builders"><span>빌더 3인</span><span>Next.js</span><span>LLM API</span></div>
                 </div>
               </Link>
               <Link className="wcard" href="/work-detail" data-cursor="VIEW →">
