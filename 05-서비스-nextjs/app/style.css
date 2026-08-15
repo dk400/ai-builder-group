@@ -228,6 +228,11 @@ body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-c
 .wcard .builders { margin-top: 10px; font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .04em; }
 
 /* ---------- 페이지 헤더·필터·빈상태·CTA배너 ---------- */
+/* 리본 위아래로 확보할 여백 — 라우트마다 리본 크기(뷰박스·획 두께)는 달라도 눈에 보이는
+   이 간격은 같아야 한다. 각 라우트는 자기 --rib-rise / --rib-fall 에 이 값을 더해서 쓴다.
+   (전에는 라우트마다 제각각이라 아래 갭이 82 / 56 / 119px 로 벌어져 있었다) */
+:root { --rib-gap-top: 40px; --rib-gap-bottom: 64px; }
+
 /* 서브 페이지 제목단 — 홈 히어로가 아니라 목록으로 가는 길목이다. 크게 잡으면 첫 화면이
    제목만으로 차서 정작 볼 것(목록·썸네일)이 스크롤 아래로 밀린다.
    아래 여백은 리본이 있는 라우트에서 각자 덮어쓴다 (work · insight · content). */

@@ -3,9 +3,9 @@
    확대율도 고정 → vw 항 없이 상수. 이 값에 원하는 여백만 더하면 리본에 안 깔린다. */
 :root { --rib-rise: calc(2vw - 4px); --rib-fall: calc(2.9vw + 4px); }
 @media (max-width: 960px) { :root { --rib-rise: 57px; --rib-fall: 2px; } }
-.page-head { padding-bottom: calc(var(--rib-rise) + 40px); }
+.page-head { padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
 .ins { display: grid; grid-template-columns: 230px 1fr; gap: 60px;
-  padding: calc(var(--rib-fall) + 56px) 0 76px; align-items: start; }
+  padding: calc(var(--rib-fall) + var(--rib-gap-bottom)) 0 76px; align-items: start; }
 .cats { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 2px; }
 .cats .k { font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2);
   text-transform: uppercase; padding: 0 14px; margin-bottom: 12px; }
