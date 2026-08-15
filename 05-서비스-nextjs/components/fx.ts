@@ -7,34 +7,54 @@ import { useEffect } from 'react'
 export function useRibbonFlow(DECKS: Record<string, string[]>, ROT: Record<string, number>) {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    type Flow = { tp: SVGTextPathElement; di: number; off: number; unit: number; speed: number }
+    type Built = { text: string; unit: number }
+    type Flow = {
+      tp: SVGTextPathElement; svg: SVGSVGElement; di: number; off: number
+      unit: number; speed: number; decks: string[]; cache: (Built | null)[]
+    }
     const flows: Flow[] = []
     const timeouts: number[] = []
     const intervals: number[] = []
     document.querySelectorAll<SVGTextPathElement>('[data-wflow]').forEach(tp => {
       const pid = (tp.getAttribute('href') || '').slice(1)
       const path = document.getElementById(pid) as unknown as SVGPathElement | null
-      if (!path) return
+      const svg = tp.ownerSVGElement
+      if (!path || !svg) return
       const decks = DECKS[pid] || [tp.textContent || '']
       const pathLen = path.getTotalLength()
       const txt = tp.parentNode as SVGTextElement
       txt.style.transition = 'opacity .45s ease'
       const f: Flow = {
-        tp, di: 0, off: 0, unit: 10,
+        tp, svg, di: 0, off: 0, unit: 10, decks, cache: decks.map(() => null),
         speed: parseFloat(tp.dataset.speed || '0.022') * (tp.dataset.dir === 'rev' ? -1 : 1),
+      }
+      /* 반복 문자열과 한 마디 길이는 문구마다 한 번만 재서 캐시한다.
+         getComputedTextLength() 는 강제 동기 레이아웃이라 회전할 때마다 부르면 그때마다 프레임이 튄다.
+         재는 동안 textContent 를 잠깐 바꾸지만 같은 태스크 안에서 되돌리므로 화면에는 안 보인다. */
+      const build = (i: number): Built => {
+        const hit = f.cache[i]
+        if (hit) return hit
+        const phrase = decks[i] || ''
+        const keep = tp.textContent
+        tp.textContent = phrase
+        const one = Math.max(1, tp.getComputedTextLength())
+        tp.textContent = keep
+        const n = Math.max(2, Math.ceil((pathLen * 1.5) / one) + 1)
+        const made: Built = { text: new Array(n + 1).join(phrase), unit: (one / pathLen) * 100 }
+        f.cache[i] = made
+        return made
       }
       const setDeck = (i: number) => {
         f.di = i
-        const phrase = decks[i]
-        tp.textContent = phrase
-        const one = Math.max(1, tp.getComputedTextLength())
-        const n = Math.max(2, Math.ceil((pathLen * 1.5) / one) + 1)
-        tp.textContent = new Array(n + 1).join(phrase)
-        f.unit = (one / pathLen) * 100
-        f.off = -f.unit / 2
+        const { text, unit } = build(i)
+        tp.textContent = text
+        f.unit = unit
+        f.off = -unit / 2
       }
       setDeck(0)
       flows.push(f)
+      /* 나머지 문구는 마운트 직후 한 번에 만들어 둔다 — 첫 회전 때 한 번씩 튀는 것까지 없앤다 */
+      if (decks.length > 1) timeouts.push(window.setTimeout(() => decks.forEach((_, i) => build(i)), 0))
       /* 문구 로테이션 — 2.6초 첫 전환 후 기본 주기 반복. 백그라운드 탭에서는 전환 건너뜀 */
       if (!reduce && decks.length > 1) {
         const period = ROT[pid] || 5000
@@ -46,21 +66,44 @@ export function useRibbonFlow(DECKS: Record<string, string[]>, ROT: Record<strin
         timeouts.push(window.setTimeout(() => { swap(); intervals.push(window.setInterval(swap, period)) }, 2600))
       }
     })
+
     let raf = 0
-    if (!reduce && flows.length) {
-      const loop = () => {
-        flows.forEach(f => {
-          f.off -= f.speed
-          if (f.off <= -f.unit) f.off += f.unit
-          if (f.off > 0) f.off -= f.unit
-          f.tp.setAttribute('startOffset', f.off + '%')
-        })
-        raf = requestAnimationFrame(loop)
-      }
+    let prev = 0
+    const shown = new Set<Element>()
+    let io: IntersectionObserver | null = null
+
+    /* 프레임 수가 아니라 경과 시간으로 움직인다.
+       기존에는 프레임당 고정량(실측 0.024%)이라 120Hz 화면에서 두 배 빨랐고, 프레임이 밀리면
+       그만큼 리본이 제자리에 멎어 중간중간 끊겨 보였다. 탭 복귀 직후 확 튀는 걸 막으려 dt 에 상한. */
+    const loop = (now: number) => {
+      const dt = prev ? Math.min(now - prev, 50) : 16.667
+      prev = now
+      const k = dt / 16.667
+      flows.forEach(f => {
+        if (!shown.has(f.svg)) return
+        f.off -= f.speed * k
+        while (f.off <= -f.unit) f.off += f.unit
+        while (f.off > 0) f.off -= f.unit
+        f.tp.setAttribute('startOffset', f.off.toFixed(4) + '%')
+      })
       raf = requestAnimationFrame(loop)
     }
+    const start = () => { if (!raf) { prev = 0; raf = requestAnimationFrame(loop) } }
+    const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0 } }
+
+    if (!reduce && flows.length) {
+      /* 화면 밖 리본은 돌리지 않는다. textPath 는 startOffset 을 건드릴 때마다 글자 배치를
+         다시 잡기 때문에, 안 보이는데 계속 돌면 스크롤에 쓸 프레임을 그대로 갉아먹는다. */
+      io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) shown.add(e.target); else shown.delete(e.target) })
+        if (shown.size) start(); else stop()
+      }, { rootMargin: '200px 0px' })
+      flows.forEach(f => io!.observe(f.svg))
+    }
+
     return () => {
-      cancelAnimationFrame(raf)
+      stop()
+      io?.disconnect()
       timeouts.forEach(t => clearTimeout(t))
       intervals.forEach(t => clearInterval(t))
     }

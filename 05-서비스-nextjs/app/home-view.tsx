@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { useRibbonFlow } from '@/components/fx'
 
 /* ── 히어로 스트림 블록 데이터 (원본 index.html 열 1·2·3, 6블록 ×2 루프) ── */
 type Block =
@@ -114,82 +115,23 @@ function Bset({ brands }: { brands: [string, string][] }) {
 }
 
 export default function HomeView() {
-  /* v19.5 이음새 리본 — 문구 덱 로테이션(페이드 전환) + 곡선 흐름 */
-  useEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const DECKS: Record<string, string[]> = {
-      rsepA: [
-        'AI 에이전트 ✳ 랜딩 페이지 ✳ 플랫폼 ✳ 모바일 앱 ✳ 업무 자동화 ✳ ',
-        'PLAN ✳ DESIGN ✳ BUILD ✳ REVIEW ✳ 올인원 턴키 ✳ ',
-        '아이디어만 가져오세요 ✳ WE BUILD THE REST ✳ NDA 가능 ✳ ',
-        'PoC 먼저, 확장은 그다음 ✳ SHIP FAST, SHIP RIGHT ✳ ',
-      ],
-      rsepB: [
-        'VIBE CODING ✳ 검증된 빌더 ✳ AI BUILDER GROUP ✳ 외주를 해드립니다 ✳ ',
-        'AI가 짓고, 사람이 검수합니다 ✳ MADE WITH AI, FINISHED BY HUMANS ✳ ',
-        '상담·견적 무료 ✳ 24시간 내 회신 ✳ AI BUILDER GROUP ✳ ',
-        '대충 만든 결과물은 통과 못 함 ✳ QUALITY GATE: ON ✳ 검수 통과분만 전달 ✳ ',
-      ],
-    }
-    const ROT: Record<string, number> = { rsepA: 5200, rsepB: 4500 }
-    type Flow = { tp: SVGTextPathElement; di: number; off: number; unit: number; speed: number }
-    const flows: Flow[] = []
-    const timeouts: number[] = []
-    const intervals: number[] = []
-    document.querySelectorAll<SVGTextPathElement>('[data-wflow]').forEach(tp => {
-      const pid = (tp.getAttribute('href') || '').slice(1)
-      const path = document.getElementById(pid) as unknown as SVGPathElement | null
-      if (!path) return
-      const decks = DECKS[pid] || [tp.textContent || '']
-      const pathLen = path.getTotalLength()
-      const txt = tp.parentNode as SVGTextElement
-      txt.style.transition = 'opacity .45s ease'
-      const f: Flow = {
-        tp, di: 0, off: 0, unit: 10,
-        speed: parseFloat(tp.dataset.speed || '0.022') * (tp.dataset.dir === 'rev' ? -1 : 1),
-      }
-      const setDeck = (i: number) => {
-        f.di = i
-        const phrase = decks[i]
-        tp.textContent = phrase
-        const one = Math.max(1, tp.getComputedTextLength())
-        const n = Math.max(2, Math.ceil((pathLen * 1.5) / one) + 1)
-        tp.textContent = new Array(n + 1).join(phrase)
-        f.unit = (one / pathLen) * 100
-        f.off = -f.unit / 2
-      }
-      setDeck(0)
-      flows.push(f)
-      /* 문구 로테이션 — 2.6초 첫 전환 후 기본 주기 반복. 백그라운드 탭에서는 전환 건너뜀 */
-      if (!reduce && decks.length > 1) {
-        const period = ROT[pid] || 5000
-        const swap = () => {
-          if (document.hidden) return
-          txt.style.opacity = '0'
-          timeouts.push(window.setTimeout(() => { setDeck((f.di + 1) % decks.length); txt.style.opacity = '1' }, 470))
-        }
-        timeouts.push(window.setTimeout(() => { swap(); intervals.push(window.setInterval(swap, period)) }, 2600))
-      }
-    })
-    let raf = 0
-    if (!reduce && flows.length) {
-      const loop = () => {
-        flows.forEach(f => {
-          f.off -= f.speed
-          if (f.off <= -f.unit) f.off += f.unit
-          if (f.off > 0) f.off -= f.unit
-          f.tp.setAttribute('startOffset', f.off + '%')
-        })
-        raf = requestAnimationFrame(loop)
-      }
-      raf = requestAnimationFrame(loop)
-    }
-    return () => {
-      cancelAnimationFrame(raf)
-      timeouts.forEach(t => clearTimeout(t))
-      intervals.forEach(t => clearInterval(t))
-    }
-  }, [])
+  /* v19.5 이음새 리본 — 문구 덱 로테이션(페이드 전환) + 곡선 흐름.
+     구현은 components/fx.ts 의 useRibbonFlow 한 곳으로 모았다 — 전에는 같은 스크립트가
+     여기에 통째로 복제돼 있어서 성능 수정을 두 군데 해야 했다. */
+  useRibbonFlow({
+    rsepA: [
+      'AI 에이전트 ✳ 랜딩 페이지 ✳ 플랫폼 ✳ 모바일 앱 ✳ 업무 자동화 ✳ ',
+      'PLAN ✳ DESIGN ✳ BUILD ✳ REVIEW ✳ 올인원 턴키 ✳ ',
+      '아이디어만 가져오세요 ✳ WE BUILD THE REST ✳ NDA 가능 ✳ ',
+      'PoC 먼저, 확장은 그다음 ✳ SHIP FAST, SHIP RIGHT ✳ ',
+    ],
+    rsepB: [
+      'VIBE CODING ✳ 검증된 빌더 ✳ AI BUILDER GROUP ✳ 외주를 해드립니다 ✳ ',
+      'AI가 짓고, 사람이 검수합니다 ✳ MADE WITH AI, FINISHED BY HUMANS ✳ ',
+      '상담·견적 무료 ✳ 24시간 내 회신 ✳ AI BUILDER GROUP ✳ ',
+      '대충 만든 결과물은 통과 못 함 ✳ QUALITY GATE: ON ✳ 검수 통과분만 전달 ✳ ',
+    ],
+  }, { rsepA: 5200, rsepB: 4500 })
 
   /* S2 스크롤 연동 · S3 자동 순환 · S5 탭 · 모바일 캐러셀 · S6 패럴랙스 · S8 퍼짐 전환 · S9 FAQ */
   useEffect(() => {
