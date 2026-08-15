@@ -712,7 +712,9 @@ export default function HomeView() {
         </section>
 
         {/* ===== S10 최종 CTA ===== */}
-        <section className="s10 roomy">
+        {/* roomy(176px) 를 뺐다 — 앞 섹션의 아래 여백 136px 과 더해져 312px 이 비었다.
+            마무리 CTA 라 위쪽은 조이고 아래(푸터 앞)만 넉넉히 둔다. */}
+        <section className="s10">
           <div className="wrap">
             <span className="ast" aria-hidden="true">✳</span>
             <h2><span className="w300">만들고 싶은 것이</span><br />있으신가요?</h2>

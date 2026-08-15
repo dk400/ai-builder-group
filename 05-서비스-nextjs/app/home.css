@@ -785,7 +785,9 @@
 /* FAQ 스타일은 홈과 /faq 가 함께 쓰므로 style.css 로 옮겼다 */
 
 /* ---- S10 최종 CTA ---- */
-.s10 { text-align: center; }
+/* FAQ 는 마지막 항목이 경계선으로 끝나 아래 여백이 덜 필요하다 */
+.s9 { padding-bottom: 76px; }
+.s10 { text-align: center; padding: 92px 0 128px; }
 .s10 .ast { display: inline-block; font-size: 44px; line-height: 1; color: var(--lime);
   -webkit-text-stroke: 1.5px var(--ink); margin-bottom: 26px; animation: spin 14s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
