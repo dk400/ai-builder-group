@@ -161,12 +161,15 @@ export default function WorkView() {
               <div className="panel__side">고르기 어렵다면 → <a href="#match">02 빠른 매칭 ↓</a></div>
             </div>
 
-            <div className="chips" role="tablist" style={{ margin: '0 0 34px' }}>
-              <button className="chip on" data-cat="all">전체</button>
-              <button className="chip" data-cat="aiax">AI · AX</button>
-              <button className="chip" data-cat="commerce">Commerce</button>
-              <button className="chip" data-cat="platform">SaaS · Admin</button>
-              <button className="chip" data-cat="finance">Finance</button>
+            {/* role="tablist" 였는데 자식이 role="tab" 도 aria-selected 도 없어서 보조기기에
+                깨진 탭으로 읽혔다. 실제 동작은 토글 버튼 묶음이라 group + aria-pressed 가 맞다. */}
+            <div className="chips" role="group" aria-label="분야별 보기" style={{ margin: '0 0 34px' }}>
+              <button className="chip on" data-cat="all" aria-pressed="true">전체</button>
+              <button className="chip" data-cat="aiax" aria-pressed="false">AI · AX</button>
+              <button className="chip" data-cat="commerce" aria-pressed="false">Commerce</button>
+              {/* 'SaaS · Admin' 이었지만 이 칩이 거르는 platform 에는 O2O · Platform 태그도 들어 있다 */}
+              <button className="chip" data-cat="platform" aria-pressed="false">Platform · Admin</button>
+              <button className="chip" data-cat="finance" aria-pressed="false">Finance</button>
             </div>
 
             <div className="pxg" data-list>
