@@ -1,6 +1,13 @@
-.ins { display: grid; grid-template-columns: 230px 1fr; gap: 60px; padding: 84px 0 76px; align-items: start; }
+/* 제목단 압축 — h1 을 줄이고 위 여백을 걷어 목록이 첫 화면에 더 들어오게 한다.
+   아래 여백만은 반대로 폭에 비례해 잡는다: 리본이 이음새 위로 (2.3vw − 4)px 올라오기
+   때문에, 고정값으로 두면 넓은 화면에서 설명문이 리본에 깔린다. */
+.page-head { padding: 48px 0 calc(2.3vw + 32px); }
+.page-head h1 { font-size: clamp(30px, 3.4vw, 44px); margin-bottom: 8px; }
+.page-head p { font-size: 15.5px; }
+/* 목록 시작점도 리본이 내려오는 만큼(3.25vw + 4px) 비켜준다 */
+.ins { display: grid; grid-template-columns: 230px 1fr; gap: 60px;
+  padding: calc(3.25vw + 40px) 0 76px; align-items: start; }
 .cats { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 2px; }
-.page-head p { font-size: 18px; }
 .cats .k { font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2);
   text-transform: uppercase; padding: 0 14px; margin-bottom: 12px; }
 .cats button { text-align: left; background: none; border: 0; font-family: var(--sans); font-size: 16px; font-weight: 600;
@@ -9,7 +16,9 @@
 .cats button:hover { color: var(--ink); background: var(--paper-2); }
 .cats button.on { color: var(--ink); background: var(--paper-3); font-weight: 700; }
 .cats .cnt { font-family: var(--mono); font-size: 12px; color: var(--muted-2); }
-.arow { display: grid; grid-template-columns: 190px 1fr; gap: 28px; padding: 28px 8px; border-bottom: 1px solid var(--line);
+/* 썸네일은 카드 안에 글씨가 박혀 있는 이미지라 190px 에서는 읽히지 않았다.
+   폭에 따라 240~360px 로 키워 카드 안 문구가 보이게 한다. */
+.arow { display: grid; grid-template-columns: clamp(240px, 24vw, 360px) 1fr; gap: 32px; padding: 30px 8px; border-bottom: 1px solid var(--line);
   text-decoration: none; transition: background .15s, padding-left .15s; align-items: center; }
 .arow:first-of-type { border-top: 1px solid var(--line-2); }
 .arow:hover { background: var(--paper-2); padding-left: 18px; }
@@ -17,7 +26,7 @@
 .arow .athumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 14px; display: block;
   border: 1px solid var(--line); }
 .arow .cat { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); }
-.arow h3 { margin: 8px 0 6px; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.35; }
+.arow h3 { margin: 8px 0 6px; font-size: 26px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.35; }
 .arow:hover h3 { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
 .arow p { margin: 0 0 10px; font-size: 16px; color: var(--muted); word-break: keep-all; }
 .arow .meta { font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .06em; }

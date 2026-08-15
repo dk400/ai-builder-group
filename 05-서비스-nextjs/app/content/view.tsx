@@ -74,7 +74,8 @@ export default function ContentView() {
           <div className="wrap">
             {/* 피처드 (관리자 지정 1건) */}
             <a className="vcell feat" href="#" data-yt data-utm="featured">
-              <img className="vimg" src="https://i.ytimg.com/vi/0dBSo3eDE-E/hqdefault.jpg" alt="" />
+              {/* 피처드는 이 화면의 LCP 요소다 — 지연 로드하지 않고 우선순위를 올린다 */}
+              <img className="vimg" src="https://i.ytimg.com/vi/0dBSo3eDE-E/hqdefault.jpg" alt="" fetchPriority="high" decoding="async" />
               <div className="vshade"></div>
               <span className="chbadge">똑똑한개발자</span>
               <span className="dur" style={durStyle}>15:47</span>
@@ -85,7 +86,8 @@ export default function ContentView() {
             <div className="vg">
               {VIDEOS.map(v => (
                 <a className="vcell" href="#" data-yt data-utm="grid" key={v.yt}>
-                  <img className="vimg" src={`https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg`} alt="" />
+                  {/* 그리드는 전부 첫 화면 아래 — 외부(i.ytimg.com) 이미지 6장을 선점하지 않게 */}
+                  <img className="vimg" src={`https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg`} alt="" loading="lazy" decoding="async" />
                   <div className="vshade"></div>
                   <span className="chbadge">{v.ch}</span>
                   <span className="dur" style={durStyle}>{v.dur}</span>

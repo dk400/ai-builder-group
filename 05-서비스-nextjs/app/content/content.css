@@ -7,10 +7,17 @@ body { color: var(--paper);
   background-attachment: fixed; }
 body::after { opacity: .05; }
 .gnb.scrolled { background: color-mix(in srgb, var(--ink) 86%, transparent); border-bottom-color: var(--d-line); }
-.gnb nav a { color: var(--paper); opacity: .5; } .gnb nav a:hover { opacity: 1; }
-.gnb nav a.active { opacity: 1; } .gnb nav a.active::after { background: var(--lime); }
+/* 다크 지면에서는 GNB 캡슐도 어둡게 뒤집는다. 캡슐이 크림색인 채로 글자만 paper 로
+   바꾸면 크림 위 크림이 돼서 비활성 메뉴가 거의 안 보인다 (활성 항목만 읽혔다). */
+.gnb nav { background: color-mix(in srgb, var(--ink) 58%, transparent); border-color: var(--d-line); }
+.gnb nav a { color: var(--paper); opacity: .62; }
+.gnb nav a:hover { opacity: 1; background: color-mix(in srgb, var(--paper) 12%, transparent); }
+.gnb nav a.active { opacity: 1; background: var(--paper); color: var(--ink); }
+.gnb nav a.active::after { background: var(--lime); }
 .logo { color: var(--paper); }
-.page-head { border-bottom-color: var(--d-line); }
+/* 리본이 이음새 위로 (3.125vw − 20)px 올라온다. 아래 여백이 고정 48px 이라
+   넓은 화면에서 설명문이 리본에 깔렸다. */
+.page-head { border-bottom-color: var(--d-line); padding-bottom: calc(3.125vw + 32px); }
 .page-head p { color: var(--d-mut); }
 .crumb { color: var(--d-mut2); }
 /* v19: 이음새 리본 (다크 페이지 — 라임 발광) */
@@ -64,7 +71,14 @@ footer { background: #131310; border-top-color: var(--d-line); }
 .ft__nav a:hover, .ft__bottom a:hover { color: var(--paper); }
 @media (max-width: 900px) { .vg { grid-template-columns: 1fr; } .feat { aspect-ratio: 16/9; } }
 .vcell .vimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.vcell .vshade { position: absolute; inset: 0; background: linear-gradient(200deg, rgba(0,0,0,.04) 40%, rgba(0,0,0,.72)); }
-.vcell .cap b { text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+/* 유튜브 썸네일은 그 자체에 큼직한 글씨가 박혀 있다. 기존 200도 대각 그라디언트는
+   캡션이 놓이는 아래쪽이 충분히 어두워지지 않아 카드 제목과 썸네일 글씨가 겹쳐 둘 다
+   안 읽혔다. 아래에서 위로 세우고 정지점을 촘촘히 둬(밴딩 방지) 바닥을 확실히 눌러준다. */
+.vcell .vshade { position: absolute; inset: 0;
+  background: linear-gradient(to top,
+    rgba(0,0,0,.96) 0%, rgba(0,0,0,.92) 14%, rgba(0,0,0,.78) 30%, rgba(0,0,0,.52) 46%,
+    rgba(0,0,0,.26) 62%, rgba(0,0,0,.08) 78%, transparent 90%); }
+.vcell .cap b { text-shadow: 0 1px 8px rgba(0,0,0,.6);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .chbadge { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(0,0,0,.6); color: #fff;
   font-size: 11.5px; font-weight: 700; padding: 5px 11px; border-radius: 999px; letter-spacing: -0.01em; }
