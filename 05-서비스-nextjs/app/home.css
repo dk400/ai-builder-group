@@ -736,7 +736,7 @@
 .s7 .sec-head { margin-bottom: 38px; }
 /* 썸네일 → 제목 → 메타. 썸네일이 생겼으니 baseline 이 아니라 center 로 맞춘다. */
 .s7 .irow { display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
-  padding: 20px 8px; border-bottom: 1px solid var(--line); text-decoration: none;
+  padding: 24px 8px; border-bottom: 1px solid var(--line); text-decoration: none;
   transition: background var(--hover), padding-left var(--hover); }
 .s7 .ithumb { width: clamp(200px, 17vw, 268px); aspect-ratio: 3/2; object-fit: cover; display: block;
   border-radius: 14px; border: 1px solid var(--line); background: var(--paper-3);
@@ -744,10 +744,13 @@
 .s7 .irow:hover .ithumb { transform: scale(1.05); }
 .s7 .irow:first-of-type { border-top: 1px solid var(--line-2); }
 .s7 .irow:hover { background: var(--paper-3); padding-left: 18px; }
-.s7 .irow .t { font-size: 19px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.45; }
-.s7 .irow .meta { display: flex; align-items: baseline; gap: 14px; white-space: nowrap; }
-.s7 .irow .meta .tag { background: var(--paper-3); }
-.s7 .irow .d { font-family: var(--mono); font-size: 12px; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+/* 제목도 썸네일과 같이 커져야 한다. 썸네일만 키웠더니 19px 제목이 옆에서 떠 보였다.
+   썸네일 폭(17vw)의 절반 비율로 묶어 둘이 함께 움직인다. */
+.s7 .irow .t { font-size: clamp(20px, 1.55vw, 25px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.42; }
+.s7 .irow .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; white-space: nowrap; }
+/* 태그는 라임 — 크림 위 크림이라 거의 안 보였다. 라임은 이 사이트에서 늘 '어두운 글자의 배경'이다 */
+.s7 .irow .meta .tag { background: var(--lime); color: var(--ink); font-weight: 700; }
+.s7 .irow .d { font-family: var(--mono); font-size: 12.5px; color: var(--muted-2); font-variant-numeric: tabular-nums; }
 /* 좁은 화면 — 썸네일은 두 줄을 세로로 걸치고, 제목·메타가 그 옆에 쌓인다 */
 @media (max-width: 720px){
   .s7 .irow { grid-template-columns: auto 1fr; gap: 6px 14px; }
