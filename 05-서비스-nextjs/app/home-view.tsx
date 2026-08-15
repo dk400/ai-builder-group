@@ -613,10 +613,14 @@ export default function HomeView() {
                   <div className="mrow"><span className="tag">Landing</span><span className="yr num">2026 · 3wks</span></div>
                   <h3>수주용 브랜드 랜딩</h3>
                   {/* 세 장의 구조를 맞춘다: 설명 한 줄 + 팀·스택 칩.
-                      전에는 '… · 빌더 2인' 처럼 인원이 설명 문장에 섞여 있어 장마다 형태가 달랐다.
-                      인원은 칩으로 빼되, 없는 기술 정보를 지어내지는 않는다. */}
-                  <p>전환 트래킹 설계 포함.</p>
-                  <div className="builders"><span>빌더 2인</span></div>
+                      전에는 '… · 빌더 2인' 처럼 인원이 설명 문장에 섞여 장마다 형태가 달랐다.
+
+                      ⚠ data-sample="stack" — 원문에 기술 스택이 없어 채워 넣은 샘플이다.
+                      실제 프로젝트 사실과 다를 수 있으니 발행 전 확인할 것.
+                      값은 지어내지 않고 사이트의 빌더 프로필에서 가져왔다
+                      (전환 트래킹 → 빌더 리아의 'GA4 설계'). 찾으려면 data-sample 로 grep. */}
+                  <p>수주 문의로 이어지는 흐름까지 설계한 브랜드 랜딩. 전환 트래킹 이벤트 정의를 포함합니다.</p>
+                  <div className="builders" data-sample="stack"><span>빌더 2인</span><span>Next.js</span><span>GA4</span></div>
                 </div>
               </Link>
               <Link className="wcard" href="/work-detail" data-cursor="VIEW →">
@@ -629,7 +633,8 @@ export default function HomeView() {
                   <div className="mrow"><span className="tag">Platform</span><span className="yr num">2026 · 6wks</span></div>
                   <h3>콘텐츠 관리 플랫폼</h3>
                   <p>비개발자도 운영 가능한 관리자·에디터. 발행 워크플로와 권한 설계 포함.</p>
-                  <div className="builders"><span>빌더 3인</span></div>
+                  {/* ⚠ 샘플 — 위 02 주석 참조 (권한 설계 → 빌더 도현의 'Supabase · RBAC') */}
+                  <div className="builders" data-sample="stack"><span>빌더 3인</span><span>Supabase</span><span>RBAC</span></div>
                 </div>
               </Link>
             </div>
