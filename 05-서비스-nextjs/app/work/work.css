@@ -58,15 +58,19 @@
    안 보였다. 안내 문구는 뒤로 빼고 목적지를 눌리는 알약으로 만든다. */
 .panel__side { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   font-size: 14px; color: var(--muted); padding-top: 30px; }
+/* 테두리만으로는 크림 배경에서 눌러야 할 것으로 안 보였다 → 라임으로 채운다.
+   라임은 늘 '어두운 글자의 배경'으로 쓰고, 호버에서 잉크/라임을 뒤집어 반응을 준다. */
 .panel__side a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-  font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .02em; color: var(--ink);
-  border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 16px; white-space: nowrap;
-  transition: border-color var(--hover), background var(--hover); }
-.panel__side a:hover { border-color: var(--ink); background: var(--paper-3); }
-.panel__side a i { font-style: normal; color: var(--muted-2); transition: transform var(--hover), color var(--hover); }
-.panel__side a:hover i { color: var(--ink); transform: translateY(2px); }
+  font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .02em;
+  background: var(--lime); color: var(--ink); border: 1.5px solid var(--ink);
+  border-radius: 999px; padding: 9px 17px; white-space: nowrap;
+  box-shadow: 0 2px 0 rgba(14,14,12,.12);
+  transition: background var(--hover), color var(--hover), transform var(--hover); }
+.panel__side a:hover { background: var(--ink); color: var(--lime); }
+.panel__side a:active { transform: translateY(2px); box-shadow: none; }
+.panel__side a i { font-style: normal; transition: transform var(--hover); }
+.panel__side a:hover i { transform: translateY(2px); }
 .panel__side a.up:hover i { transform: translateY(-2px); }
-.panel__side a { color: var(--ink); font-weight: 700; }
 @media (max-width: 760px) { .panel__side { padding-top: 0; } }
 
 /* ── 매칭 위젯 — 밝은 카드 + 진행 바 ── */
