@@ -37,6 +37,11 @@
 
 /* 우측 — 폼 */
 .c-form { background: #fff; padding: 48px 52px; }
+/* pluug 폼 임베드 — 폼이 자기 여백을 갖고 있어 바깥 패딩은 최소로 둔다 */
+.c-form--embed { padding: 16px 16px 20px; display: flex; flex-direction: column; }
+.c-form--embed iframe { width: 100%; min-height: 820px; border: 0; display: block; border-radius: 12px; }
+.c-form--embed .after-note { margin: 14px 4px 0; }
+@media (max-width: 720px) { .c-form--embed iframe { min-height: 900px; } }
 .f-row { margin-bottom: 24px; }
 .f-row > label, .f-group > label { display: block; font-size: 14.5px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
 label .req { color: #C0392B; }

@@ -61,7 +61,7 @@ export default function InsightView() {
         {/* v19: 이음새 리본 — 페이지 헤드 ↔ 목록 */}
         <div className="ribbon-sep" aria-hidden="true">
           <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
-            <path id="rsI" d="M -80,90 C 280,130 560,70 860,110 C 1160,150 1360,90 1700,120" fill="none" />
+            <path id="rsI" d="M -80,100 C 220,185 480,15 780,100 C 1080,185 1340,15 1700,100" fill="none" />
             <use href="#rsI" className="edge" />
             <use href="#rsI" className="lane" />
             <text>

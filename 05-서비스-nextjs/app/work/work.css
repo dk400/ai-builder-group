@@ -34,8 +34,8 @@
 /* 리본이 이음새 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측 (근거는 insight.css 주석).
    여기는 실제로 겹쳐 있었다: 1600px 에서 −4px, 2400px 에서 −20px 로 리본이 제목단 글씨를
    덮고 있었다. 아래 목록(.panels)도 34px 고정이라 넓은 화면에서 리본에 물렸다. */
-:root { --rib-rise: calc(2vw + 20px); --rib-fall: calc(2.82vw - 20px); }
-@media (max-width: 960px) { :root { --rib-rise: 57px; --rib-fall: 1px; } }
+:root { --rib-rise: calc(3.29vw + 20px); --rib-fall: calc(3.29vw - 20px); }
+@media (max-width: 960px) { :root { --rib-rise: 73px; --rib-fall: 7px; } }
 .page-head { padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
 .panels { padding: calc(var(--rib-fall) + var(--rib-gap-bottom)) 0 8px; }
 /* 첫 패널의 margin-top 26px 이 위 여백에 더해져서 아래 갭만 26px 더 벌어져 있었다 */
@@ -204,8 +204,8 @@
 .ribbon-sep svg { position: absolute; left: 0; right: 0;
   top: calc(var(--rib-mid) - var(--rib-h) / 2); width: 100%; height: var(--rib-h);
   display: block; overflow: visible; filter: drop-shadow(0 12px 24px rgba(14,14,12,.14)); }
-.ribbon-sep .edge2 { fill: none; stroke: var(--paper); stroke-width: 44; stroke-linecap: round; }
-.ribbon-sep .lane2 { fill: none; stroke: var(--ink); stroke-width: 38; stroke-linecap: round; }
+.ribbon-sep .edge2 { fill: none; stroke: var(--paper); stroke-width: 56; stroke-linecap: round; }
+.ribbon-sep .lane2 { fill: none; stroke: var(--ink); stroke-width: 50; stroke-linecap: round; }
 .ribbon-sep text { font-family: var(--sans); dominant-baseline: central; word-spacing: .48em; }
 .ribbon-sep text.t2 { font-size: 14.5px; font-weight: 700; letter-spacing: .17em; fill: var(--lime); }
 @media (max-width: 960px) {

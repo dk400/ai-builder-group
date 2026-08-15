@@ -370,6 +370,9 @@ body.dark .logo { color: var(--paper); }
 .skip:focus { left: 0; }
 
 /* ---------- 플로팅 CTA 독 (v10 — toktokhan/torder 문법 / v12 디벨롭: 잉크 배경 고대비) ---------- */
+/* 채널톡이 부팅되면 body.ct-on 이 붙는다. 채널톡 기본 런처는 우하단 고정이고
+   ChannelIO('setBottomMargin') 으로는 안 움직인다(Origin 실측) — 좁은 화면에서 dock 이 비켜준다. */
+@media (max-width: 900px) { body.ct-on .dock { transform: translateX(calc(-50% - 34px)); } }
 .dock { position: fixed; left: 50%; bottom: 24px; z-index: 70;
   transform: translateX(-50%) translateY(160%);
   display: flex; align-items: center; gap: 22px;

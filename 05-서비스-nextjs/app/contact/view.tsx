@@ -1,9 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { PLUUG_FORM_URL, pluugUrl } from '@/app/_integrations'
 
 export default function ContactView() {
+  /* pluug 폼 주소는 클라이언트에서만 만든다 — 유입 utm_source 를 location 에서 읽기 때문에
+     서버 렌더 결과와 달라져 하이드레이션이 어긋난다. 마운트 후에 채운다. */
+  const [formSrc, setFormSrc] = useState('')
+  useEffect(() => { setFormSrc(pluugUrl('contact_page')) }, [])
+
   /* 필 라디오 토글 */
   useEffect(() => {
     document.querySelectorAll('[data-pills]').forEach(group => {
@@ -65,7 +71,27 @@ export default function ContactView() {
             </div>
           </div>
 
-          {/* 우측 — 폼 */}
+          {/* 우측 — 폼.
+              pluug 주소가 설정돼 있으면 실제 폼을 얹는다. 문의 데이터는 우리 DB 로 오지 않고
+              pluug 가 받는다 (README §절대 규칙).
+              주소가 없으면 아래 목업 폼이 그대로 남는다 — 키 없이도 화면이 죽지 않아야 한다.
+              ⚠ pluug 쪽 '제출 후 이동 링크'를 이 사이트의 /submit 으로 맞춰야 전환 측정이 성립한다. */}
+          {PLUUG_FORM_URL ? (
+            <div className="c-form c-form--embed">
+              {formSrc && (
+                <iframe
+                  src={formSrc}
+                  title="프로젝트 문의 폼"
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              )}
+              <p className="after-note">
+                폼이 보이지 않으면 <a href={formSrc || PLUUG_FORM_URL} target="_blank" rel="noopener noreferrer">새 창에서 열기</a> ·
+                하루 안에 회신드려요
+              </p>
+            </div>
+          ) : (
           <form className="c-form" data-form onSubmit={onSubmit}>
             <div className="f-2col">
               <div className="f-row"><label>회사 / 담당자명 <span className="req">*</span></label>
@@ -105,6 +131,7 @@ export default function ContactView() {
             <button className="btn btn--lime" type="submit">문의 보내기 <span className="arr">→</span></button>
             <p className="after-note">제출하면 <b>하루 안에</b> 회신드려요 · 광고성 연락은 하지 않습니다</p>
           </form>
+          )}
         </div>
       </div>
     </main>

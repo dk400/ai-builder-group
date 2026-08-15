@@ -1,8 +1,8 @@
 /* 리본이 이음새(page-head 아래 경계) 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측해 뽑았다.
    slice 확대율이 폭에 비례하므로 vw 항이 붙는다. 960px 이하는 리본 높이가 150px 로 고정이라
    확대율도 고정 → vw 항 없이 상수. 이 값에 원하는 여백만 더하면 리본에 안 깔린다. */
-:root { --rib-rise: calc(2vw - 4px); --rib-fall: calc(2.9vw + 4px); }
-@media (max-width: 960px) { :root { --rib-rise: 57px; --rib-fall: 2px; } }
+:root { --rib-rise: calc(3.29vw - 4px); --rib-fall: calc(3.29vw + 4px); }
+@media (max-width: 960px) { :root { --rib-rise: 73px; --rib-fall: 7px; } }
 .page-head { padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
 .ins { display: grid; grid-template-columns: 230px 1fr; gap: 60px;
   padding: calc(var(--rib-fall) + var(--rib-gap-bottom)) 0 76px; align-items: start; }
@@ -45,8 +45,8 @@
 .ribbon-sep svg { position: absolute; left: 0; right: 0;
   top: calc(var(--rib-mid) - var(--rib-h) / 2); width: 100%; height: var(--rib-h);
   display: block; overflow: visible; filter: drop-shadow(0 12px 24px rgba(14,14,12,.14)); }
-.ribbon-sep .edge { fill: none; stroke: var(--ink); stroke-width: 44; stroke-linecap: round; }
-.ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 38; stroke-linecap: round; }
+.ribbon-sep .edge { fill: none; stroke: var(--ink); stroke-width: 56; stroke-linecap: round; }
+.ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 50; stroke-linecap: round; }
 .ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .13em;
   word-spacing: .44em; fill: var(--ink); dominant-baseline: central; }
 @media (max-width: 960px) {

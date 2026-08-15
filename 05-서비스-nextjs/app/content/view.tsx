@@ -61,7 +61,7 @@ export default function ContentView() {
         {/* v19: 이음새 리본 — 페이지 헤드 ↔ 영상 그리드 (다크 위 라임) */}
         <div className="ribbon-sep" aria-hidden="true">
           <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
-            <path id="rsC" d="M -80,110 C 300,70 560,140 880,100 C 1200,60 1400,130 1700,95" fill="none" />
+            <path id="rsC" d="M -80,100 C 220,15 480,185 780,100 C 1080,15 1340,185 1700,100" fill="none" />
             <use href="#rsC" className="edge" />
             <use href="#rsC" className="lane" />
             <text>

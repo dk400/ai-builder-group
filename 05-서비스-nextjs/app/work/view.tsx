@@ -139,7 +139,7 @@ export default function WorkView() {
         {/* v19: 이음새 리본 — 페이지 헤드 ↔ 패널 */}
         <div className="ribbon-sep" aria-hidden="true">
           <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
-            <path id="rsW" d="M -80,120 C 260,80 520,150 820,110 C 1120,70 1320,130 1700,90" fill="none" />
+            <path id="rsW" d="M -80,100 C 220,15 480,185 780,100 C 1080,15 1340,185 1700,100" fill="none" />
             <use href="#rsW" className="edge2" />
             <use href="#rsW" className="lane2" />
             <text className="t2">
