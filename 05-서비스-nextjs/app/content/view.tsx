@@ -21,8 +21,8 @@ const VIDEOS: Video[] = [
 ]
 
 const CHANNELS = [
-  { name: '서장원', href: 'https://www.youtube.com/@AISeoceo', slug: 'seo-jangwon' },
-  { name: '김이솝', href: 'https://www.youtube.com/@%EA%B9%80%EC%9D%B4%EC%86%9D%EC%9D%98AI%EA%B0%80%EC%9D%B4%EB%93%9C', slug: 'kim-iesop' },
+  { name: 'AI 서대표', href: 'https://www.youtube.com/@AISeoceo', slug: 'seo-jangwon' },
+  { name: '김이솝의 AI 가이드', href: 'https://www.youtube.com/@%EA%B9%80%EC%9D%B4%EC%86%9D%EC%9D%98AI%EA%B0%80%EC%9D%B4%EB%93%9C', slug: 'kim-iesop' },
   { name: '똑똑한개발자', href: 'https://www.youtube.com/@toktokhandev', slug: 'toktokhan-dev' },
 ] as const
 
