@@ -21,11 +21,11 @@ const VIDEOS: Video[] = [
 ]
 
 export default function ContentView() {
-  /* 다크 지면 페이지 — body.dark */
-  useEffect(() => {
-    document.body.classList.add('dark')
-    return () => document.body.classList.remove('dark')
-  }, [])
+  /* 다크 전환은 CSS 가 body:has(.content-dark) 로 판정한다 (아래 main 의 클래스).
+     전에는 여기서 body.dark 를 붙였다 뗐는데, 정작 content.css 는 body { … } 를 그냥
+     덮어쓰고 있어서 클래스는 아무 역할도 못 했다. 라우트 CSS 는 클라이언트 이동 때
+     확실히 언로드되지 않아서, 콘텐츠 페이지를 한 번 열면 다른 페이지까지 어두워졌다.
+     마커를 마크업에 두면 서버 렌더 단계부터 맞아 첫 화면 깜빡임도 없다. */
 
   useRibbonFlow({
     rsC: [
@@ -50,7 +50,7 @@ export default function ContentView() {
 
   return (
     <>
-      <main id="main" className="grain">
+      <main id="main" className="grain content-dark">
         <div className="page-head">
           <div className="wrap">
             <h1><span className="w300">영상으로 보는</span><br />우리의 작업</h1>

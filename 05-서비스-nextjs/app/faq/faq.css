@@ -21,7 +21,7 @@
 .faqpage .faq-item:has(.faq-q[aria-expanded="true"])::before { opacity: 1; }
 .faqpage .faq-item:has(.faq-q[aria-expanded="true"]) { border-color: var(--line-2); background: var(--paper-2); }
 .faqpage .faq-q { padding: 23px 58px 23px 24px; font-size: 17.5px; }
-.faqpage .faq-q::after { right: 24px; }
+.faqpage .faq-q::after { right: 20px; }
 .faqpage .faq-a p { padding: 0 24px 24px; }
 
 /* 하단 CTA — 콘텐츠 페이지의 구독 배너와 같은 어휘로 라임 ✳ 워터마크를 깐다 */

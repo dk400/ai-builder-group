@@ -249,9 +249,15 @@ body.assets .asset-toggle { background: var(--lime); color: var(--ink); border-c
 .faq-item:first-of-type { border-top: 1px solid var(--line-2); }
 .faq-q { width: 100%; text-align: left; background: none; border: 0; font-family: var(--sans); cursor: pointer;
   padding: 26px 48px 26px 8px; font-size: 18.5px; font-weight: 700; letter-spacing: -0.025em; color: var(--ink); position: relative; }
-.faq-q::after { content: "+"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-  font-family: var(--mono); font-size: 21px; font-weight: 400; color: var(--muted-2); transition: transform .3s var(--ease-in), color .3s; }
-.faq-q[aria-expanded="true"]::after { transform: translateY(-50%) rotate(45deg); color: var(--ink); }
+/* + 아이콘 — 라임 원 안에 잉크 글자. 라임을 글자색으로 쓰면 크림 위에서 안 보이므로 면으로 준다.
+   세로 중앙은 translateY 가 아니라 margin-top 으로 잡는다 — transform 은 회전에만 쓰려고.
+   펼치면 45도 돌아 × 가 되고 색이 뒤집힌다(잉크 원 + 라임 글자). */
+.faq-q::after { content: "+"; position: absolute; right: 14px; top: 50%; margin-top: -15px;
+  width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--lime); color: var(--ink);
+  font-family: var(--mono); font-size: 18px; font-weight: 400; line-height: 1;
+  transition: transform .3s var(--ease-in), background .25s, color .25s; }
+.faq-q[aria-expanded="true"]::after { transform: rotate(45deg); background: var(--ink); color: var(--lime); }
 /* 펼침은 grid-template-rows 0fr → 1fr 로 연다. 전에는 JS 가 scrollHeight 를 재서
    max-height 를 직접 넣었는데, 그러면 열림 상태를 스크립트가 들고 있어야 하고
    창 폭이 바뀌어 줄 수가 달라지면 값이 어긋난다. */

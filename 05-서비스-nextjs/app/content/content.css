@@ -1,88 +1,88 @@
 /* 다크 지면 페이지 (시안 B 크래프트) */
-body { color: var(--paper);
+body:has(.content-dark) { color: var(--paper);
   background:
     radial-gradient(1000px 640px at 96% -8%, rgba(216,255,61,.09), transparent 55%),
     radial-gradient(1200px 800px at -6% 110%, rgba(216,255,61,.05), transparent 55%),
     var(--ink);
   background-attachment: fixed; }
-body::after { opacity: .05; }
-.gnb.scrolled { background: color-mix(in srgb, var(--ink) 86%, transparent); border-bottom-color: var(--d-line); }
+body:has(.content-dark)::after { opacity: .05; }
+body:has(.content-dark) .gnb.scrolled { background: color-mix(in srgb, var(--ink) 86%, transparent); border-bottom-color: var(--d-line); }
 /* 다크 지면에서는 GNB 캡슐도 어둡게 뒤집는다. 캡슐이 크림색인 채로 글자만 paper 로
    바꾸면 크림 위 크림이 돼서 비활성 메뉴가 거의 안 보인다 (활성 항목만 읽혔다). */
-.gnb nav { background: color-mix(in srgb, var(--ink) 58%, transparent); border-color: var(--d-line); }
-.gnb nav a { color: var(--paper); opacity: .62; }
-.gnb nav a:hover { opacity: 1; background: color-mix(in srgb, var(--paper) 12%, transparent); }
-.gnb nav a.active { opacity: 1; background: var(--paper); color: var(--ink); }
-.gnb nav a.active::after { background: var(--lime); }
-.logo { color: var(--paper); }
+body:has(.content-dark) .gnb nav { background: color-mix(in srgb, var(--ink) 58%, transparent); border-color: var(--d-line); }
+body:has(.content-dark) .gnb nav a { color: var(--paper); opacity: .62; }
+body:has(.content-dark) .gnb nav a:hover { opacity: 1; background: color-mix(in srgb, var(--paper) 12%, transparent); }
+body:has(.content-dark) .gnb nav a.active { opacity: 1; background: var(--paper); color: var(--ink); }
+body:has(.content-dark) .gnb nav a.active::after { background: var(--lime); }
+body:has(.content-dark) .logo { color: var(--paper); }
 /* 리본이 이음새 위아래로 뻗는 양 — 헤드리스로 두 폭에서 실측 (근거는 insight.css 주석) */
-:root { --rib-rise: calc(3.29vw + 20px); --rib-fall: calc(3.29vw - 20px); }
+body:has(.content-dark) { --rib-rise: calc(3.29vw + 20px); --rib-fall: calc(3.29vw - 20px); }
 /* 모바일에선 이 리본이 이음새보다 위에서 끝난다 → fall 이 음수 (실측 −6.9px) */
-@media (max-width: 960px) { :root { --rib-rise: 73px; --rib-fall: 7px; } }
-.page-head { border-bottom-color: var(--d-line); padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
+@media (max-width: 960px) { body:has(.content-dark) { --rib-rise: 73px; --rib-fall: 7px; } }
+body:has(.content-dark) .page-head { border-bottom-color: var(--d-line); padding-bottom: calc(var(--rib-rise) + var(--rib-gap-top)); }
 /* 리본 다음 섹션은 전역 section 여백(136px)을 쓰고 있어서 리본 크기와 무관했다 — 아래 갭만 119px */
-.ribbon-sep + section { padding-top: calc(var(--rib-fall) + var(--rib-gap-bottom)); }
-.page-head p { color: var(--d-mut); }
-.crumb { color: var(--d-mut2); }
+body:has(.content-dark) .ribbon-sep + section { padding-top: calc(var(--rib-fall) + var(--rib-gap-bottom)); }
+body:has(.content-dark) .page-head p { color: var(--d-mut); }
+body:has(.content-dark) .crumb { color: var(--d-mut2); }
 /* v19: 이음새 리본 (다크 페이지 — 라임 발광) */
 /* 높이·세로정렬·자간 규칙은 home.css 의 리본과 같다 — 근거는 그쪽 주석 참조.
    (리본 CSS 가 라우트마다 복제돼 있어 네 곳을 같이 고쳐야 한다) */
-.ribbon-sep { --rib-h: max(200px, 7vw); --rib-mid: -20px;
+body:has(.content-dark) .ribbon-sep { --rib-h: max(200px, 7vw); --rib-mid: -20px;
   position: relative; height: 0; z-index: 6; pointer-events: none; }
-.ribbon-sep svg { position: absolute; left: 0; right: 0;
+body:has(.content-dark) .ribbon-sep svg { position: absolute; left: 0; right: 0;
   top: calc(var(--rib-mid) - var(--rib-h) / 2); width: 100%; height: var(--rib-h);
   display: block; overflow: visible; filter: drop-shadow(0 12px 28px rgba(0,0,0,.4)); }
-.ribbon-sep .edge { fill: none; stroke: #000; stroke-width: 56; stroke-linecap: round; }
-.ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 50; stroke-linecap: round; }
-.ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .13em;
+body:has(.content-dark) .ribbon-sep .edge { fill: none; stroke: #000; stroke-width: 56; stroke-linecap: round; }
+body:has(.content-dark) .ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 50; stroke-linecap: round; }
+body:has(.content-dark) .ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .13em;
   word-spacing: .44em; fill: var(--ink); dominant-baseline: central; }
 @media (max-width: 960px) {
-  .ribbon-sep { --rib-h: 150px; --rib-mid: -33px; }
-  .ribbon-sep svg { filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); }
+  body:has(.content-dark) .ribbon-sep { --rib-h: 150px; --rib-mid: -33px; }
+  body:has(.content-dark) .ribbon-sep svg { filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); }
 }
-.vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f;
+body:has(.content-dark) .vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f;
   transition: transform .35s cubic-bezier(.2,.6,.2,1); display: block; text-decoration: none; }
-.vcell:hover { transform: scale(1.018); }
-.vcell .thumb { position: absolute; inset: 0;
+body:has(.content-dark) .vcell:hover { transform: scale(1.018); }
+body:has(.content-dark) .vcell .thumb { position: absolute; inset: 0;
   background: radial-gradient(80% 90% at 28% 18%, rgba(216,255,61,.24), transparent 58%),
               radial-gradient(90% 90% at 82% 88%, rgba(244,241,234,.1), transparent 55%),
               linear-gradient(200deg, transparent 50%, rgba(0,0,0,.5)); }
-.vcell .dur { position: absolute; top: 16px; right: 16px; font-family: var(--mono); font-size: 11px;
+body:has(.content-dark) .vcell .dur { position: absolute; top: 16px; right: 16px; font-family: var(--mono); font-size: 11px;
   letter-spacing: .1em; background: rgba(0,0,0,.55); color: rgba(244,241,234,.8); padding: 5px 10px; border-radius: 999px; }
-.vcell .play { position: absolute; inset: 0; display: grid; place-items: center; }
-.vcell .play i { width: 60px; height: 60px; border-radius: 50%; background: var(--lime); color: var(--ink);
+body:has(.content-dark) .vcell .play { position: absolute; inset: 0; display: grid; place-items: center; }
+body:has(.content-dark) .vcell .play i { width: 60px; height: 60px; border-radius: 50%; background: var(--lime); color: var(--ink);
   display: grid; place-items: center; font-size: 18px; transition: transform .3s; box-shadow: 0 12px 40px rgba(216,255,61,.22); }
-.vcell:hover .play i { transform: scale(1.14); }
-.vcell .cap { position: absolute; left: 22px; bottom: 18px; right: 22px; }
-.vcell .cap b { display: block; font-size: 16.5px; letter-spacing: -0.025em; font-weight: 700; }
-.vcell .cap span { font-family: var(--mono); font-size: 11px; color: var(--d-mut); letter-spacing: .12em; text-transform: uppercase; }
-.feat { aspect-ratio: 21/9; margin-bottom: 20px; }
-.feat .cap b { font-size: 24px; letter-spacing: -0.035em; }
-.vg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.vg .vcell { aspect-ratio: 16/9; }
-.sub-banner { position: relative; overflow: hidden; margin: 68px 0 0; border: 1px solid var(--d-line); border-radius: 26px;
+body:has(.content-dark) .vcell:hover .play i { transform: scale(1.14); }
+body:has(.content-dark) .vcell .cap { position: absolute; left: 22px; bottom: 18px; right: 22px; }
+body:has(.content-dark) .vcell .cap b { display: block; font-size: 16.5px; letter-spacing: -0.025em; font-weight: 700; }
+body:has(.content-dark) .vcell .cap span { font-family: var(--mono); font-size: 11px; color: var(--d-mut); letter-spacing: .12em; text-transform: uppercase; }
+body:has(.content-dark) .feat { aspect-ratio: 21/9; margin-bottom: 20px; }
+body:has(.content-dark) .feat .cap b { font-size: 24px; letter-spacing: -0.035em; }
+body:has(.content-dark) .vg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+body:has(.content-dark) .vg .vcell { aspect-ratio: 16/9; }
+body:has(.content-dark) .sub-banner { position: relative; overflow: hidden; margin: 68px 0 0; border: 1px solid var(--d-line); border-radius: 26px;
   padding: 44px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.sub-banner::before { content: "✳"; position: absolute; right: -20px; bottom: -54px; font-size: 180px;
+body:has(.content-dark) .sub-banner::before { content: "✳"; position: absolute; right: -20px; bottom: -54px; font-size: 180px;
   line-height: 1; color: var(--lime); opacity: .1; pointer-events: none; }
-.sub-banner .k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase;
+body:has(.content-dark) .sub-banner .k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase;
   color: var(--d-mut2); display: block; margin-bottom: 10px; }
-.sub-banner h3 { margin: 0 0 4px; font-size: 23px; font-weight: 800; letter-spacing: -0.035em; }
-.sub-banner p { margin: 0; color: var(--d-mut); font-size: 14px; }
-footer { background: #131310; border-top-color: var(--d-line); }
-.ft__top { border-bottom-color: var(--d-line); }
-.ft__brand p, .ft__nav a, .ft__biz, .ft__bottom { color: var(--d-mut2); }
-.ft__biz b { color: var(--d-mut); }
-.ft__nav a:hover, .ft__bottom a:hover { color: var(--paper); }
+body:has(.content-dark) .sub-banner h3 { margin: 0 0 4px; font-size: 23px; font-weight: 800; letter-spacing: -0.035em; }
+body:has(.content-dark) .sub-banner p { margin: 0; color: var(--d-mut); font-size: 14px; }
+body:has(.content-dark) footer { background: #131310; border-top-color: var(--d-line); }
+body:has(.content-dark) .ft__top { border-bottom-color: var(--d-line); }
+body:has(.content-dark) .ft__brand p, body:has(.content-dark) .ft__nav a, body:has(.content-dark) .ft__biz, body:has(.content-dark) .ft__bottom { color: var(--d-mut2); }
+body:has(.content-dark) .ft__biz b { color: var(--d-mut); }
+body:has(.content-dark) .ft__nav a:hover, body:has(.content-dark) .ft__bottom a:hover { color: var(--paper); }
 @media (max-width: 900px) { .vg { grid-template-columns: 1fr; } .feat { aspect-ratio: 16/9; } }
-.vcell .vimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+body:has(.content-dark) .vcell .vimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 /* 유튜브 썸네일은 그 자체에 큼직한 글씨가 박혀 있다. 기존 200도 대각 그라디언트는
    캡션이 놓이는 아래쪽이 충분히 어두워지지 않아 카드 제목과 썸네일 글씨가 겹쳐 둘 다
    안 읽혔다. 아래에서 위로 세우고 정지점을 촘촘히 둬(밴딩 방지) 바닥을 확실히 눌러준다. */
-.vcell .vshade { position: absolute; inset: 0;
+body:has(.content-dark) .vcell .vshade { position: absolute; inset: 0;
   background: linear-gradient(to top,
     rgba(0,0,0,.96) 0%, rgba(0,0,0,.92) 14%, rgba(0,0,0,.78) 30%, rgba(0,0,0,.52) 46%,
     rgba(0,0,0,.26) 62%, rgba(0,0,0,.08) 78%, transparent 90%); }
-.vcell .cap b { text-shadow: 0 1px 8px rgba(0,0,0,.6);
+body:has(.content-dark) .vcell .cap b { text-shadow: 0 1px 8px rgba(0,0,0,.6);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.chbadge { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(0,0,0,.6); color: #fff;
+body:has(.content-dark) .chbadge { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(0,0,0,.6); color: #fff;
   font-size: 11.5px; font-weight: 700; padding: 5px 11px; border-radius: 999px; letter-spacing: -0.01em; }
