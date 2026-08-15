@@ -3,7 +3,6 @@
    (홈 프리뷰는 목록형 그대로 — 프리뷰와 전용 페이지의 위계를 남겨둔다) */
 /* 제목단도 같은 폭으로 — 헤딩만 1280 단이면 카드 왼쪽 모서리와 시작선이 어긋난다 */
 .page-head .wrap { max-width: 880px; }
-.page-head .eyebrow { margin-bottom: 14px; }
 .faqpage { padding: 48px 0 96px; }
 .faqpage .wrap { max-width: 880px; }
 .faqpage .topics { margin-bottom: 30px; }
