@@ -13,6 +13,7 @@ export default function FaqView() {
       <main id="main">
         <div className="page-head">
           <div className="wrap">
+            <div className="eyebrow"><i></i>FAQ</div>
             <h1><span className="w300">자주 묻는</span> 질문</h1>
             <p>문의 전에 가장 많이 받는 질문을 모았습니다. 여기서 답을 못 찾으셨다면 바로 물어봐 주세요.</p>
           </div>

@@ -1,7 +1,22 @@
-/* P-07 FAQ — 목록 스타일(.topics · .faq-item · .faq-q · .faq-a)은 style.css 공용.
-   여기에는 이 페이지 고유의 여백과 하단 CTA 만 둔다. */
-.faqpage { padding: 56px 0 96px; }
-.faqpage .topics { margin-bottom: 34px; }
+/* P-07 FAQ — 기본 스타일(.topics · .faq-item · .faq-q · .faq-a)은 style.css 공용.
+   여기서는 전용 페이지답게 문항을 카드로 세우고 단을 좁힌다.
+   (홈 프리뷰는 목록형 그대로 — 프리뷰와 전용 페이지의 위계를 남겨둔다) */
+/* 제목단도 같은 폭으로 — 헤딩만 1280 단이면 카드 왼쪽 모서리와 시작선이 어긋난다 */
+.page-head .wrap { max-width: 880px; }
+.page-head .eyebrow { margin-bottom: 14px; }
+.faqpage { padding: 48px 0 96px; }
+.faqpage .wrap { max-width: 880px; }
+.faqpage .topics { margin-bottom: 30px; }
+
+/* 문항을 카드로 — 경계선 목록보다 질문 하나하나가 또렷하게 떨어진다 */
+.faqpage .faq-item { border: 1px solid var(--line); border-radius: 18px; background: var(--paper);
+  margin-bottom: 12px; overflow: hidden; transition: border-color var(--hover), background var(--hover); }
+.faqpage .faq-item:first-of-type { border-top: 1px solid var(--line); }
+.faqpage .faq-item:last-of-type { border-bottom: 1px solid var(--line); }
+.faqpage .faq-item:hover { border-color: var(--line-2); background: var(--paper-2); }
+.faqpage .faq-q { padding: 23px 58px 23px 24px; font-size: 17.5px; }
+.faqpage .faq-q::after { right: 24px; }
+.faqpage .faq-a p { padding: 0 24px 24px; }
 
 .faq-cta { margin-top: 64px; display: flex; align-items: center; justify-content: space-between;
   gap: 24px; flex-wrap: wrap; padding: 34px 38px; border-radius: 26px;
