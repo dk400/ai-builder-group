@@ -111,6 +111,27 @@ export function useRibbonFlow(DECKS: Record<string, string[]>, ROT: Record<strin
   }, [])
 }
 
+/* 화면에 들어올 때마다 클래스를 다시 붙였다 뗀다.
+   SiteFx 의 .rv 리빌은 한 번 보이면 unobserve 라 되돌아와도 다시 재생되지 않는다.
+   스테퍼처럼 '볼 때마다 순서대로 켜지는' 연출은 그래서 따로 관찰해야 한다. */
+export function useReplayOnView(selector: string, cls = 'lit', threshold = 0.4) {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll(selector))
+    if (!els.length) return
+    /* 모션을 끈 사용자에겐 애니메이션 없이 켜진 상태로 고정 */
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add(cls))
+      return
+    }
+    const io = new IntersectionObserver(
+      es => es.forEach(e => e.target.classList.toggle(cls, e.isIntersecting)),
+      { threshold },
+    )
+    els.forEach(el => io.observe(el))
+    return () => io.disconnect()
+  }, [selector, cls, threshold])
+}
+
 /* 숫자 카운트업 — [data-count] 요소가 화면에 들어오면 0 에서 원래 값까지 센다.
    마크업에는 최종 표기("10" · "09" · "4.9")를 그대로 두고 형식(자릿수·소수점)만 읽어낸다.
    JS 가 없거나 모션을 끈 환경에서는 아무것도 안 해도 값이 제대로 보인다. */

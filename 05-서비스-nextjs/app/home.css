@@ -216,6 +216,28 @@
   border-color: var(--ink); color: var(--lime);
   box-shadow: inset 0 1.5px 1px rgba(255,255,255,.22), inset 0 -3px 6px rgba(0,0,0,.5),
     0 2px 3px rgba(14,14,12,.15), 0 12px 24px -6px rgba(14,14,12,.35); }
+
+/* 스테퍼 점등 — 화면에 들어올 때마다 01 → 02 → 03 → ✓ 순서로 라임 불이 켜지고
+   사이의 선이 왼쪽에서 오른쪽으로 채워진다. .lit 은 useReplayOnView 가 붙였다 뗀다
+   (.rv 는 한 번 보이면 unobserve 라 되돌아와도 재생되지 않는다).
+   순서는 마크업의 --i 로만 정한다 — nth-child 로 세면 사이의 .fline 까지 섞인다. */
+.sys__flow2 .dot { transition: border-color .45s var(--ease-in), box-shadow .45s var(--ease-in);
+  transition-delay: calc(var(--i, 0) * 130ms); }
+.sys__flow2 .fline { position: relative; overflow: hidden; }
+.sys__flow2 .fline::after { content: ""; position: absolute; inset: 0; background: var(--lime);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform .4s var(--ease-in); transition-delay: calc(var(--i, 0) * 130ms); }
+.sys__flow2.lit .fline::after { transform: scaleX(1); }
+.sys__flow2.lit .fstep .dot { border-color: var(--lime);
+  box-shadow: inset 0 1.5px 0 rgba(255,255,255,1), inset 0 -3px 6px rgba(14,14,12,.07),
+    0 0 0 3px color-mix(in srgb, var(--lime) 42%, transparent), 0 0 20px rgba(216,255,61,.55); }
+.sys__flow2.lit .fstep--last .dot { border-color: var(--lime);
+  box-shadow: inset 0 1.5px 1px rgba(255,255,255,.22), inset 0 -3px 6px rgba(0,0,0,.5),
+    0 0 0 3px color-mix(in srgb, var(--lime) 58%, transparent), 0 0 28px rgba(216,255,61,.72); }
+@media (prefers-reduced-motion: reduce) {
+  .sys__flow2 .dot, .sys__flow2 .fline::after { transition: none; }
+  .sys__flow2 .fline::after { transform: scaleX(1); }
+}
 @media (max-width: 980px) {
   .sys__head { flex-direction: column; align-items: flex-start; }
   .sys__sub { text-align: left; }

@@ -1,8 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
-import { useRibbonFlow } from '@/components/fx'
+import { useEffect, type CSSProperties } from 'react'
+import { useRibbonFlow, useReplayOnView } from '@/components/fx'
+
+/* 스테퍼 점등 순서를 CSS 변수로 넘긴다 (CSS 커스텀 속성이라 캐스트가 필요하다) */
+const step = (i: number) => ({ '--i': i }) as CSSProperties
 
 /* ── 히어로 스트림 블록 데이터 (원본 index.html 열 1·2·3, 6블록 ×2 루프) ── */
 type Block =
@@ -132,6 +135,7 @@ export default function HomeView() {
       '대충 만든 결과물은 통과 못 함 ✳ QUALITY GATE: ON ✳ 검수 통과분만 전달 ✳ ',
     ],
   }, { rsepA: 5200, rsepB: 4500 })
+  useReplayOnView('[data-stepflow]')
 
   /* S2 스크롤 연동 · S3 자동 순환 · S5 탭 · 모바일 캐러셀 · S6 패럴랙스 · S8 퍼짐 전환 · S9 FAQ */
   useEffect(() => {
@@ -399,14 +403,16 @@ export default function HomeView() {
                 <div className="bd2"><b>매칭·보증 — 크몽</b><span>거래·정산을 <mark>마켓 안전망이 보증</mark></span></div>
               </div>
             </div>
-            <div className="sys__flow2" aria-label="검증 프로세스" style={{ marginTop: 72 }}>
-              <span className="fstep"><span className="dot">01</span><span className="lb2">교육<small>커리큘럼 수료</small></span></span>
-              <span className="fline"></span>
-              <span className="fstep"><span className="dot">02</span><span className="lb2">제작<small>검증된 빌더</small></span></span>
-              <span className="fline"></span>
-              <span className="fstep"><span className="dot">03</span><span className="lb2">검수<small>9년차 기준 심사</small></span></span>
-              <span className="fline"></span>
-              <span className="fstep fstep--last"><span className="dot">✓</span><span className="lb2">고객 전달<small>검수 통과분만</small></span></span>
+            {/* --i = 점등 순서. 사이의 .fline 까지 한 칸씩 세므로 0,1,2,… 로 이어 붙인다.
+                nth-child 로 세면 선까지 섞여 순서가 어긋난다. */}
+            <div className="sys__flow2" data-stepflow aria-label="검증 프로세스" style={{ marginTop: 72 }}>
+              <span className="fstep" style={step(0)}><span className="dot">01</span><span className="lb2">교육<small>커리큘럼 수료</small></span></span>
+              <span className="fline" style={step(1)}></span>
+              <span className="fstep" style={step(2)}><span className="dot">02</span><span className="lb2">제작<small>검증된 빌더</small></span></span>
+              <span className="fline" style={step(3)}></span>
+              <span className="fstep" style={step(4)}><span className="dot">03</span><span className="lb2">검수<small>9년차 기준 심사</small></span></span>
+              <span className="fline" style={step(5)}></span>
+              <span className="fstep fstep--last" style={step(6)}><span className="dot">✓</span><span className="lb2">고객 전달<small>검수 통과분만</small></span></span>
             </div>
           </div>
         </section>
