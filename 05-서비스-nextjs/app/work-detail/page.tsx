@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/app/_meta'
 import './work-detail.css'
 import WorkDetailView from './view'
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: 'AI 상담 챗봇 구축 — Work',
-  openGraph: { title: 'AI 상담 챗봇 구축 — Work', url: 'https://ai-builder-group-pearl.vercel.app/work-detail' },
-}
+  path: '/work-detail',
+})
 
 export default function WorkDetailPage() {
   return <WorkDetailView />

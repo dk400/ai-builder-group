@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/app/_meta'
 import './submit.css'
 import SubmitView from './view'
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: '문의 접수 완료 — AI 빌더 그룹',
-  openGraph: { title: '문의 접수 완료 — AI 빌더 그룹', url: 'https://ai-builder-group-pearl.vercel.app/submit' },
-}
+  path: '/submit',
+})
 
 export default function SubmitPage() {
   return <SubmitView />

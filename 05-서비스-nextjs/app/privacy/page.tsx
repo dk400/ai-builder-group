@@ -1,14 +1,11 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/app/_meta'
 import Link from 'next/link'
 import './privacy.css'
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: '개인정보처리방침 — AI 빌더 그룹',
-  openGraph: {
-    title: '개인정보처리방침 — AI 빌더 그룹',
-    url: 'https://ai-builder-group-pearl.vercel.app/privacy',
-  },
-}
+  path: '/privacy',
+})
 
 const SECTIONS = [
   { no: '01', title: '수집하는 개인정보 항목', hold: '플레이스홀더 — pluug 문의 폼: 담당자명 · 연락처 · 이메일 · 문의 내용 등' },

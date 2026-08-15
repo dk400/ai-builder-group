@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/app/_meta'
 import './content.css'
 import ContentView from './view'
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: '콘텐츠 — AI 빌더 그룹',
-  openGraph: { title: '콘텐츠 — AI 빌더 그룹', url: 'https://ai-builder-group-pearl.vercel.app/content' },
-}
+  path: '/content',
+})
 
 export default function ContentPage() {
   return <ContentView />

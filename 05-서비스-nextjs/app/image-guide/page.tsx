@@ -1,10 +1,11 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/app/_meta'
 import Link from 'next/link'
 import './image-guide.css'
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: '이미지 에셋 가이드 — AI 빌더 그룹',
-}
+  path: '/image-guide',
+})
 
 const TH = (
   <thead><tr><th>위치</th><th>슬롯</th><th>수량</th><th>내용</th><th>권장 사이즈 (@2x)</th><th>우선순위</th></tr></thead>
