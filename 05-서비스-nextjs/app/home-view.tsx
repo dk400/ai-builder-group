@@ -518,7 +518,10 @@ export default function HomeView() {
         {/* ===== S5 맞춤 매칭 ===== */}
         <section className="s5" id="builders">
           <div className="wrap">
-            <h2><span className="w300">개발사를 고르지 마세요.</span><br />맞는 개발자를 매칭해 드립니다</h2>
+            <div className="s5__head">
+              <h2><span className="w300">개발사를 고르지 마세요.</span><br />맞는 개발자를 매칭해 드립니다</h2>
+              <Link className="btn btn--ghost s5__cta" href="/work#builders" data-track="cta_click" data-location="match_section">어떤 빌더들인지 보러가기 <span className="arr">→</span></Link>
+            </div>
             {/* '카드에 마우스를 올려보세요' 안내는 뺐다 — 조작법을 적어두는 건 내부 시연용 문구다.
                 호버·탭 반응은 카드 자체가 알려줘야 한다. */}
             <p className="t-lead">프로젝트 성격에 맞는 빌더를 선별해 배정합니다.</p>
@@ -565,9 +568,6 @@ export default function HomeView() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="rv" style={{ marginTop: 46, textAlign: 'center' }}>
-              <Link className="btn btn--ghost" href="/work#builders" data-track="cta_click" data-location="match_section">어떤 빌더들인지 보러가기 <span className="arr">→</span></Link>
             </div>
           </div>
         </section>
