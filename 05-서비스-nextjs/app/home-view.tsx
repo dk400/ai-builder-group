@@ -324,7 +324,7 @@ export default function HomeView() {
               <Link className="btn btn--ink btn--pulse" href="/contact" data-track="cta_click" data-location="hero">프로젝트 문의 <span className="arr">→</span></Link>
               <Link className="cta-sub" href="/work" data-track="cta_click" data-location="hero_secondary">작업물 먼저 보기 <span className="arr">→</span></Link>
             </div>
-            <p className="st st3 hero-proof"><span>검증된 빌더 <b className="num">7</b>인</span><i></i><span>공개 프로젝트 <b className="num">9</b>건</span><i></i><a className="proof-link" href="#system"><b>검수 시스템</b> 운영</a></p>
+            <p className="st st3 hero-proof"><a className="proof-link" href="#builders">검증된 빌더 <b className="num">7</b>인</a><i></i><a className="proof-link" href="#work">공개 프로젝트 <b className="num">9</b>건</a><i></i><a className="proof-link" href="#system"><b>검수 시스템</b> 운영</a></p>
           </div>
           <div className="hero__scroll">SCROLL</div>
         </section>
@@ -505,7 +505,7 @@ export default function HomeView() {
         </section>
 
         {/* ===== S5 맞춤 매칭 ===== */}
-        <section className="s5">
+        <section className="s5" id="builders">
           <div className="wrap">
             <h2><span className="w300">개발사를 고르지 마세요.</span><br />맞는 개발자를 매칭해 드립니다</h2>
             {/* '카드에 마우스를 올려보세요' 안내는 뺐다 — 조작법을 적어두는 건 내부 시연용 문구다.
@@ -562,7 +562,7 @@ export default function HomeView() {
         </section>
 
         {/* ===== S6 Work 프리뷰 ===== */}
-        <section>
+        <section id="work">
           <div className="wrap">
             <div className="sec-head">
               <h2>완성한 프로젝트</h2>
