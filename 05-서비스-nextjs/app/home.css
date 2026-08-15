@@ -13,7 +13,7 @@
    그만큼 히어로를 줄여 리본 전체가 첫 화면에 들어오게 한다. 12px 는 아래 여유. */
 .hero { position: relative; min-height: calc(100vh - var(--rib-fall) - 12px);
   display: flex; align-items: center;
-  overflow: hidden; border-bottom: 1px solid var(--line); padding: 0; }
+  overflow: hidden; padding: 0; }
 .hero__bg { position: absolute; inset: -22%; z-index: 0; filter: blur(70px); opacity: .5;
   background:
     radial-gradient(36% 40% at 20% 28%, var(--lime), transparent 68%),
@@ -755,7 +755,7 @@
 }
 
 /* ---- S8 콘텐츠·유튜브 ---- */
-.s8 { background: var(--ink); color: var(--paper); border-block: 1px solid var(--line); }
+.s8 { background: var(--ink); color: var(--paper); border-bottom: 1px solid var(--line); }
 .s8 h2 { color: var(--paper); } .s8 .t-lead { color: var(--d-mut); }
 .s8 .more-link { color: var(--lime); }
 .s8 .sec-head h2 { white-space: nowrap; }
