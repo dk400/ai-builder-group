@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 declare global {
   interface Window {
@@ -10,11 +10,10 @@ declare global {
 }
 
 /* assets/app.js 공통 스크립트 이식 —
-   리빌/마스크 IntersectionObserver · GA4 스텁 · 에셋 가이드 토글 · 커서 추종 "VIEW →"
+   리빌/마스크 IntersectionObserver · GA4 스텁 · 커서 추종 "VIEW →"
    pathname이 바뀔 때마다 새 페이지의 .rv/.mask를 다시 관찰한다 */
 export default function SiteFx() {
   const pathname = usePathname()
-  const [assets, setAssets] = useState(false)
   const curRef = useRef<HTMLDivElement>(null)
 
   /* GA4 이벤트 스텁 — [data-track] 클릭 위임 */
@@ -32,14 +31,6 @@ export default function SiteFx() {
     document.addEventListener('click', onClick)
     return () => document.removeEventListener('click', onClick)
   }, [])
-
-  /* 에셋 가이드 토글 상태 복원 */
-  useEffect(() => {
-    try { if (sessionStorage.getItem('assets')) setAssets(true) } catch {}
-  }, [])
-  useEffect(() => {
-    document.body.classList.toggle('assets', assets)
-  }, [assets])
 
   /* 리빌 (IntersectionObserver) — 페이지 전환마다 재관찰 */
   useEffect(() => {
@@ -117,19 +108,11 @@ export default function SiteFx() {
     }
   }, [])
 
-  const toggleAssets = () => {
-    setAssets(v => {
-      try { sessionStorage.setItem('assets', v ? '' : '1') } catch {}
-      return !v
-    })
-  }
+  /* ASSET GUIDE 토글은 제거했다.
+     어떤 이미지를 몇 픽셀로 넣을지 화면 위에 겹쳐 보여주는 제작용 도구인데, 전 페이지
+     우하단에 떠 있어 실사용자에게도 보였다. 릴리즈에는 없어야 한다.
+     스펙 자체는 .slot__spec 마크업에 남아 CSS 로 감춰져 있으므로, 내부에서 다시 보려면
+     이 버튼과 body.assets 스위치만 되살리면 된다. */
 
-  return (
-    <>
-      <button className="asset-toggle" type="button" aria-pressed={assets} onClick={toggleAssets}>
-        ASSET GUIDE
-      </button>
-      <div ref={curRef} className="cur" aria-hidden="true">VIEW →</div>
-    </>
-  )
+  return <div ref={curRef} className="cur" aria-hidden="true">VIEW →</div>
 }

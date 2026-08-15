@@ -2,10 +2,13 @@ import { pageMeta } from '@/app/_meta'
 import Link from 'next/link'
 import './image-guide.css'
 
-export const metadata = pageMeta({
-  title: '이미지 에셋 가이드 — AI 빌더 그룹',
-  path: '/image-guide',
-})
+/* 제작용 내부 문서다 (어떤 이미지를 몇 픽셀로 넣을지 · 동의 수령 규칙 등).
+   어디에서도 링크하지 않지만 URL 은 공개돼 있어 검색에는 잡힐 수 있다 → noindex.
+   릴리즈 전에 이 라우트를 통째로 지울지는 팀 판단. */
+export const metadata = {
+  ...pageMeta({ title: '이미지 에셋 가이드 — AI 빌더 그룹', path: '/image-guide' }),
+  robots: { index: false, follow: false },
+}
 
 const TH = (
   <thead><tr><th>위치</th><th>슬롯</th><th>수량</th><th>내용</th><th>권장 사이즈 (@2x)</th><th>우선순위</th></tr></thead>

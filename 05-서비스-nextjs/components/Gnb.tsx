@@ -8,7 +8,7 @@ const NAV = [
   { href: '/', label: 'Home', match: (p: string) => p === '/' },
   { href: '/work', label: 'Work', match: (p: string) => p.startsWith('/work') || p.startsWith('/builder') },
   { href: '/insight', label: 'Insight', match: (p: string) => p.startsWith('/insight') },
-  { href: '/content', label: '콘텐츠', match: (p: string) => p.startsWith('/content') },
+  { href: '/content', label: 'Content', match: (p: string) => p.startsWith('/content') },
 ]
 
 export default function Gnb() {

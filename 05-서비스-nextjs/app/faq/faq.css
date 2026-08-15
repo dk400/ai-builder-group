@@ -1,0 +1,16 @@
+/* P-07 FAQ — 목록 스타일(.topics · .faq-item · .faq-q · .faq-a)은 style.css 공용.
+   여기에는 이 페이지 고유의 여백과 하단 CTA 만 둔다. */
+.faqpage { padding: 56px 0 96px; }
+.faqpage .topics { margin-bottom: 34px; }
+
+.faq-cta { margin-top: 64px; display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap; padding: 34px 38px; border-radius: 26px;
+  background: var(--paper-2); border: 1px solid var(--line); }
+.faq-cta b { display: block; font-size: 21px; font-weight: 800; letter-spacing: -0.03em; }
+.faq-cta span { display: block; margin-top: 6px; color: var(--muted); font-size: 15px; }
+
+@media (max-width: 640px) {
+  .faqpage { padding: 36px 0 72px; }
+  .faq-cta { padding: 26px 22px; }
+  .faq-cta b { font-size: 18px; }
+}

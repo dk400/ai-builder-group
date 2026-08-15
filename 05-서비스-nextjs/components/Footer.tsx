@@ -13,12 +13,12 @@ export default function Footer() {
             <b>Service</b>
             <Link href="/work">Work</Link>
             <Link href="/insight">Insight</Link>
-            <Link href="/content">콘텐츠</Link>
+            <Link href="/content">Content</Link>
           </div>
           <div className="col">
             <b>Company</b>
             <Link href="/#how">일하는 방식</Link>
-            <Link href="/#faq">FAQ</Link>
+            <Link href="/faq">FAQ</Link>
             <span className="soon">채용 (준비 중)</span>
           </div>
           <div className="col">

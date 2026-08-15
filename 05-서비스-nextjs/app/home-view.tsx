@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useEffect, type CSSProperties } from 'react'
 import { useRibbonFlow, useReplayOnView, useAccordion } from '@/components/fx'
+import FaqList from '@/components/FaqList'
+import { FAQ_HOME } from './_faq'
 
 /* 스테퍼 점등 순서를 CSS 변수로 넘긴다 (CSS 커스텀 속성이라 캐스트가 필요하다) */
 const step = (i: number) => ({ '--i': i }) as CSSProperties
@@ -48,7 +50,7 @@ function StreamBlock({ b }: { b: Block }) {
           <div className="bf__bar"><i></i><i></i><i></i><span className="url">{b.url}</span></div>
           <img className="shot" src={`/assets/img/${b.img}`} alt={b.alt} />
         </div>
-        <div className="shotshade"></div><span className="lb">Sample · 교체 예정</span>
+        <div className="shotshade"></div>
       </div>
     )
   }
@@ -56,7 +58,6 @@ function StreamBlock({ b }: { b: Block }) {
     <div className="sc sc--duo slot" style={{ height: b.h }}>
       <img src={`/assets/img/${b.a}`} alt="" />
       <img src={`/assets/img/${b.b}`} alt="" />
-      <span className="lb">Mobile · Sample</span>
     </div>
   )
 }
@@ -256,28 +257,6 @@ export default function HomeView() {
     })
     cleanups.push(() => goTimers.forEach(t => clearTimeout(t)))
 
-    /* S9 FAQ */
-    document.querySelectorAll('.faq-q').forEach(q => {
-      q.addEventListener('click', () => {
-        const open = q.getAttribute('aria-expanded') === 'true'
-        q.setAttribute('aria-expanded', String(!open))
-        const a = document.getElementById(q.getAttribute('aria-controls') || '')
-        if (a) a.style.maxHeight = open ? '0' : a.scrollHeight + 'px'
-      })
-    })
-    const setTopic = (t: string) => {
-      document.querySelectorAll<HTMLElement>('.topic').forEach(b => {
-        b.setAttribute('aria-selected', String(b.dataset.topic === t))
-      })
-      document.querySelectorAll<HTMLElement>('[data-panel]').forEach(p => {
-        p.hidden = p.dataset.panel !== t
-      })
-      if (location.hash !== '#faq-' + t) history.replaceState(null, '', '#faq-' + t)
-    }
-    document.querySelectorAll<HTMLElement>('.topic').forEach(b => {
-      b.addEventListener('click', () => setTopic(b.dataset.topic || ''))
-    })
-    if (location.hash.indexOf('#faq-') === 0) setTopic(location.hash.replace('#faq-', ''))
 
     return () => cleanups.forEach(fn => fn())
   }, [])
@@ -529,7 +508,9 @@ export default function HomeView() {
         <section className="s5">
           <div className="wrap">
             <h2><span className="w300">개발사를 고르지 마세요.</span><br />맞는 개발자를 매칭해 드립니다</h2>
-            <p className="t-lead">카드에 마우스를 올려보세요. (모바일: 탭)</p>
+            {/* '카드에 마우스를 올려보세요' 안내는 뺐다 — 조작법을 적어두는 건 내부 시연용 문구다.
+                호버·탭 반응은 카드 자체가 알려줘야 한다. */}
+            <p className="t-lead">프로젝트 성격에 맞는 빌더를 선별해 배정합니다.</p>
             <div className="grid g3">
               <div className="mcard mcard--light" tabIndex={0}>
                 <div className="bg bgi bgi-1"><span className="mring"></span><svg className="mico" viewBox="0 0 96 96" aria-hidden="true"><rect x="8" y="14" width="80" height="64" rx="10" fill="none" stroke="currentColor" strokeWidth="5" /><line x1="8" y1="32" x2="88" y2="32" stroke="currentColor" strokeWidth="5" /><circle cx="20" cy="23" r="3.2" fill="currentColor" /><circle cx="31" cy="23" r="3.2" fill="currentColor" /><rect x="20" y="42" width="34" height="8" rx="4" fill="currentColor" /><rect x="20" y="56" width="22" height="8" rx="4" fill="currentColor" /><path d="M60 50 L78 65 L69 66.5 L64.5 75 Z" fill="currentColor" /></svg><span className="mdeco md1">✳</span><span className="mdeco md2">✦</span></div>
@@ -720,44 +701,13 @@ export default function HomeView() {
         {/* ===== S9 FAQ ===== */}
         <section className="s9" id="faq">
           <div className="wrap">
-            <h2>자주 묻는 질문</h2>
+            <div className="sec-head">
+              <h2>자주 묻는 질문</h2>
+              <Link className="more-link" href="/faq">전체 보기</Link>
+            </div>
             <p className="t-lead">문의 전에 가장 많이 받는 질문을 모았습니다.</p>
-
-            <div className="topics" role="tablist">
-              <button className="topic" role="tab" aria-selected="true" data-topic="inquiry" data-track="faq_topic_change">외주 문의</button>
-              <button className="topic" role="tab" aria-selected="false" data-topic="process" data-track="faq_topic_change">진행 방식</button>
-            </div>
-
-            <div data-panel="inquiry">
-              <div className="faq-item">
-                <button className="faq-q" aria-expanded="false" aria-controls="fa1">바이브 코딩으로 만들면 품질이 괜찮나요?</button>
-                <div className="faq-a" id="fa1" role="region"><p>도구가 아니라 만드는 사람이 품질을 결정합니다. 우리는 교육을 수료하고 검증된 빌더만 배정하고, 전용 시스템으로 진행 과정을 관리해 결과물을 상향 평준화합니다.</p></div>
-              </div>
-              <div className="faq-item">
-                <button className="faq-q" aria-expanded="false" aria-controls="fa2">기간은 얼마나 걸리나요?</button>
-                <div className="faq-a" id="fa2" role="region"><p>규모에 따라 다르지만, 랜딩 페이지 기준 제작 2주 + 환경 세팅·이관 1주가 일반적입니다. 기획 단계에서 일정을 확정해 드립니다.</p></div>
-              </div>
-              <div className="faq-item">
-                <button className="faq-q" aria-expanded="false" aria-controls="fa3">어떤 개발자가 작업하나요?</button>
-                <div className="faq-a" id="fa3" role="region"><p>프로젝트 성격에 맞는 빌더를 선별해 배정합니다. 규모가 큰 프로젝트는 시니어 개발자가 함께 투입되는 투트랙으로 진행합니다.</p></div>
-              </div>
-            </div>
-
-            <div data-panel="process" hidden>
-              <div className="faq-item">
-                <button className="faq-q" aria-expanded="false" aria-controls="fb1">진행 단계는 어떻게 되나요?</button>
-                <div className="faq-a" id="fb1" role="region"><p>기획 → 디자인(목업) → 개발 순서로 진행하며, 각 단계마다 확인을 받고 다음으로 넘어갑니다. 디자인 단계에서는 실제로 눌러볼 수 있는 목업을 드립니다.</p></div>
-              </div>
-              <div className="faq-item">
-                <button className="faq-q" aria-expanded="false" aria-controls="fb2">수정 요청은 어디까지 가능한가요?</button>
-                <div className="faq-a" id="fb2" role="region"><p>문구·이미지 교체 같은 경미한 수정은 범위 내에서 반영합니다. 화면 추가나 기능 변경은 일정·비용과 함께 별도로 안내드립니다.</p></div>
-              </div>
-              <div className="faq-item">
-                <button className="faq-q" aria-expanded="false" aria-controls="fb3">완료 후 유지보수는요?</button>
-                <div className="faq-a" id="fb3" role="region"><p>납품 후 30일 무상 하자보수가 기본입니다. 이후 기능 추가·운영 관리는 별도 유지보수 계약으로 진행합니다.</p></div>
-              </div>
-            </div>
-
+            {/* 데이터는 app/_faq.ts 한 곳에서 온다 — /faq 페이지와 같은 원본 */}
+            <FaqList topics={FAQ_HOME} />
           </div>
         </section>
 
