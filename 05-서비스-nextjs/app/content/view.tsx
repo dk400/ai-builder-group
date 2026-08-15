@@ -64,7 +64,7 @@ export default function ContentView() {
             <path id="rsC" d="M -80,110 C 300,70 560,140 880,100 C 1200,60 1400,130 1700,95" fill="none" />
             <use href="#rsC" className="edge" />
             <use href="#rsC" className="lane" />
-            <text dy="6">
+            <text>
               <textPath href="#rsC" data-wflow data-unit="4" data-speed="0.02">YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ YOUTUBE ✳ 김이솝의 AI 가이드 ✳ 똑똑한개발자 ✳ AI 서대표 ✳ </textPath>
             </text>
           </svg>

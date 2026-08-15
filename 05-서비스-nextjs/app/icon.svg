@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI 빌더 그룹">
+  <!--
+    GNB 로고 마크(.logo em)를 그대로 옮긴 것.
+    27px 사각 · radius 9 · ink 배경 · lime ✳ · -8도 회전 → 64 기준으로 환산.
+    ✳(U+2733)는 글자가 아니라 획으로 그렸다. 파비콘은 사이트 폰트가 없는 환경에서
+    렌더되므로 text 로 두면 브라우저 기본 폰트에 따라 모양이 달라진다.
+    회전 때문에 사각형이 타일 밖으로 나가지 않도록 56 로 줄여 가운데 놓았다(56 × 1.13 ≈ 63).
+  -->
+  <g transform="rotate(-8 32 32)">
+    <rect x="4" y="4" width="56" height="56" rx="18.7" fill="#0E0E0C"/>
+    <g stroke="#D8FF3D" stroke-width="5.4" stroke-linecap="round">
+      <path d="M32 15.5V48.5"/>
+      <path d="M15.5 32H48.5"/>
+      <path d="M20.3 20.3L43.7 43.7"/>
+      <path d="M43.7 20.3L20.3 43.7"/>
+    </g>
+  </g>
+</svg>

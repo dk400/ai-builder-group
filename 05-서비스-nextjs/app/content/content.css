@@ -14,14 +14,21 @@ body::after { opacity: .05; }
 .page-head p { color: var(--d-mut); }
 .crumb { color: var(--d-mut2); }
 /* v19: 이음새 리본 (다크 페이지 — 라임 발광) */
-.ribbon-sep { position: relative; height: 0; z-index: 6; pointer-events: none; }
-.ribbon-sep svg { position: absolute; left: 0; right: 0; top: -120px; width: 100%; height: 200px;
+/* 높이·세로정렬·자간 규칙은 home.css 의 리본과 같다 — 근거는 그쪽 주석 참조.
+   (리본 CSS 가 라우트마다 복제돼 있어 네 곳을 같이 고쳐야 한다) */
+.ribbon-sep { --rib-h: max(200px, 7vw); --rib-mid: -20px;
+  position: relative; height: 0; z-index: 6; pointer-events: none; }
+.ribbon-sep svg { position: absolute; left: 0; right: 0;
+  top: calc(var(--rib-mid) - var(--rib-h) / 2); width: 100%; height: var(--rib-h);
   display: block; overflow: visible; filter: drop-shadow(0 12px 28px rgba(0,0,0,.4)); }
 .ribbon-sep .edge { fill: none; stroke: #000; stroke-width: 44; stroke-linecap: round; }
 .ribbon-sep .lane { fill: none; stroke: var(--lime); stroke-width: 38; stroke-linecap: round; }
-.ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .1em;
-  fill: var(--ink); dominant-baseline: middle; }
-@media (max-width: 960px) { .ribbon-sep svg { top: -108px; height: 150px; filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); } }
+.ribbon-sep text { font-family: var(--sans); font-size: 16px; font-weight: 800; letter-spacing: .13em;
+  word-spacing: .44em; fill: var(--ink); dominant-baseline: central; }
+@media (max-width: 960px) {
+  .ribbon-sep { --rib-h: 150px; --rib-mid: -33px; }
+  .ribbon-sep svg { filter: drop-shadow(0 8px 16px rgba(14,14,12,.14)); }
+}
 .vcell { position: relative; border-radius: 22px; overflow: hidden; cursor: pointer; background: #17170f;
   transition: transform .35s cubic-bezier(.2,.6,.2,1); display: block; text-decoration: none; }
 .vcell:hover { transform: scale(1.018); }

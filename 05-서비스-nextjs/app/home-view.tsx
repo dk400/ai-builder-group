@@ -407,7 +407,7 @@ export default function HomeView() {
             <path id="rsepA" d="M -80,150 C 240,90 420,190 720,150 C 1020,110 1220,170 1420,120 C 1520,95 1600,100 1700,80" fill="none" />
             <use href="#rsepA" className="edge2" />
             <use href="#rsepA" className="lane2" />
-            <text className="t2" dy="6">
+            <text className="t2">
               <textPath href="#rsepA" data-wflow data-unit="5" data-speed="0.026" data-dir="rev">AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ </textPath>
             </text>
           </svg>
@@ -707,7 +707,7 @@ export default function HomeView() {
             <path id="rsepB" d="M -80,80 C 220,130 460,60 760,110 C 1060,160 1260,80 1460,130 C 1550,152 1620,140 1700,160" fill="none" />
             <use href="#rsepB" className="edge" />
             <use href="#rsepB" className="lane" />
-            <text dy="7">
+            <text>
               <textPath href="#rsepB" data-wflow data-unit="4" data-speed="0.02">VIBE CODING ✳ 검증된 빌더 ✳ AI BUILDER GROUP ✳ 외주를 해드립니다 ✳ VIBE CODING ✳ 검증된 빌더 ✳ AI BUILDER GROUP ✳ 외주를 해드립니다 ✳ </textPath>
             </text>
           </svg>

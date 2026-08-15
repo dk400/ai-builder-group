@@ -128,7 +128,7 @@ export default function WorkView() {
             <path id="rsW" d="M -80,120 C 260,80 520,150 820,110 C 1120,70 1320,130 1700,90" fill="none" />
             <use href="#rsW" className="edge2" />
             <use href="#rsW" className="lane2" />
-            <text className="t2" dy="5">
+            <text className="t2">
               <textPath href="#rsW" data-wflow data-unit="5" data-speed="0.024" data-dir="rev">AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ AI 에이전트 ✳ 랜딩 ✳ 플랫폼 ✳ 모바일 앱 ✳ 자동화 ✳ </textPath>
             </text>
           </svg>

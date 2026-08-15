@@ -64,7 +64,7 @@ export default function InsightView() {
             <path id="rsI" d="M -80,90 C 280,130 560,70 860,110 C 1160,150 1360,90 1700,120" fill="none" />
             <use href="#rsI" className="edge" />
             <use href="#rsI" className="lane" />
-            <text dy="6">
+            <text>
               <textPath href="#rsI" data-wflow data-unit="4" data-speed="0.02">발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ 발주 가이드 ✳ 일하는 방식 ✳ AI · AX ✳ 프로젝트 비하인드 ✳ </textPath>
             </text>
           </svg>
