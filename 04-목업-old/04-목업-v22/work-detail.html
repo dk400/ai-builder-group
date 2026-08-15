@@ -58,20 +58,9 @@
 .aside a.b-chip:hover { border-color: var(--ink); transform: translateY(-1px); }
 .aside .note { margin: 0; padding: 14px 22px; border-top: 1px solid var(--line); font-family: var(--mono);
   font-size: 12px; color: var(--muted-2); line-height: 1.7; }
-/* significa식 "다음 프로젝트" 전환 푸터 */
-.next-proj { display: block; text-decoration: none; border-top: 1px solid var(--line); margin-top: 40px; }
-.next-proj .in { display: grid; grid-template-columns: 1fr 340px; gap: 44px; align-items: center;
-  padding: 64px 0; transition: background var(--hover); }
-.next-proj:hover .in { background: var(--paper-2); }
-.next-proj .k { font-family: var(--mono); font-size: 12px; letter-spacing: .24em; color: var(--muted-2); text-transform: uppercase; display: block; margin-bottom: 16px; }
-.next-proj h3 { margin: 0 0 8px; font-size: clamp(26px, 3.4vw, 40px); font-weight: 800; letter-spacing: -0.045em; }
-.next-proj:hover h3 { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 3px; }
-.next-proj p { margin: 0; color: var(--muted); font-size: 14.5px; }
-.next-proj .slot { aspect-ratio: 16/10; }
 @media (max-width: 900px) {
   .wd-body { grid-template-columns: 1fr; } .aside { position: static; order: -1; }
   .wd-art .shot--pair { grid-template-columns: 1fr; }
-  .next-proj .in { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -179,21 +168,6 @@
     </div>
   </section>
 
-  <!-- 다음 프로젝트 전환 (significa) -->
-  <a class="next-proj" href="work-detail.html" data-cursor="NEXT →">
-    <div class="wrap in">
-      <div>
-        <h3>콘텐츠 관리 플랫폼</h3>
-        <p>비개발자도 운영 가능한 관리자·에디터 구축 · Platform · 6wks</p>
-      </div>
-      <div class="slot">
-        <div class="bf"><div class="bf__bar"><i></i><i></i><i></i><span class="url">cms.studio.io</span></div>
-          <div class="bf__body"><div class="row" style="height:100%"><div style="width:52px;display:flex;flex-direction:column;gap:5px"><div class="bl" style="height:9px"></div><div class="bl bl--lime" style="height:9px"></div><div class="bl" style="height:9px"></div></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:6px"><div class="bl" style="height:11px;width:52%"></div><div class="bl" style="flex:1"></div></div></div></div></div>
-        <div class="slot__spec"><b>Asset — Next 썸네일</b><span>다음 프로젝트 커버</span><em>1520×950px</em></div>
-      </div>
-    </div>
-  </a>
 </main>
 
 <footer>

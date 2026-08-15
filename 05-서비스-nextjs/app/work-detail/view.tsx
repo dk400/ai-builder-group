@@ -118,27 +118,6 @@ export default function WorkDetailView() {
         </div>
       </section>
 
-      {/* 다음 프로젝트 전환 (significa) */}
-      <Link className="next-proj" href="/work-detail" data-cursor="NEXT →">
-        <div className="wrap in">
-          <div>
-            <h3>콘텐츠 관리 플랫폼</h3>
-            <p>비개발자도 운영 가능한 관리자·에디터 구축 · Platform · 6wks</p>
-          </div>
-          <div className="slot">
-            <div className="bf">
-              <div className="bf__bar"><i></i><i></i><i></i><span className="url">cms.studio.io</span></div>
-              <div className="bf__body">
-                <div className="row" style={{ height: '100%' }}>
-                  <div style={{ width: 52, display: 'flex', flexDirection: 'column', gap: 5 }}><div className="bl" style={{ height: 9 }}></div><div className="bl bl--lime" style={{ height: 9 }}></div><div className="bl" style={{ height: 9 }}></div></div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}><div className="bl" style={{ height: 11, width: '52%' }}></div><div className="bl" style={{ flex: 1 }}></div></div>
-                </div>
-              </div>
-            </div>
-            <div className="slot__spec"><b>Asset — Next 썸네일</b><span>다음 프로젝트 커버</span><em>1520×950px</em></div>
-          </div>
-        </div>
-      </Link>
     </main>
   )
 }
