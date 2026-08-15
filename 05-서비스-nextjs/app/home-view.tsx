@@ -648,15 +648,22 @@ export default function HomeView() {
               <h2>우리의 생각</h2>
               <Link className="more-link" href="/insight">전체 보기</Link>
             </div>
+            {/* ⚠ data-sample="thumb" — /insight 목록의 썸네일을 주제가 가까운 것으로 빌려 왔다.
+                그 이미지들에는 각자 다른 글 제목이 박혀 있어서, 이 크기(96×64)에서는 질감으로만
+                읽히지만 확대하면 문구가 어긋난다. 글마다 전용 썸네일이 생기면 교체할 것.
+                찾으려면 grep -rn 'data-sample' app/ */}
             <Link className="irow" href="/insight-detail">
+              <img className="ithumb" data-sample="thumb" src="/assets/img/ins/ins-turnkey.jpg" alt="" loading="lazy" decoding="async" />
               <span className="t">바이브 코딩 외주, 잘하는 곳과 못하는 곳의 차이</span>
               <span className="meta"><span className="tag">발주 가이드</span><span className="d num">2026.08.11</span></span>
             </Link>
             <Link className="irow" href="/insight-detail">
+              <img className="ithumb" data-sample="thumb" src="/assets/img/ins/ins-native.jpg" alt="" loading="lazy" decoding="async" />
               <span className="t">우리가 3주 만에 랜딩 페이지를 만드는 순서</span>
               <span className="meta"><span className="tag">일하는 방식</span><span className="d num">2026.08.09</span></span>
             </Link>
             <Link className="irow" href="/insight-detail">
+              <img className="ithumb" data-sample="thumb" src="/assets/img/ins/ins-poc.jpg" alt="" loading="lazy" decoding="async" />
               <span className="t">새 AI 툴을 실무에 붙일 때 우리가 확인하는 것들</span>
               <span className="meta"><span className="tag">AI 활용</span><span className="d num">2026.08.07</span></span>
             </Link>

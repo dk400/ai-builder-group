@@ -734,16 +734,25 @@
 /* ---- S7 Insight 프리뷰 — 제목 우선 ---- */
 .s7 { background: var(--paper-2); border-top: 1px solid var(--line); }
 .s7 .sec-head { margin-bottom: 38px; }
-.s7 .irow { display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: baseline;
-  padding: 26px 8px; border-bottom: 1px solid var(--line); text-decoration: none;
+/* 썸네일 → 제목 → 메타. 썸네일이 생겼으니 baseline 이 아니라 center 로 맞춘다. */
+.s7 .irow { display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
+  padding: 20px 8px; border-bottom: 1px solid var(--line); text-decoration: none;
   transition: background var(--hover), padding-left var(--hover); }
+.s7 .ithumb { width: 96px; height: 64px; object-fit: cover; display: block;
+  border-radius: 10px; border: 1px solid var(--line); background: var(--paper-3);
+  transition: transform var(--hover); }
+.s7 .irow:hover .ithumb { transform: scale(1.05); }
 .s7 .irow:first-of-type { border-top: 1px solid var(--line-2); }
 .s7 .irow:hover { background: var(--paper-3); padding-left: 18px; }
 .s7 .irow .t { font-size: 19px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.45; }
 .s7 .irow .meta { display: flex; align-items: baseline; gap: 14px; white-space: nowrap; }
 .s7 .irow .meta .tag { background: var(--paper-3); }
 .s7 .irow .d { font-family: var(--mono); font-size: 12px; color: var(--muted-2); font-variant-numeric: tabular-nums; }
-@media (max-width: 720px){ .s7 .irow { grid-template-columns: 1fr; gap: 8px; } }
+/* 좁은 화면 — 썸네일은 두 줄을 세로로 걸치고, 제목·메타가 그 옆에 쌓인다 */
+@media (max-width: 720px){
+  .s7 .irow { grid-template-columns: auto 1fr; gap: 6px 14px; }
+  .s7 .ithumb { grid-row: 1 / span 2; width: 74px; height: 56px; }
+}
 
 /* ---- S8 콘텐츠·유튜브 ---- */
 .s8 { background: var(--ink); color: var(--paper); border-block: 1px solid var(--line); }
