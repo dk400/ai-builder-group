@@ -158,7 +158,7 @@ export default function WorkView() {
                 <h2>수행 프로젝트 <span className="head-cnt num" data-cnt>( 09 )</span></h2>
                 <p className="panel__sub">비슷한 결과물을 먼저 찾으세요 — 담당 빌더가 함께 보입니다.</p>
               </div>
-              <div className="panel__side">고르기 어렵다면 → <a href="#match">03 빠른 매칭 ↓</a></div>
+              <div className="panel__side">고르기 어렵다면 → <a href="#match">02 빠른 매칭 ↓</a></div>
             </div>
 
             <div className="chips" role="tablist" style={{ margin: '0 0 34px' }}>
@@ -195,42 +195,11 @@ export default function WorkView() {
             <div className="list-note"><button className="btn btn--ghost">더 보기</button></div>
           </section>
 
-          {/* ── 패널 02 · 빌더 프로필 ── */}
-          <section className="panel panel--tint" id="builders">
-            <div className="panel__head">
-              <div>
-                <div className="panel__no"><i>02</i>만드는 사람들</div>
-                <h2>검증된 빌더 <span className="head-cnt num">( 10 )</span></h2>
-                <p className="panel__sub">카드를 누르면 빌더의 프로필과 수행한 작업물을 볼 수 있습니다.</p>
-              </div>
-              <div className="panel__side">누구에게 맡길지 고민된다면 → <a href="#match">03 빠른 매칭 ↓</a></div>
-            </div>
-            <div className="bld__grid">
-              {BUILDERS.map(b => (
-                <Link className={b.box} href={`/builder?b=${b.slug}`} data-cursor="PROFILE →" data-track="builder_click" data-slug={b.slug} key={b.slug}>
-                  <div className="slot mask">
-                    <img src={`/assets/img/av-${b.slug}.jpg`} alt={`${b.name} 프로필 사진`} />
-                    {b.badge && <span className={b.badge.cls}>{b.badge.label}</span>}
-                    <div className="ct"><span>수행 <span className="num">{b.cnt}</span>건</span><span className="go">Profile →</span></div>
-                    <div className="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
-                  </div>
-                  <div className="meta">
-                    <b>{b.name}</b>
-                    <span className="role">{b.role}</span>
-                    <p>{b.desc}</p>
-                    <div className="stk"><i>{b.stk[0]}</i><i>{b.stk[1]}</i></div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <p className="bld-note">※ <b>✳ 이달의 빌더</b>는 매달 고객 평가로 새로 선정합니다 · <b>NEW</b>는 합류 90일 이내의 빌더입니다</p>
-          </section>
-
-          {/* ── 패널 03 · 빠른 매칭 ── */}
+          {/* ── 패널 02 · 빠른 매칭 ── */}
           <section className="panel panel--tint" id="match">
             <div className="panel__head">
               <div>
-                <div className="panel__no"><i>03</i>빠른 매칭</div>
+                <div className="panel__no"><i>02</i>빠른 매칭</div>
                 <h2>딱 맞는 빌더를 찾아드려요</h2>
                 <p className="panel__sub">세 번만 고르면 프로젝트에 맞는 빌더 2명을 추천해 드립니다.</p>
               </div>
@@ -282,6 +251,38 @@ export default function WorkView() {
               </div>
             </div>
           </section>
+
+          {/* ── 패널 03 · 빌더 프로필 ── */}
+          <section className="panel panel--tint" id="builders">
+            <div className="panel__head">
+              <div>
+                <div className="panel__no"><i>03</i>만드는 사람들</div>
+                <h2>검증된 빌더 <span className="head-cnt num">( 10 )</span></h2>
+                <p className="panel__sub">카드를 누르면 빌더의 프로필과 수행한 작업물을 볼 수 있습니다.</p>
+              </div>
+              <div className="panel__side">누구에게 맡길지 고민된다면 → <a href="#match">02 빠른 매칭 ↑</a></div>
+            </div>
+            <div className="bld__grid">
+              {BUILDERS.map(b => (
+                <Link className={b.box} href={`/builder?b=${b.slug}`} data-cursor="PROFILE →" data-track="builder_click" data-slug={b.slug} key={b.slug}>
+                  <div className="slot mask">
+                    <img src={`/assets/img/av-${b.slug}.jpg`} alt={`${b.name} 프로필 사진`} />
+                    {b.badge && <span className={b.badge.cls}>{b.badge.label}</span>}
+                    <div className="ct"><span>수행 <span className="num">{b.cnt}</span>건</span><span className="go">Profile →</span></div>
+                    <div className="slot__spec"><b>Asset — 빌더 인물 사진</b><span>상반신 인물 컷 · 밝은 배경 통일</span><em>800×1000px · 4:5 @2x</em></div>
+                  </div>
+                  <div className="meta">
+                    <b>{b.name}</b>
+                    <span className="role">{b.role}</span>
+                    <p>{b.desc}</p>
+                    <div className="stk"><i>{b.stk[0]}</i><i>{b.stk[1]}</i></div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <p className="bld-note">※ <b>✳ 이달의 빌더</b>는 매달 고객 평가로 새로 선정합니다 · <b>NEW</b>는 합류 90일 이내의 빌더입니다</p>
+          </section>
+
         </div>
 
         <section>
