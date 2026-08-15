@@ -135,6 +135,12 @@
   display: flex; justify-content: space-between; align-items: center; gap: 10px;
   background: linear-gradient(transparent, rgba(14,14,12,.66)); font-family: var(--mono); font-size: 11.5px;
   letter-spacing: .12em; text-transform: uppercase; color: rgba(244,241,234,.9); }
+/* 수행 건수 — 어두운 그라디언트 위 11.5px 회색이라 거의 안 읽혔다. 이 카드에서 유일한
+   실적 근거이므로 라임 알약으로 세운다. 숫자는 한 단 더 키워 먼저 눈에 걸리게. */
+.bcard .ct .cnt { display: inline-flex; align-items: baseline; gap: 4px;
+  background: var(--lime); color: var(--ink); border-radius: 999px; padding: 5px 12px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.bcard .ct .cnt .num { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
 .bcard .ct .go { opacity: 0; transform: translateX(-6px); transition: opacity var(--hover), transform .25s var(--ease-in); }
 .bcard:hover .ct .go { opacity: 1; transform: none; }
 .bcard .meta { padding: 14px 2px 0; }
@@ -164,7 +170,9 @@
   .bcard .role { font-size: 11.5px; margin: 2px 0 0; }
   .bcard p, .bcard .stk { display: none; }
   .bcard .lv { top: 9px; left: 9px; font-size: 9px; padding: 4px 8px; letter-spacing: .12em; }
-  .bcard .ct { padding: 34px 12px 9px; font-size: 9.5px; }
+  .bcard .ct { padding: 34px 10px 9px; font-size: 9.5px; }
+  .bcard .ct .cnt { font-size: 11px; padding: 4px 10px; gap: 3px; }
+  .bcard .ct .cnt .num { font-size: 14px; }
 }
 
 /* ── 포트폴리오 그리드 ──
