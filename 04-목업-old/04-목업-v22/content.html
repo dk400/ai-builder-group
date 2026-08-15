@@ -69,6 +69,17 @@ body::after { opacity: .05; }
   color: var(--d-mut2); display: block; margin-bottom: 10px; }
 .sub-banner h3 { margin: 0 0 4px; font-size: 23px; font-weight: 800; letter-spacing: -0.035em; }
 .sub-banner p { margin: 0; color: var(--d-mut); font-size: 14px; }
+.channel-tabs { position: relative; z-index: 1; display: flex; gap: 5px; padding: 5px;
+  border: 1px solid var(--d-line); border-radius: 999px; background: rgba(244,241,234,.04); }
+.channel-tab { display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 18px; border-radius: 999px; color: var(--paper); font-size: 14px; font-weight: 800;
+  text-decoration: none; white-space: nowrap; transition: background var(--hover), color var(--hover), transform var(--hover); }
+.channel-tab span { font-family: var(--mono); font-size: 12px; }
+.channel-tab:hover { background: var(--lime); color: var(--ink); transform: translateY(-1px); }
+@media (max-width: 720px) {
+  .channel-tabs { width: 100%; display: grid; grid-template-columns: 1fr; border-radius: 20px; }
+  .channel-tab { justify-content: space-between; padding-inline: 16px; }
+}
 footer { background: #131310; border-top-color: var(--d-line); }
 .ft__top { border-bottom-color: var(--d-line); }
 .ft__brand p, .ft__nav a, .ft__biz, .ft__bottom { color: var(--d-mut2); }
@@ -179,9 +190,13 @@ footer { background: #131310; border-top-color: var(--d-line); }
       <div class="sub-banner">
         <div>
           <h3>채널을 구독하면 새 영상을 놓치지 않아요</h3>
-          <p>매주 실전 바이브 코딩 콘텐츠가 올라옵니다.</p>
+          <p>세 채널에서 매주 실전 바이브 코딩 콘텐츠가 올라옵니다.</p>
         </div>
-        <a class="btn btn--lime" href="#" data-yt data-utm="subscribe">유튜브 채널 가기 <span class="arr">→</span></a>
+        <nav class="channel-tabs" aria-label="유튜브 채널">
+          <a class="channel-tab" href="https://www.youtube.com/@AISeoceo" target="_blank" rel="noopener noreferrer" data-track="youtube_channel_click" data-location="content_seo-jangwon">서장원 <span aria-hidden="true">↗</span></a>
+          <a class="channel-tab" href="https://www.youtube.com/@%EA%B9%80%EC%9D%B4%EC%86%9D%EC%9D%98AI%EA%B0%80%EC%9D%B4%EB%93%9C" target="_blank" rel="noopener noreferrer" data-track="youtube_channel_click" data-location="content_kim-iesop">김이솝 <span aria-hidden="true">↗</span></a>
+          <a class="channel-tab" href="https://www.youtube.com/@toktokhandev" target="_blank" rel="noopener noreferrer" data-track="youtube_channel_click" data-location="content_toktokhan-dev">똑똑한개발자 <span aria-hidden="true">↗</span></a>
+        </nav>
       </div>
     </div>
   </section>

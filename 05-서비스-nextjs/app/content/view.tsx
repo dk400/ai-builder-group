@@ -20,6 +20,12 @@ const VIDEOS: Video[] = [
   { yt: 'gtZPILhrnl8', ch: 'AI 서대표', dur: '13:48', title: '오르카(Orca) 설치부터 AI 블로그 자동화 세팅까지', sub: 'NEW' },
 ]
 
+const CHANNELS = [
+  { name: '서장원', href: 'https://www.youtube.com/@AISeoceo', slug: 'seo-jangwon' },
+  { name: '김이솝', href: 'https://www.youtube.com/@%EA%B9%80%EC%9D%B4%EC%86%9D%EC%9D%98AI%EA%B0%80%EC%9D%B4%EB%93%9C', slug: 'kim-iesop' },
+  { name: '똑똑한개발자', href: 'https://www.youtube.com/@toktokhandev', slug: 'toktokhan-dev' },
+] as const
+
 export default function ContentView() {
   /* 다크 전환은 CSS 가 body:has(.content-dark) 로 판정한다 (아래 main 의 클래스).
      전에는 여기서 body.dark 를 붙였다 뗐는데, 정작 content.css 는 body { … } 를 그냥
@@ -100,9 +106,15 @@ export default function ContentView() {
             <div className="sub-banner">
               <div>
                 <h3>채널을 구독하면 새 영상을 놓치지 않아요</h3>
-                <p>매주 실전 바이브 코딩 콘텐츠가 올라옵니다.</p>
+                <p>세 채널에서 매주 실전 바이브 코딩 콘텐츠가 올라옵니다.</p>
               </div>
-              <a className="btn btn--lime" href="#" data-yt data-utm="subscribe">유튜브 채널 가기 <span className="arr">→</span></a>
+              <nav className="channel-tabs" aria-label="유튜브 채널">
+                {CHANNELS.map(channel => (
+                  <a className="channel-tab" href={channel.href} target="_blank" rel="noopener noreferrer" data-track="youtube_channel_click" data-location={`content_${channel.slug}`} key={channel.slug}>
+                    {channel.name}<span aria-hidden="true">↗</span>
+                  </a>
+                ))}
+              </nav>
             </div>
           </div>
         </section>
