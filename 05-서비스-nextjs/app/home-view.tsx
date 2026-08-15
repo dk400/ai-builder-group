@@ -188,13 +188,20 @@ export default function HomeView() {
       cleanups.push(() => { clearInterval(s3timer); sg.removeEventListener('mouseenter', stopS3); sg.removeEventListener('mouseleave', startS3) })
     }
 
-    /* S5 모바일 탭 */
+    /* S5 모바일 탭 — 한 번에 한 장만 펼친다 */
+    const openOnly = (card: Element | null) =>
+      document.querySelectorAll('.mcard').forEach(x => x.classList.toggle('open', x === card))
     document.querySelectorAll('.mcard').forEach(c => {
-      c.addEventListener('click', () => { if (mobile.matches) c.classList.toggle('open') })
+      c.addEventListener('click', () => {
+        if (!mobile.matches) return
+        openOnly(c.classList.contains('open') ? null : c)
+      })
     })
 
-    /* v22: 모바일 캐러셀 탭 슬라이드 (≤960px) — 검수(S4)·매칭(S5) 공용 */
-    const cmq = window.matchMedia('(max-width: 960px)')
+    /* v22: 모바일 캐러셀 탭 슬라이드 — 검수(S4)·매칭(S5) 공용.
+       기준을 960 → 900px 로 내렸다. 상세 토글과 그 CSS 는 900px 기준인데 캐러셀만 960 이라,
+       901~960px 구간에서는 캐러셀이 탭을 가로채는데 토글은 꺼져 있어 카드가 아예 안 열렸다. */
+    const cmq = window.matchMedia('(max-width: 900px)')
     const isAtSnap = (grid: Element, card: Element) => {
       const pad = parseFloat(getComputedStyle(grid).scrollPaddingLeft) || 0
       return Math.abs(card.getBoundingClientRect().left - grid.getBoundingClientRect().left - pad) < 24
@@ -218,6 +225,10 @@ export default function HomeView() {
         if (!card || isAtSnap(s5grid, card)) return /* 정렬된 카드 탭은 기존 상세 토글로 */
         e.stopPropagation()
         slideTo(card)
+        /* 끌어오기만 하고 끝내면 '눌렀는데 설명이 안 나온다'가 된다. 실제로 그랬다 —
+           화면 밖 카드는 탭이 여기서 막혀 카드 자신의 토글까지 도달하지 못했다.
+           끌어오면서 같이 펼친다. */
+        openOnly(card)
       }
       s5grid.addEventListener('click', s5tap, true)
       cleanups.push(() => s5grid.removeEventListener('click', s5tap, true))
