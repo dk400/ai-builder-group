@@ -17,7 +17,7 @@ export default async function AdminBuilderProfilePage({ params }: { params: Prom
 
   const profile: Profile = {
     slug: b.slug, no: b.no, name: b.name, avatar: b.avatar, roleLabel: b.role,
-    blurb: b.blurb, bio: b.bio, focus: b.focus, stack: b.stack,
+    blurb: b.blurb, bio: b.bio, focus: b.focus, stack: b.stack, principles: b.principles,
     email: b.email, account: b.accountRole, active: b.active, lastLogin: b.lastLogin, done: b.done,
   }
   return <BuilderProfilePage p={profile} />

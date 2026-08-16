@@ -18,6 +18,10 @@ body:has(.adm) { background: var(--paper-3); }
 body:has(.adm)::after { display: none; }
 
 .adm { --adm-nav: 236px; --adm-bar: 34px; color: var(--ink); }
+/* style.css 의 section { padding: 136px 0 } 은 공개 페이지의 섹션 간격이다.
+   어드민에서 <section> 을 의미 구분자로 쓰면 그 여백이 그대로 붙어 폼 사이가 벌어진다 —
+   실제로 프로필 편집 화면에서 항목 사이가 136px 씩 떠서 화면이 텅 비어 보였다. */
+.adm section { padding: 0; }
 
 /* ── 목업 고지 띠 ── */
 .adm-mock { position: fixed; inset: 0 0 auto 0; z-index: 60; margin: 0; height: var(--adm-bar);
@@ -234,6 +238,60 @@ body:has(.adm)::after { display: none; }
   background: linear-gradient(to top, var(--paper-3) 72%, transparent);
   display: flex; gap: 8px; align-items: center; }
 .adm-actions .warn { font-size: 12.5px; color: var(--muted); margin-right: auto; }
+
+/* ── 프로필 편집 ──
+   목록과 달리 밀도를 올릴 이유가 없는 화면이다. 한 사람이 자기 정보를 손보는 자리라
+   720px 한 열로 세우고 여백을 넉넉히 준다. 2열 카드 폼으로 짰을 때 복잡해 보였다. */
+.prof { max-width: 720px; }
+
+.prof-hero { display: flex; gap: 20px; align-items: center; padding: 18px;
+  background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 34px; }
+.prof-ava { position: relative; width: 96px; height: 120px; border-radius: 13px; overflow: hidden;
+  background: var(--paper-3); flex: none; border: 1px solid var(--line-2); }
+.prof-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.prof-ava input[type="file"] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.prof-ava .ov { position: absolute; inset: auto 0 0 0; padding: 7px 0; text-align: center; cursor: pointer;
+  background: rgba(14,14,12,.74); color: var(--paper); font-size: 11.5px; font-weight: 700;
+  opacity: 0; transition: opacity var(--hover); }
+.prof-ava:hover .ov, .prof-ava:focus-within .ov { opacity: 1; }
+/* 키보드로 파일 입력에 닿았을 때 테두리가 보여야 한다 */
+.prof-ava:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.prof-id { min-width: 0; }
+.prof-id b { display: block; font-size: 21px; font-weight: 800; letter-spacing: -0.035em; }
+.prof-id > span { display: block; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.prof-ava__acts { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 12px; }
+.prof-ava__acts .note { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--muted-2); }
+
+.prof-sec { margin-bottom: 34px; }
+.prof-sec > h2 { display: flex; align-items: baseline; gap: 9px; margin: 0 0 14px;
+  font-size: 13px; font-weight: 800; letter-spacing: -0.01em;
+  padding-bottom: 9px; border-bottom: 1px solid var(--line); }
+.prof-sec > h2 em { font-family: var(--mono); font-size: 10px; font-style: normal; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted-2); font-weight: 400; }
+
+/* 원칙 세 줄 — 번호 + 제목 + 설명. 라벨을 매 줄 반복하지 않는다 (aria-label 로 대신) */
+.prof-pr { display: grid; grid-template-columns: 26px minmax(0, 210px) minmax(0, 1fr); gap: 10px;
+  align-items: center; margin-bottom: 9px; }
+.prof-pr .no { font-family: var(--mono); font-size: 11px; color: var(--muted-2); }
+.prof-pr .f { margin-bottom: 0; }
+
+.prof-slug { display: flex; gap: 8px; align-items: center; }
+.prof-slug .slug-row { flex: 1; min-width: 0; }
+
+.prof-sec--acct > h2 { border-bottom-color: var(--line-2); }
+.prof-acct { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 20px; margin: 0; }
+.prof-acct > div { padding: 9px 0; border-bottom: 1px dashed var(--line); }
+.prof-acct dt { font-size: 11.5px; color: var(--muted-2); }
+.prof-acct dd { margin: 2px 0 0; font-size: 13.5px; font-weight: 700; }
+.prof-acct__acts { display: flex; gap: 7px; margin-top: 14px; }
+
+@media (max-width: 700px) {
+  .prof-hero { flex-direction: column; align-items: flex-start; }
+  .prof-pr { grid-template-columns: 26px minmax(0, 1fr); }
+  .prof-pr .no { grid-row: span 2; }
+  .prof-acct { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* ── 승인 대기 ── */
 .appr { display: grid; gap: 14px; }

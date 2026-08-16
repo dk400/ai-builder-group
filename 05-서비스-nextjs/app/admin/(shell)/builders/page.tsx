@@ -30,6 +30,7 @@ export default function AdminBuildersPage() {
     bio: b.bio,
     focus: b.focus,
     stack: b.stack,
+    principles: b.principles,
     email: b.email,
     account: b.accountRole,
     active: b.active,
