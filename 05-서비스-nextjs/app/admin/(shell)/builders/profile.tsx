@@ -20,6 +20,21 @@ const OTHER = '__other__'
 const BLURB_REC = 45
 const BLURB_MAX = 52
 
+/* 소개 길이 — /builder 프로필 히어로의 .bp-bio 에서 실측.
+
+     글자 수      데스크톱(550px)   모바일 390px(350px)
+     ~60자        2줄               2줄
+     ~90자        2줄               4줄
+     100~140자    3줄               5줄
+     150자~       4줄               6줄
+
+   데스크톱은 max-width: 56ch 라 900~1440px 어디서 봐도 글상자가 550px 로 같다. 그래서
+   줄 수가 갈리는 건 모바일뿐이다. 히어로 사진(500px)이 훨씬 커서 넘칠 위험은 없고,
+   기준은 순전히 읽는 호흡과 열 명의 통일성이다 — 지금 아홉 명이 70~94자로 두 줄에 앉고
+   조쉬만 124자로 세 줄이다. 140자는 데스크톱 세 줄이 유지되는 마지막 지점이다. */
+const BIO_REC = 90
+const BIO_MAX = 140
+
 export type Profile = {
   slug: string
   no: string
@@ -53,6 +68,7 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
   const [slug, setSlug] = useState(p.slug)
   const [stack, setStack] = useState(p.stack.join(', '))
   const [blurb, setBlurb] = useState(p.blurb)
+  const [bio, setBio] = useState(p.bio)
 
   /* 저장된 값이 목록에 없으면 '기타'로 열어 둔 채 그 값을 그대로 보여 준다.
      목록에 없다고 값을 비워 버리면, 폼을 열기만 해도 프로필이 지워진다. */
@@ -154,8 +170,17 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
           </p>
         </div>
         <div className="f">
-          <label htmlFor="bio">소개 <span className="opt">프로필 상단 본문</span></label>
-          <textarea id="bio" defaultValue={p.bio} onChange={touch} style={{ minHeight: 108 }} />
+          <label className="with-cc" htmlFor="bio">
+            소개 <span className="opt">프로필 상단 본문</span>
+            <CharCount value={bio} rec={BIO_REC} max={BIO_MAX} />
+          </label>
+          <textarea id="bio" value={bio} style={{ minHeight: 108 }}
+            onChange={e => { setBio(e.target.value); touch() }} />
+          <p className="hint">
+            {/* 줄이 바뀌는 자리에 표현식이 오면 JSX 가 그 사이 공백을 지운다 — 문장이 붙는다 */}
+            <b>{BIO_REC}자 이내</b>를 권합니다 — 데스크톱 두 줄, 모바일 네 줄로 앉습니다.{' '}
+            {BIO_MAX}자를 넘으면 데스크톱도 네 줄, 모바일은 여섯 줄이 됩니다.
+          </p>
         </div>
         <div className="f2">
           {/* 위 '전문 분야'가 분류라면 이쪽은 실제로 맡는 일이다 — 둘 다 '전문 분야'라
