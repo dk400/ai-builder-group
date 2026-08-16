@@ -1,6 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { useRole } from '../../role'
+import ProfileForm, { type Profile } from './profile'
 
 type Row = {
   slug: string; name: string; email: string
@@ -8,28 +10,50 @@ type Row = {
   active: boolean; lastLogin: string; done: number
 }
 
-export default function BuildersView({ rows }: { rows: Row[] }) {
+export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles: Profile[] }) {
   const { role, me } = useRole()
   const isAdmin = role === 'admin'
-  /* 빌더는 본인 프로필만 볼 수 있고 본인 것만 수정한다 (FR-A06-05).
-     계정 목록·발급·회수는 관리자 전용이다 (FR-A06-01~03). */
-  const shown = isAdmin ? rows : rows.filter(r => r.slug === me)
+
+  /* 빌더에게는 목록을 보여줄 이유가 없다 — 볼 수 있는 계정이 자기 하나뿐이라(FR-A06-05)
+     한 줄짜리 표에 '편집' 버튼을 두면 클릭이 한 번 늘 뿐이다. 바로 편집 폼을 연다. */
+  if (!isAdmin) {
+    const mine = profiles.find(p => p.slug === me)
+    return (
+      <main id="main">
+        <div className="adm-top">
+          <div>
+            <h1>내 프로필</h1>
+            <p className="sub">여기서 고친 내용은 공개 사이트의 빌더 프로필에 그대로 나갑니다.</p>
+          </div>
+          <div className="adm-top__r">
+            {mine && (
+              <Link className="abtn" href={`/builder?b=${mine.slug}`} target="_blank" rel="noopener noreferrer">
+                공개 화면 보기 ↗
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="adm-body">
+          {mine
+            ? <ProfileForm p={mine} canEditAccount={false} />
+            : <div className="adm-empty"><h3>계정을 찾을 수 없습니다</h3><p>관리자에게 문의해 주세요.</p></div>}
+        </div>
+      </main>
+    )
+  }
+
   const active = rows.filter(r => r.active).length
 
   return (
     <main id="main">
       <div className="adm-top">
         <div>
-          <h1>{isAdmin ? '빌더 관리' : '내 프로필'}</h1>
+          <h1>빌더 관리</h1>
           {/* 기수가 늘수록 계정이 계속 증가한다 — 발급만큼 회수 절차가 중요하다 (기획서 §5.6) */}
-          <p className="sub">
-            {isAdmin
-              ? `계정 ${rows.length}개 · 활성 ${active}개. 자체 회원가입은 없고, 여기서만 발급합니다.`
-              : '본인 프로필만 수정할 수 있습니다. 다른 빌더의 계정은 보이지 않습니다.'}
-          </p>
+          <p className="sub">계정 {rows.length}개 · 활성 {active}개. 자체 회원가입은 없고, 여기서만 발급합니다.</p>
         </div>
         <div className="adm-top__r">
-          {isAdmin && <button className="abtn abtn--ink" type="button">＋ 계정 발급</button>}
+          <button className="abtn abtn--ink" type="button">＋ 계정 발급</button>
         </div>
       </div>
 
@@ -48,13 +72,13 @@ export default function BuildersView({ rows }: { rows: Row[] }) {
             </tr>
           </thead>
           <tbody>
-            {shown.map(r => (
+            {rows.map(r => (
               <tr key={r.slug}>
                 <td className="thumb">
                   <img src={r.avatar} alt="" loading="lazy" style={{ width: 34, height: 34, borderRadius: '50%' }} />
                 </td>
                 <td>
-                  <span className="t">{r.name}</span>
+                  <Link className="t" href={`/admin/builders/${r.slug}`}>{r.name}</Link>
                   <span className="sub">{r.roleLabel}</span>
                 </td>
                 <td className="muted">{r.email}</td>
@@ -74,12 +98,11 @@ export default function BuildersView({ rows }: { rows: Row[] }) {
                 </td>
                 <td className="right">
                   <span className="acts">
-                    <button className="abtn abtn--sm" type="button">프로필 편집</button>
-                    {/* 회수하면 즉시 로그인이 막히지만 작성한 콘텐츠는 남는다 (FR-A06-03).
-                        발급·회수는 관리자만 — 빌더에게는 버튼을 주지 않는다 */}
-                    {isAdmin && (r.active
+                    <Link className="abtn abtn--sm" href={`/admin/builders/${r.slug}`}>프로필 편집</Link>
+                    {/* 회수하면 즉시 로그인이 막히지만 작성한 콘텐츠는 남는다 (FR-A06-03) */}
+                    {r.active
                       ? <button className="abtn abtn--sm abtn--danger" type="button">회수</button>
-                      : <button className="abtn abtn--sm" type="button">재발급</button>)}
+                      : <button className="abtn abtn--sm" type="button">재발급</button>}
                   </span>
                 </td>
               </tr>
@@ -88,9 +111,7 @@ export default function BuildersView({ rows }: { rows: Row[] }) {
         </table>
 
         <p className="hint" style={{ marginTop: 14, fontSize: 12.5, color: 'var(--muted)' }}>
-          {isAdmin
-            ? '※ 계정을 회수해도 그 빌더가 작성한 글과 프로젝트는 그대로 남습니다 · 관리자 승격은 화면에서 할 수 없습니다'
-            : '※ 여기서 고친 이름·한 줄 소개·사진은 공개 사이트의 빌더 프로필에 그대로 나갑니다'}
+          ※ 계정을 회수해도 그 빌더가 작성한 글과 프로젝트는 그대로 남습니다 · 관리자 승격은 화면에서 할 수 없습니다
         </p>
       </div>
     </main>

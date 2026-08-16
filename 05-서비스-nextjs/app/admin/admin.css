@@ -215,6 +215,8 @@ body:has(.adm)::after { display: none; }
 .drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .drop .ph { position: relative; z-index: 1; }
 .drop .ph em { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--muted-2); margin-top: 5px; font-style: normal; }
+/* 인물 사진은 4:5 세로컷이다 (에셋 스펙 800×1000) — 16:10 틀에 넣으면 얼굴이 잘린다 */
+.drop--avatar { aspect-ratio: 4 / 5; max-width: 200px; }
 
 /* 빌더 연결 */
 .bpick { display: flex; flex-wrap: wrap; gap: 7px; }
