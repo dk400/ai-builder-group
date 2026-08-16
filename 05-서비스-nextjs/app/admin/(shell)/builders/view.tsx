@@ -110,7 +110,7 @@ export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles
           </tbody>
         </table>
 
-        <p className="hint" style={{ marginTop: 14, fontSize: 12.5, color: 'var(--muted)' }}>
+        <p className="hint" style={{ marginTop: 14 }}>
           ※ 계정을 회수해도 그 빌더가 작성한 글과 프로젝트는 그대로 남습니다 · 관리자 승격은 화면에서 할 수 없습니다
         </p>
       </div>

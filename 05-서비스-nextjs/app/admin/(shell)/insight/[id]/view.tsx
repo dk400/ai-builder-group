@@ -102,7 +102,7 @@ export default function InsightEditView(p: Props) {
                   {p.bodyHtml
                     ? <div className="ed__body" dangerouslySetInnerHTML={{ __html: p.bodyHtml }} />
                     : (
-                      <div className="ed__body" style={{ color: 'var(--muted-2)' }}>
+                      <div className="ed__body ed__body--empty">
                         <p>여기에 본문을 씁니다. 소제목은 H2 부터 시작합니다.</p>
                       </div>
                     )}

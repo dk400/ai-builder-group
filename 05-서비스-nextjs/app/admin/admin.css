@@ -17,7 +17,20 @@ body:has(.adm) { background: var(--paper-3); }
 /* 종이 질감 오버레이는 표가 많은 화면에서 눈을 피로하게 한다 */
 body:has(.adm)::after { display: none; }
 
-.adm { --adm-nav: 236px; --adm-bar: 34px; color: var(--ink); }
+.adm {
+  --adm-nav: 236px; --adm-bar: 34px; color: var(--ink);
+  /* 보조 텍스트 색.
+
+     --muted(#807E74)를 쓰고 있었는데 종이 배경(#FBF9F4) 위에서 3.75:1 이라 WCAG AA 의
+     4.5:1 에 미달한다. 공개 페이지는 16px 본문이라 덜 티가 났지만, 어드민은 라벨·힌트가
+     12px 대라 그대로 쓰면 읽히지 않는다. 실측 6.1:1 인 값으로 내렸다.
+
+     함께 고친 것 — 10px 대 글자를 12px 이상으로 올리고, 자간을 .16~.18em 에서 .06em 안팎으로
+     줄였다. 자간을 넓힌 작은 회색 mono 가 "기계가 찍어낸 화면" 인상의 대부분이었다.
+     한글 라벨(콘텐츠 · 제목 · 카테고리)에는 mono 와 uppercase 를 걷어냈다 — JetBrains Mono 에
+     한글 글리프가 없어 어차피 Pretendard 로 떨어지는데 자간만 남아 어색했다. */
+  --adm-dim: #5E5C53;
+}
 /* style.css 의 section { padding: 136px 0 } 은 공개 페이지의 섹션 간격이다.
    어드민에서 <section> 을 의미 구분자로 쓰면 그 여백이 그대로 붙어 폼 사이가 벌어진다 —
    실제로 프로필 편집 화면에서 항목 사이가 136px 씩 떠서 화면이 텅 비어 보였다. */
@@ -32,14 +45,13 @@ body:has(.adm)::after { display: none; }
   .adm-mock { flex-direction: column; justify-content: center; gap: 4px; padding: 6px 12px; font-size: 11.5px; text-align: center; }
   .adm-roleswitch { margin-left: 0; padding-left: 0; border-left: 0; }
 }
-.adm-mock b { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-  border: 1px solid var(--ink); border-radius: 999px; padding: 2px 8px; margin-right: 6px; }
+.adm-mock b { font-size: 12px; font-weight: 800; letter-spacing: -0.01em;
+  border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px 9px; margin-right: 7px; }
 
 /* 역할 전환 — 목업 전용 스위치. 인증이 붙으면 통째로 사라진다 */
 .adm-roleswitch { display: inline-flex; align-items: center; gap: 5px; margin-left: 14px;
   padding-left: 14px; border-left: 1px solid rgba(14,14,12,.25); }
-.adm-roleswitch .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
-  text-transform: uppercase; opacity: .6; margin-right: 2px; }
+.adm-roleswitch .lbl { font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em; opacity: .72; margin-right: 3px; }
 .adm-roleswitch button { border: 1px solid rgba(14,14,12,.3); background: transparent; color: var(--ink);
   font-family: var(--sans); font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em;
   padding: 3px 10px; border-radius: 999px; cursor: pointer; min-height: 24px; }
@@ -54,16 +66,18 @@ body:has(.adm)::after { display: none; }
 .adm-nav__brand { display: flex; align-items: center; gap: 9px; padding: 0 10px 20px; font-weight: 800; letter-spacing: -0.03em; font-size: 15px; }
 .adm-nav__brand em { width: 22px; height: 22px; border-radius: 7px; background: var(--lime); color: var(--ink);
   display: grid; place-items: center; font-style: normal; font-size: 12px; }
-.adm-nav__brand span { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; color: var(--d-mut);
-  border: 1px solid var(--d-line); border-radius: 999px; padding: 2px 7px; }
-.adm-nav__sec { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--d-mut2); padding: 16px 10px 7px; }
+.adm-nav__brand span { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  color: var(--lime); border: 1px solid rgba(216,255,61,.42); background: rgba(216,255,61,.14);
+  border-radius: 999px; padding: 3px 9px; }
+/* 한글 라벨이라 mono·uppercase·넓은 자간을 걷었다 — 셋 다 라틴 대문자용 장치다 */
+.adm-nav__sec { font-size: 12px; font-weight: 700; letter-spacing: -0.01em;
+  color: rgba(244,241,234,.62); padding: 18px 10px 8px; }
 .adm-nav a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px;
-  color: var(--d-mut); text-decoration: none; font-size: 14px; font-weight: 600; transition: background var(--hover), color var(--hover); }
+  color: rgba(244,241,234,.74); text-decoration: none; font-size: 14px; font-weight: 600; transition: background var(--hover), color var(--hover); }
 .adm-nav a:hover { background: var(--d-line2); color: var(--paper); }
 .adm-nav a.on { background: var(--paper); color: var(--ink); }
 .adm-nav a i { font-style: normal; width: 17px; text-align: center; opacity: .85; }
-.adm-nav a .n { margin-left: auto; font-family: var(--mono); font-size: 11px; padding: 1px 7px; border-radius: 999px;
+.adm-nav a .n { margin-left: auto; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
   background: var(--d-line2); }
 .adm-nav a.on .n { background: var(--paper-3); }
 .adm-nav a .n--hot { background: var(--lime); color: var(--ink); }
@@ -72,14 +86,14 @@ body:has(.adm)::after { display: none; }
 .adm-who i { width: 28px; height: 28px; border-radius: 50%; background: var(--d-line2); display: grid; place-items: center;
   font-style: normal; font-size: 12px; font-weight: 700; color: var(--paper); }
 .adm-who b { display: block; font-size: 13px; }
-.adm-who span { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--d-mut2); }
+.adm-who span { display: block; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .06em; color: rgba(244,241,234,.66); }
 
 /* ── 본문 ── */
 .adm-main { min-width: 0; padding: 0 0 60px; }
 .adm-top { position: sticky; top: var(--adm-bar); z-index: 20; background: var(--paper-3);
   border-bottom: 1px solid var(--line); padding: 20px 30px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .adm-top h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.035em; }
-.adm-top .sub { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+.adm-top .sub { margin: 3px 0 0; color: var(--adm-dim); font-size: 13.5px; }
 /* 작은 글자 링크의 세로 클릭 영역 확보 — inline-block 이라야 패딩이 먹는다 */
 .adm-top .sub a, .adm-login .foot a { display: inline-block; padding: 7px 0; }
 .ed__body .yt-link a { display: inline-block; padding: 5px 0; }
@@ -105,11 +119,11 @@ body:has(.adm)::after { display: none; }
 
 /* ── 필터 바 ── */
 .adm-filter { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
-.adm-filter .fchip { font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; min-height: 32px;
-  border: 1px solid var(--line-2); background: var(--paper-2); color: var(--muted); cursor: pointer; transition: all var(--hover); }
+.adm-filter .fchip { font-size: 13px; font-weight: 700; padding: 7px 14px; border-radius: 999px; min-height: 32px;
+  border: 1px solid var(--line-2); background: var(--paper-2); color: var(--adm-dim); cursor: pointer; transition: all var(--hover); }
 .adm-filter .fchip:hover { border-color: var(--ink); color: var(--ink); }
 .adm-filter .fchip.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.adm-filter .fchip .c { font-family: var(--mono); font-size: 11px; margin-left: 6px; opacity: .7; }
+.adm-filter .fchip .c { font-family: var(--mono); font-size: 12px; font-weight: 700; margin-left: 6px; opacity: .82; }
 .adm-search { margin-left: auto; position: relative; }
 .adm-search input { width: 240px; padding: 8px 13px 8px 32px; border: 1px solid var(--line-2); border-radius: 9px;
   background: var(--paper-2); font-family: var(--sans); font-size: 13.5px; color: var(--ink); }
@@ -119,8 +133,9 @@ body:has(.adm)::after { display: none; }
 /* ── 표 ── */
 .adm-table { width: 100%; border-collapse: collapse; background: var(--paper-2);
   border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-.adm-table th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--muted-2); font-weight: 500; padding: 11px 16px; border-bottom: 1px solid var(--line); background: var(--paper-3); white-space: nowrap; }
+/* 헤더가 한글이라 mono·uppercase 를 걷고 크기·굵기를 올렸다 (10.5px 2.13:1 → 12px 11.9:1) */
+.adm-table th { text-align: left; font-size: 12px; letter-spacing: -0.01em;
+  color: var(--ink-2); font-weight: 700; padding: 11px 16px; border-bottom: 1px solid var(--line); background: var(--paper-3); white-space: nowrap; }
 .adm-table td { padding: 13px 16px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
 .adm-table tr:last-child td { border-bottom: 0; }
 .adm-table tbody tr:hover { background: var(--paper-3); }
@@ -129,54 +144,58 @@ body:has(.adm)::after { display: none; }
 .adm-table .t { font-weight: 700; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; display: block;
   max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px 0; }
 .adm-table .t:hover { text-decoration: underline; text-underline-offset: 3px; }
-.adm-table .sub { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted-2); }
-.adm-table .muted { color: var(--muted); font-size: 13px; }
+.adm-table .sub { display: block; font-family: var(--mono); font-size: 12px; color: var(--adm-dim); }
+.adm-table .muted { color: var(--adm-dim); font-size: 13.5px; }
 .adm-table .right { text-align: right; white-space: nowrap; }
 .adm-table .acts { display: inline-flex; gap: 6px; }
 .adm-table td.thumb { width: 74px; padding-right: 0; }
 .adm-table td.thumb img { width: 58px; height: 38px; object-fit: cover; border-radius: 6px; display: block; background: var(--paper-3); }
 
 /* ── 상태 배지 ── */
-.st { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
-  text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); white-space: nowrap; }
+.st { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em;
+  padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
 .st::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 .st--published { color: #2E6B3E; border-color: #BEDBC6; background: #F0F7F2; }
 .st--pending   { color: #8A5A00; border-color: #E8D5A8; background: #FBF5E6; }
-.st--draft     { color: var(--muted); border-color: var(--line-2); background: var(--paper-3); }
+.st--draft     { color: var(--ink-2); border-color: var(--line-2); background: var(--paper-3); }
 .st--rejected  { color: #A02D1F; border-color: #E3C4BE; background: #FBF2F0; }
-.st--archived  { color: var(--muted-2); border-color: var(--line); background: var(--paper-3); }
+.st--archived  { color: var(--ink-2); border-color: var(--line); background: var(--paper-3); opacity: .74; }
 
 /* ── 빈 상태 ── */
 .adm-empty { border: 1px dashed var(--line-2); border-radius: 14px; background: var(--paper-2);
   padding: 62px 24px; text-align: center; }
 .adm-empty h3 { margin: 0 0 6px; font-size: 17px; letter-spacing: -0.02em; }
-.adm-empty p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.adm-empty p { margin: 0; color: var(--adm-dim); font-size: 14px; }
 
 /* ── 편집 화면 ── */
 .adm-edit { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
 .card { background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px; }
-.card__h { padding: 12px 18px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 10.5px;
-  letter-spacing: .16em; text-transform: uppercase; color: var(--muted-2); display: flex; justify-content: space-between; align-items: center; }
+.card__h { padding: 12px 18px; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 700;
+  letter-spacing: -0.01em; color: var(--ink-2); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .card__b { padding: 18px; }
 .card + .card { margin-top: 18px; }
 
 .f { margin-bottom: 16px; }
 .f:last-child { margin-bottom: 0; }
-.f > label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+.f > label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
 .f > label .req { color: #A02D1F; margin-left: 3px; }
-.f > label .opt { color: var(--muted-2); font-weight: 500; margin-left: 6px; font-size: 11.5px; }
+.f > label .opt { color: var(--adm-dim); font-weight: 600; margin-left: 6px; font-size: 12px; }
 .f input[type="text"], .f input[type="email"], .f input[type="password"], .f textarea, .f select {
   width: 100%; box-sizing: border-box; padding: 10px 13px; border: 1px solid var(--line-2); border-radius: 9px;
   background: var(--paper); font-family: var(--sans); font-size: 14px; color: var(--ink); }
 .f textarea { resize: vertical; min-height: 88px; line-height: 1.7; }
 .f input:focus, .f textarea:focus, .f select:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
-.f .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height: 1.6; }
+/* .f 밖에서도 쓴다 (표 아래 주석 등) — 두 선택자를 함께 둔다.
+   인라인 style 로 색을 덮어쓰면 이 규칙이 무력해진다. 실제로 그렇게 한 곳에서만 3.47:1 이 남았다. */
+.f .hint, .adm .hint { margin: 6px 0 0; font-size: 12.5px; color: var(--adm-dim); line-height: 1.65; }
+/* 본문이 비어 있을 때의 안내 문구 */
+.ed__body--empty { color: var(--adm-dim); }
 /* 슬러그 예시가 어절 중간에서 접히면 읽을 수 없다 — 한 덩어리로 유지한다 */
 .f .hint code { font-family: var(--mono); font-size: 11.5px; background: var(--paper-3); padding: 1px 5px;
   border-radius: 4px; white-space: nowrap; }
 .f2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .slug-row { display: flex; align-items: center; gap: 0; }
-.slug-row .pre { font-family: var(--mono); font-size: 13px; color: var(--muted-2); background: var(--paper-3);
+.slug-row .pre { font-family: var(--mono); font-size: 13px; color: var(--adm-dim); background: var(--paper-3);
   border: 1px solid var(--line-2); border-right: 0; border-radius: 9px 0 0 9px; padding: 10px 10px; white-space: nowrap; }
 .slug-row input { border-radius: 0 9px 9px 0 !important; }
 
@@ -188,8 +207,8 @@ body:has(.adm)::after { display: none; }
   font-family: var(--mono); font-size: 12px; color: var(--ink-2); cursor: pointer; min-width: 32px; min-height: 32px; }
 .ed__bar button:hover { background: var(--paper-2); border-color: var(--line-2); }
 .ed__bar .sep { width: 1px; background: var(--line-2); margin: 4px 5px; }
-.ed__bar .note { margin-left: auto; align-self: center; font-family: var(--mono); font-size: 10.5px;
-  letter-spacing: .1em; color: var(--muted-2); }
+.ed__bar .note { margin-left: auto; align-self: center; font-size: 12px; font-weight: 600;
+  letter-spacing: -0.01em; color: var(--adm-dim); }
 .ed__body { padding: 18px 20px; min-height: 300px; font-size: 15px; line-height: 1.85; color: var(--ink-2); }
 .ed__body h2 { font-size: 20px; color: var(--ink); letter-spacing: -0.03em; margin: 24px 0 10px; }
 .ed__body h2:first-child { margin-top: 0; }
@@ -203,22 +222,22 @@ body:has(.adm)::after { display: none; }
   display: grid; place-items: center; font-size: 15px; }
 .ed__body .yt-link { font-size: 13.5px; }
 .ed__body .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 22px; }
-.ed__body .tags .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; border: 1px solid var(--line-2);
-  border-radius: 999px; padding: 3px 10px; color: var(--muted); }
+.ed__body .tags .tag { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  border: 1px solid var(--line-2); border-radius: 999px; padding: 3px 10px; color: var(--adm-dim); }
 
 /* 사이드 패널 행 */
 .srow { display: flex; justify-content: space-between; align-items: center; gap: 12px;
   padding: 11px 0; border-bottom: 1px dashed var(--line); font-size: 13.5px; }
 .srow:last-child { border-bottom: 0; }
-.srow dt, .srow .k { color: var(--muted); font-size: 13px; }
+.srow dt, .srow .k { color: var(--adm-dim); font-size: 13px; }
 .srow dd, .srow .v { margin: 0; font-weight: 700; text-align: right; }
 
 /* 업로드 자리 */
 .drop { border: 1px dashed var(--line-2); border-radius: 11px; background: var(--paper);
-  aspect-ratio: 16 / 10; display: grid; place-items: center; text-align: center; color: var(--muted); font-size: 13px; position: relative; overflow: hidden; }
+  aspect-ratio: 16 / 10; display: grid; place-items: center; text-align: center; color: var(--adm-dim); font-size: 13px; position: relative; overflow: hidden; }
 .drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .drop .ph { position: relative; z-index: 1; }
-.drop .ph em { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--muted-2); margin-top: 5px; font-style: normal; }
+.drop .ph em { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--adm-dim); margin-top: 5px; font-style: normal; }
 /* 인물 사진은 4:5 세로컷이다 (에셋 스펙 800×1000) — 16:10 틀에 넣으면 얼굴이 잘린다 */
 .drop--avatar { aspect-ratio: 4 / 5; max-width: 200px; }
 
@@ -231,13 +250,13 @@ body:has(.adm)::after { display: none; }
 .bpick button:hover { border-color: var(--ink); }
 .bpick button.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .bpick button.on .r { color: var(--lime); }
-.bpick .r { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--muted-2); }
+.bpick .r { font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--adm-dim); }
 
 /* 하단 액션 바 */
 .adm-actions { position: sticky; bottom: 0; margin-top: 22px; padding: 14px 0;
   background: linear-gradient(to top, var(--paper-3) 72%, transparent);
   display: flex; gap: 8px; align-items: center; }
-.adm-actions .warn { font-size: 12.5px; color: var(--muted); margin-right: auto; }
+.adm-actions .warn { font-size: 13px; color: var(--adm-dim); margin-right: auto; }
 
 /* ── 프로필 편집 ──
    목록과 달리 밀도를 올릴 이유가 없는 화면이다. 한 사람이 자기 정보를 손보는 자리라
@@ -259,21 +278,21 @@ body:has(.adm)::after { display: none; }
 
 .prof-id { min-width: 0; }
 .prof-id b { display: block; font-size: 21px; font-weight: 800; letter-spacing: -0.035em; }
-.prof-id > span { display: block; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.prof-id > span { display: block; color: var(--adm-dim); font-size: 13.5px; margin-top: 2px; }
 .prof-ava__acts { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 12px; }
-.prof-ava__acts .note { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--muted-2); }
+.prof-ava__acts .note { font-size: 12px; color: var(--adm-dim); }
 
 .prof-sec { margin-bottom: 34px; }
 .prof-sec > h2 { display: flex; align-items: baseline; gap: 9px; margin: 0 0 14px;
   font-size: 13px; font-weight: 800; letter-spacing: -0.01em;
   padding-bottom: 9px; border-bottom: 1px solid var(--line); }
-.prof-sec > h2 em { font-family: var(--mono); font-size: 10px; font-style: normal; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--muted-2); font-weight: 400; }
+.prof-sec > h2 em { font-size: 12px; font-style: normal; letter-spacing: -0.01em;
+  color: var(--adm-dim); font-weight: 600; }
 
 /* 원칙 세 줄 — 번호 + 제목 + 설명. 라벨을 매 줄 반복하지 않는다 (aria-label 로 대신) */
 .prof-pr { display: grid; grid-template-columns: 26px minmax(0, 210px) minmax(0, 1fr); gap: 10px;
   align-items: center; margin-bottom: 9px; }
-.prof-pr .no { font-family: var(--mono); font-size: 11px; color: var(--muted-2); }
+.prof-pr .no { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--adm-dim); }
 .prof-pr .f { margin-bottom: 0; }
 
 .prof-slug { display: flex; gap: 8px; align-items: center; }
@@ -282,7 +301,7 @@ body:has(.adm)::after { display: none; }
 .prof-sec--acct > h2 { border-bottom-color: var(--line-2); }
 .prof-acct { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 20px; margin: 0; }
 .prof-acct > div { padding: 9px 0; border-bottom: 1px dashed var(--line); }
-.prof-acct dt { font-size: 11.5px; color: var(--muted-2); }
+.prof-acct dt { font-size: 12.5px; color: var(--adm-dim); }
 .prof-acct dd { margin: 2px 0 0; font-size: 13.5px; font-weight: 700; }
 .prof-acct__acts { display: flex; gap: 7px; margin-top: 14px; }
 
@@ -298,10 +317,10 @@ body:has(.adm)::after { display: none; }
 .appr__row { background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px;
   display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 18px; align-items: center; }
 .appr__row img { width: 96px; height: 64px; object-fit: cover; border-radius: 8px; display: block; background: var(--paper-3); }
-.appr__row .kind { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
-  border: 1px solid var(--line-2); border-radius: 999px; padding: 2px 8px; color: var(--muted); }
+.appr__row .kind { font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .04em;
+  border: 1px solid var(--line-2); border-radius: 999px; padding: 3px 9px; color: var(--ink-2); }
 .appr__row h3 { margin: 8px 0 4px; font-size: 16px; letter-spacing: -0.025em; }
-.appr__row .meta { margin: 0; font-size: 12.5px; color: var(--muted); }
+.appr__row .meta { margin: 0; font-size: 13px; color: var(--adm-dim); }
 .appr__acts { display: flex; gap: 7px; }
 
 /* ── 로그인 ── */
@@ -312,10 +331,11 @@ body:has(.adm)::after { display: none; }
 .adm-login__brand em { width: 24px; height: 24px; border-radius: 8px; background: var(--ink); color: var(--lime);
   display: grid; place-items: center; font-style: normal; font-size: 12px; }
 .adm-login h1 { margin: 15px 0 3px; font-size: 20px; font-weight: 800; letter-spacing: -0.035em; }
-.adm-login p.lead { margin: 0 0 24px; color: var(--muted); font-size: 13.5px; }
+.adm-login p.lead { margin: 0 0 24px; color: var(--adm-dim); font-size: 14px; }
 .adm-login .abtn { width: 100%; justify-content: center; padding: 12px; font-size: 14.5px; }
-.adm-login .foot { margin: 18px 0 0; font-size: 12.5px; color: var(--muted-2); text-align: center; line-height: 1.7; }
-.adm-login .foot a { color: var(--muted); }
+.adm-login .foot { margin: 18px 0 0; font-size: 12.5px; color: var(--adm-dim); text-align: center; line-height: 1.7; }
+/* 링크는 주변 글보다 진해야 링크로 읽힌다 — --muted 는 오히려 더 흐렸다 (3.87:1) */
+.adm-login .foot a { color: var(--ink-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── 좁은 화면 ── */
 @media (max-width: 1000px) {
