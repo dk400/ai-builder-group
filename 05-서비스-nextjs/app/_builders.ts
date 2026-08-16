@@ -177,6 +177,27 @@ export const BUILDERS: Builder[] = [
   },
 ]
 
+/* 전문 분야 — 그룹이 수주하는 영역의 목록이다.
+
+   빌더 카드 · 프로젝트 크레딧 · 매칭 결과에 그대로 나가는 값이라 자유 입력으로 두면
+   "랜딩·인터랙션" 과 "랜딩 / 인터랙션" 이 섞여 목록이 지저분해진다. 어드민에서는 이 목록에서
+   고르게 하고, 여기 없는 영역이 생기면 '기타'로 직접 적는다.
+
+   ⚠ 순서는 화면 노출 순서다. 늘릴 때는 /work 의 매칭 위저드(landing · platform · ai · app)가
+   어느 항목으로 이어지는지 함께 확인할 것. */
+export const SPECIALTIES = [
+  '프로덕트 빌더 · 기획+개발',
+  '랜딩 · 인터랙션',
+  '플랫폼 · 어드민',
+  'AI 서비스 · 에이전트',
+  '모바일 앱 · 크로스플랫폼',
+  '데이터 · 업무 자동화',
+  '브랜드 · 모션 디자인',
+  '커머스 · 결제',
+  '그로스 · SEO',
+  '운영 · 인프라',
+] as const
+
 export function builderBySlug(slug: string): Builder | undefined {
   return BUILDERS.find(b => b.slug === slug)
 }

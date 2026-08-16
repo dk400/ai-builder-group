@@ -2,13 +2,16 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import { SPECIALTIES } from '@/app/_builders'
+
+const OTHER = '__other__'
 
 export type Profile = {
   slug: string
   no: string
   name: string
   avatar: string
-  roleLabel: string        /* 직함 한 줄 — '랜딩 · 인터랙션' */
+  roleLabel: string        /* 전문 분야 — '랜딩 · 인터랙션'. SPECIALTIES 중 하나이거나 직접 입력값 */
   blurb: string            /* 카드 한 줄 소개 */
   bio: string              /* 프로필 본문 */
   focus: string
@@ -35,6 +38,12 @@ export type Profile = {
 export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEditAccount: boolean }) {
   const [slug, setSlug] = useState(p.slug)
   const [stack, setStack] = useState(p.stack.join(', '))
+
+  /* 저장된 값이 목록에 없으면 '기타'로 열어 둔 채 그 값을 그대로 보여 준다.
+     목록에 없다고 값을 비워 버리면, 폼을 열기만 해도 프로필이 지워진다. */
+  const known = (SPECIALTIES as readonly string[]).includes(p.roleLabel)
+  const [spec, setSpec] = useState(known ? p.roleLabel : OTHER)
+  const [specOther, setSpecOther] = useState(known ? '' : p.roleLabel)
   const [photo, setPhoto] = useState(p.avatar)
   const [photoName, setPhotoName] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -98,9 +107,24 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
           <input id="name" type="text" defaultValue={p.name} onChange={touch} />
           <p className="hint">사이트 전체에 이 표기가 나갑니다 — 빌더 카드 · 프로젝트 크레딧 · 매칭 결과.</p>
         </div>
+        {/* 자유 입력이었는데, 이 값이 빌더 카드·프로젝트 크레딧·매칭 결과에 그대로 나가서
+            표기가 조금만 흔들려도 목록이 지저분해진다. 정해진 목록에서 고르게 바꿨다. */}
         <div className="f">
-          <label htmlFor="role">직함 <span className="req">*</span></label>
-          <input id="role" type="text" defaultValue={p.roleLabel} onChange={touch} placeholder="랜딩 · 인터랙션" />
+          <label htmlFor="spec">전문 분야 <span className="req">*</span></label>
+          <select id="spec" value={spec}
+            onChange={e => { setSpec(e.target.value); touch() }}>
+            {SPECIALTIES.map(s => <option key={s} value={s}>{s}</option>)}
+            <option value={OTHER}>기타 — 직접 입력</option>
+          </select>
+          {spec === OTHER && (
+            <input type="text" value={specOther} style={{ marginTop: 8 }}
+              onChange={e => { setSpecOther(e.target.value); touch() }}
+              aria-label="전문 분야 직접 입력"
+              placeholder="예) 리서치 · 사용성 테스트" />
+          )}
+          <p className="hint">
+            빌더 카드와 프로젝트 크레딧에 이 표기가 나갑니다. 목록에 없는 영역이면 <b>기타</b>를 고르세요.
+          </p>
         </div>
         <div className="f">
           <label htmlFor="blurb">한 줄 소개 <span className="req">*</span> <span className="opt">빌더 카드에 노출</span></label>
@@ -111,9 +135,12 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
           <textarea id="bio" defaultValue={p.bio} onChange={touch} style={{ minHeight: 108 }} />
         </div>
         <div className="f2">
+          {/* 위 '전문 분야'가 분류라면 이쪽은 실제로 맡는 일이다 — 둘 다 '전문 분야'라
+              부르고 있어서 무엇을 적는 칸인지 알 수 없었다. 공개 프로필의 라벨도 함께 맞췄다. */}
           <div className="f">
-            <label htmlFor="focus">전문 분야</label>
-            <input id="focus" type="text" defaultValue={p.focus} onChange={touch} />
+            <label htmlFor="focus">주로 맡는 일</label>
+            <input id="focus" type="text" defaultValue={p.focus} onChange={touch}
+              placeholder="수주용 랜딩 · 브랜드 사이트" />
           </div>
           <div className="f">
             <label htmlFor="stack">주요 스택 <span className="opt">쉼표로 구분</span></label>

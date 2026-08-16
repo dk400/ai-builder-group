@@ -94,7 +94,10 @@ export default function BuilderView() {
               <p className="bp-bio" data-el="bio"></p>
               <dl className="bp-facts">
                 <div className="fhead"><span>Builder Sheet</span><span data-el="sheetno">B—001</span></div>
-                <div className="row"><dt>전문 분야</dt><dd data-el="focus"></dd></div>
+                {/* 이 시트 바로 위 bp-role 이 '전문 분야'(랜딩 · 인터랙션)를 이미 보여 준다.
+                    같은 이름을 두 번 쓰면 무엇이 다른지 알 수 없어 이쪽을 세부 표기로 바꿨다.
+                    어드민 프로필 편집의 라벨과 같은 말을 쓴다. */}
+                <div className="row"><dt>주로 맡는 일</dt><dd data-el="focus"></dd></div>
                 <div className="row"><dt>주요 스택</dt><dd data-el="stack"></dd></div>
                 <div className="row"><dt>수행 프로젝트</dt><dd className="num" data-el="done"></dd></div>
                 <div className="row"><dt>함께한 파트너</dt><dd>똑똑한개발자</dd></div>
