@@ -12,6 +12,7 @@ export default function AdminInsightPage() {
     thumb: `/assets/img/ins/${a.thumb}`,
     status: a.status,
     updated: a.updated,
+    owner: a.owner,
   }))
 
   const counts = { all: rows.length } as Record<Status | 'all', number>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Empty } from '../ui'
+import { useRole } from '../../role'
 
 type Row = {
   kind: 'Work' | 'Insight'
@@ -14,10 +15,32 @@ type Row = {
 }
 
 export default function ApprovalsView({ rows }: { rows: Row[] }) {
+  const { role } = useRole()
   /* 반려는 사유 입력이 필수다 (FR-A07-04) — 사유 없이는 버튼이 눌리지 않는다.
      빌더 입장에서 "반려됨" 세 글자만 받으면 무엇을 고쳐야 할지 알 수 없다. */
   const [rejecting, setRejecting] = useState<string | null>(null)
   const [reason, setReason] = useState('')
+
+  /* 빌더가 주소를 직접 쳐서 들어오면 403 (FR-A07-05).
+     메뉴에서 감추는 것만으로는 막은 게 아니다 — 실제로는 이 판정을 서버가 한다. */
+  if (role !== 'admin') {
+    return (
+      <main id="main">
+        <div className="adm-top">
+          <div>
+            <h1>접근할 수 없습니다</h1>
+            <p className="sub">403 — 승인 대기는 운영 관리자 전용 화면입니다.</p>
+          </div>
+        </div>
+        <div className="adm-body">
+          <Empty
+            title="빌더 계정으로는 열 수 없는 화면입니다"
+            desc="제출한 콘텐츠의 승인 여부는 Insight · Work 목록의 상태에서 확인할 수 있습니다."
+          />
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main id="main">

@@ -3,30 +3,48 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { Badge, Empty, FilterBar } from '../ui'
-import type { Status } from '../../_mock'
+import { useRole } from '../../role'
+import { STATUS_ORDER, countBy, type Status } from '../../_mock'
 
 type Row = {
   slug: string; title: string; tag: string; thumb: string
-  builders: string[]; status: Status; updated: string
+  builders: string[]; status: Status; updated: string; owner: string
 }
 
 export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Record<Status | 'all', number> }) {
+  const { role, me } = useRole()
+  const isAdmin = role === 'admin'
   const [active, setActive] = useState<Status | 'all'>('all')
   const [query, setQuery] = useState('')
 
+  /* 빌더는 본인이 리드인 프로젝트만 본다 (FR-A04-01). 목업이라 화면에서 거른다 —
+     실제로는 쿼리에서 걸러야 한다 (insight/view.tsx 주석 참조) */
+  const mine = useMemo(() => (isAdmin ? rows : rows.filter(r => r.owner === me)), [rows, isAdmin, me])
+
+  const scoped = useMemo(() => {
+    if (isAdmin) return counts
+    const c = { all: mine.length } as Record<Status | 'all', number>
+    for (const s of STATUS_ORDER) c[s] = countBy(mine, s)
+    return c
+  }, [isAdmin, counts, mine])
+
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return rows.filter(r =>
+    return mine.filter(r =>
       (active === 'all' || r.status === active) &&
       (q === '' || r.title.toLowerCase().includes(q) || r.builders.join(' ').toLowerCase().includes(q)))
-  }, [rows, active, query])
+  }, [mine, active, query])
 
   return (
     <main id="main">
       <div className="adm-top">
         <div>
           <h1>Work 관리</h1>
-          <p className="sub">관리자 시점 — 전체 {rows.length}건이 보입니다. 빌더 계정은 본인 프로젝트만 보입니다.</p>
+          <p className="sub">
+            {isAdmin
+              ? `운영 관리자 — 전체 ${rows.length}건`
+              : `빌더 리아 — 내가 리드인 ${mine.length}건만 보입니다`}
+          </p>
         </div>
         <div className="adm-top__r">
           <Link className="abtn abtn--ink" href="/admin/work/new">＋ 새 프로젝트</Link>
@@ -35,7 +53,7 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
 
       <div className="adm-body">
         <FilterBar
-          counts={counts} active={active} onActive={setActive}
+          counts={scoped} active={active} onActive={setActive}
           query={query} onQuery={setQuery} placeholder="제목 · 빌더 검색"
         />
 
@@ -68,8 +86,10 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
                   <td className="muted num">{r.updated}</td>
                   <td className="right">
                     <span className="acts">
-                      <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}>편집</Link>
-                      <button className="abtn abtn--sm abtn--danger" type="button">삭제</button>
+                      {!isAdmin && r.status === 'pending'
+                        ? <button className="abtn abtn--sm" type="button" disabled title="제출 후에는 편집할 수 없습니다">잠김</button>
+                        : <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}>편집</Link>}
+                      {isAdmin && <button className="abtn abtn--sm abtn--danger" type="button">삭제</button>}
                     </span>
                   </td>
                 </tr>

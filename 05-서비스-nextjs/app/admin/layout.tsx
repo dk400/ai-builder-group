@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './admin.css'
+import { RoleProvider, RoleSwitch } from './role'
 
 /* 어드민 목업 — 인증도 저장도 없다.
 
@@ -20,11 +21,15 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="adm">
-      <p className="adm-mock" role="status">
-        <b>목업</b> 화면 확인용입니다 — 로그인·저장·발행이 실제로 동작하지 않습니다
-      </p>
-      {children}
-    </div>
+    <RoleProvider>
+      <div className="adm">
+        <div className="adm-mock" role="status">
+          <span><b>목업</b> 로그인·저장·발행이 실제로 동작하지 않습니다</span>
+          {/* 권한 모델(PRD §2.2)을 눈으로 확인하는 스위치. 인증이 붙으면 사라진다 */}
+          <RoleSwitch />
+        </div>
+        {children}
+      </div>
+    </RoleProvider>
   )
 }

@@ -13,6 +13,7 @@ export default function AdminWorkPage() {
     builders: w.builders.flatMap(s => { const b = builderBySlug(s); return b ? [b.name] : [] }),
     status: w.status,
     updated: w.updated,
+    owner: w.owner,
   }))
 
   const counts = { all: rows.length } as Record<Status | 'all', number>

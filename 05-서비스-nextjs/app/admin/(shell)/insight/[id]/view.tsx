@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Badge } from '../../ui'
+import { useRole } from '../../../role'
 import type { Status } from '../../../_mock'
 
 type Props = {
@@ -30,6 +31,8 @@ const TOOLS = [
 ]
 
 export default function InsightEditView(p: Props) {
+  const { role } = useRole()
+  const isAdmin = role === 'admin'
   const [slug, setSlug] = useState(p.slug)
   const [dirty, setDirty] = useState(false)
   const touch = () => setDirty(true)
@@ -176,11 +179,15 @@ export default function InsightEditView(p: Props) {
         {/* 상태 머신대로만 움직인다 (§7.3 · FR-A03-07). 발행은 관리자만 누를 수 있다 */}
         <div className="adm-actions">
           <span className="warn">
-            {dirty ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)' : '목업이라 저장되지 않습니다'}
+            {dirty
+              ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)'
+              : isAdmin ? '목업이라 저장되지 않습니다' : '빌더는 제출까지 할 수 있습니다 · 발행은 관리자 승인 후'}
           </span>
           <button className="abtn" type="button">임시저장</button>
           <button className="abtn" type="button">제출 → 승인대기</button>
-          <button className="abtn abtn--lime" type="button">발행</button>
+          {/* 발행은 관리자만 (§7.3 상태 전이표). 빌더에게는 버튼 자체를 주지 않는다 —
+              눌러도 서버가 403 을 내지만, 있는데 안 되는 버튼은 화면이 거짓말하는 것이다 */}
+          {isAdmin && <button className="abtn abtn--lime" type="button">발행</button>}
         </div>
       </div>
     </main>

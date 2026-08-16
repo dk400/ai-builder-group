@@ -75,13 +75,13 @@ export const ARTICLES: Article[] = [
     slug: '3주-랜딩페이지-제작순서',
     cat: 'how', title: '우리가 3주 만에 랜딩 페이지를 만드는 순서',
     excerpt: '기획·디자인·개발을 한 사람이 맡으면 일정이 어떻게 접히는지.',
-    thumb: 'ins-native.jpg', source: 'own', author: '운영팀', date: '2026.08.09',
+    thumb: 'ins-native.jpg', source: 'own', author: '빌더 리아', date: '2026.08.09',
   },
   {
     slug: 'ai툴-실무도입-검증기준',
     cat: 'ai-ax', title: '새 AI 툴을 실무에 붙일 때 우리가 확인하는 것들',
     excerpt: '도구가 매주 바뀝니다. 붙일지 말지를 가르는 우리 기준을 공개합니다.',
-    thumb: 'ins-poc.jpg', source: 'own', author: '운영팀', date: '2026.08.07',
+    thumb: 'ins-poc.jpg', source: 'own', author: '빌더 세인', date: '2026.08.07',
   },
 
   /* ── 파트너 아티클 ── */

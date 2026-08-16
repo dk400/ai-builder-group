@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Badge } from '../../ui'
+import { useRole } from '../../../role'
 import type { Status } from '../../../_mock'
 
 type Roster = { slug: string; name: string; avatar: string; role: string }
@@ -19,10 +20,13 @@ type Props = {
   builders: string[]
   status: Status
   updated: string
+  rejectReason: string | null
   roster: Roster[]
 }
 
 export default function WorkEditView(p: Props) {
+  const { role } = useRole()
+  const isAdmin = role === 'admin'
   const [slug, setSlug] = useState(p.slug)
   const [picked, setPicked] = useState<string[]>(p.builders)
   const [dirty, setDirty] = useState(false)
@@ -47,6 +51,16 @@ export default function WorkEditView(p: Props) {
       </div>
 
       <div className="adm-body">
+        {/* 반려된 건에는 사유가 반드시 붙어 있다 (FR-A07-04) */}
+        {p.rejectReason && (
+          <div className="card" style={{ marginBottom: 18, borderColor: '#E3C4BE', background: '#FBF2F0' }}>
+            <div className="card__b" style={{ padding: '14px 18px' }}>
+              <b style={{ fontSize: 13, color: '#A02D1F' }}>반려 사유</b>
+              <p style={{ margin: '5px 0 0', fontSize: 13.5, color: 'var(--ink-2)', lineHeight: 1.7 }}>{p.rejectReason}</p>
+            </div>
+          </div>
+        )}
+
         <div className="adm-edit">
           <div>
             <div className="card">
@@ -189,11 +203,13 @@ export default function WorkEditView(p: Props) {
 
         <div className="adm-actions">
           <span className="warn">
-            {dirty ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)' : '목업이라 저장되지 않습니다'}
+            {dirty
+              ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)'
+              : isAdmin ? '목업이라 저장되지 않습니다' : '빌더는 제출까지 할 수 있습니다 · 발행은 관리자 승인 후'}
           </span>
           <button className="abtn" type="button">임시저장</button>
           <button className="abtn" type="button">제출 → 승인대기</button>
-          <button className="abtn abtn--lime" type="button">발행</button>
+          {isAdmin && <button className="abtn abtn--lime" type="button">발행</button>}
         </div>
       </div>
     </main>

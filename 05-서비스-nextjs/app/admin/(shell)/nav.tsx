@@ -2,20 +2,27 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useRole } from '../role'
 
 type Counts = { insight: number; work: number; approvals: number; builders: number }
 
 /* 사이드바. 대시보드 항목이 없는 것은 의도다 — 로그인 후 첫 화면은 A-02(Insight 관리)이고
-   별도 운영 대시보드는 범위 밖이다 (E10 · FR-A00-03). */
+   별도 운영 대시보드는 범위 밖이다 (E10 · FR-A00-03).
+
+   빌더로 보면 '승인 대기'가 사라지고 '빌더 관리'가 '내 프로필'이 된다 (PRD §2.2).
+   메뉴에서 감추는 것은 안내일 뿐이고, 실제 차단은 서버가 한다 (FR-A07-05 — 빌더 접근 403). */
 const NAV = [
   { href: '/admin/insight', icon: '✎', label: 'Insight 관리', key: 'insight' as const, sec: '콘텐츠' },
   { href: '/admin/work', icon: '▣', label: 'Work 관리', key: 'work' as const, sec: '콘텐츠' },
-  { href: '/admin/approvals', icon: '✓', label: '승인 대기', key: 'approvals' as const, sec: '운영', hot: true },
-  { href: '/admin/builders', icon: '☺', label: '빌더 관리', key: 'builders' as const, sec: '운영' },
+  { href: '/admin/approvals', icon: '✓', label: '승인 대기', key: 'approvals' as const, sec: '운영', adminOnly: true, hot: true },
+  { href: '/admin/builders', icon: '☺', label: '빌더 관리', key: 'builders' as const, sec: '운영', builderLabel: '내 프로필' },
 ]
 
-export default function AdminNav({ counts }: { counts: Counts }) {
+export default function AdminNav({ counts, myCounts }: { counts: Counts; myCounts: Counts }) {
   const pathname = usePathname()
+  const { role } = useRole()
+  const isAdmin = role === 'admin'
+  const n = isAdmin ? counts : myCounts
   let lastSec = ''
 
   return (
@@ -24,20 +31,23 @@ export default function AdminNav({ counts }: { counts: Counts }) {
         <em>✳</em>AI빌더그룹<span>Admin</span>
       </div>
 
-      {NAV.map(item => {
+      {NAV.filter(item => isAdmin || !item.adminOnly).map(item => {
         const head = item.sec !== lastSec ? item.sec : null
         lastSec = item.sec
         /* /admin/insight/[id] 에서도 Insight 관리가 켜져 있어야 한다 */
         const on = pathname === item.href || pathname.startsWith(item.href + '/')
-        const n = counts[item.key]
+        const count = n[item.key]
+        const label = !isAdmin && item.builderLabel ? item.builderLabel : item.label
         return (
           <div key={item.href}>
             {head && <div className="adm-nav__sec">{head}</div>}
             <Link className={on ? 'on' : undefined} href={item.href}>
               <i aria-hidden="true">{item.icon}</i>
-              {item.label}
+              {label}
               {/* 승인 대기 건수만 라임으로 세운다 — 여기만 사람이 뭔가 해야 하는 숫자다 */}
-              <span className={'n' + (item.hot && n > 0 ? ' n--hot' : '')}>{n}</span>
+              {!(item.key === 'builders' && !isAdmin) && (
+                <span className={'n' + (item.hot && count > 0 ? ' n--hot' : '')}>{count}</span>
+              )}
             </Link>
           </div>
         )
@@ -46,10 +56,10 @@ export default function AdminNav({ counts }: { counts: Counts }) {
       <div className="adm-nav__foot">
         {/* 로그아웃·비밀번호 재설정은 별도 화면을 만들지 않고 여기서 처리한다 (D2 · FR-A00-04·05) */}
         <div className="adm-who">
-          <i aria-hidden="true">조</i>
+          <i aria-hidden="true">{isAdmin ? '조' : '리'}</i>
           <span>
-            <b>빌더 조쉬</b>
-            <span>ADMIN</span>
+            <b>{isAdmin ? '빌더 조쉬' : '빌더 리아'}</b>
+            <span>{isAdmin ? 'ADMIN' : 'BUILDER'}</span>
           </span>
         </div>
         <Link href="/admin/login">

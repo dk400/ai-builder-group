@@ -48,8 +48,29 @@ const WORK_STATUS: Record<string, Status> = {
   '미디어-광고-셀프집행': 'published',
   '커머스-복지몰-edk': 'draft',
   'ai-심리분석-canape': 'published',
-  '플랫폼-돌봄-연결': 'archived',
+  '플랫폼-돌봄-연결': 'rejected',
 }
+
+/* 콘텐츠의 주인.
+
+   빌더로 로그인하면 "본인 것만" 보인다 (FR-A02-01 · FR-A04-01). 그 규칙을 확인하려면
+   빌더가 소유한 콘텐츠가 실제로 있어야 한다.
+
+   Work 은 리드 빌더(builders[0])가 주인이라 따로 적지 않는다. Insight 는 소유 개념이
+   데이터에 없어서 여기서 붙인다 — 적지 않은 글은 운영팀(josh)이 주인이다. */
+const INSIGHT_OWNER: Record<string, string> = {
+  '3주-랜딩페이지-제작순서': 'ria',
+  'ai툴-실무도입-검증기준': 'sein',
+}
+
+export const ADMIN_ACCOUNT = 'josh'
+
+/* 빌더로 볼 때 '나'로 삼을 계정.
+
+   ⚠ role.tsx 가 아니라 여기에 둔다. role.tsx 는 'use client' 라서, 서버 컴포넌트가 거기서
+   상수를 import 하면 문자열이 아니라 클라이언트 참조 프록시가 온다 — 비교가 조용히 전부
+   false 가 되고 사이드바 건수가 0 으로 나온다. 실제로 그렇게 한 번 틀렸다. */
+export const BUILDER_ME = 'ria'
 
 /* 수정일. 발행일과 다른 값이어야 "언제 마지막으로 손댔나"가 의미를 갖는다 */
 const UPDATED: Record<string, string> = {
@@ -58,32 +79,37 @@ const UPDATED: Record<string, string> = {
   '기업ai-도입-거버넌스': '2026.08.12',
   'saas-지점정산-운영콘솔': '2026.08.13',
   '커머스-복지몰-edk': '2026.08.15',
+  '플랫폼-돌봄-연결': '2026.08.14',
 }
 
 /* 반려 사유는 필수 입력이다 (FR-A07-04) — 반려된 건에는 반드시 값이 있다 */
 export const REJECT_REASON: Record<string, string> = {
   '기업ai-도입-거버넌스': '3장 도입부의 통계 출처가 빠졌습니다. 원 자료 링크를 달아 다시 제출해 주세요.',
+  '플랫폼-돌봄-연결': '히어로 이미지에 실제 이용자 얼굴이 그대로 보입니다. 마스킹하거나 다른 컷으로 교체 후 다시 제출해 주세요.',
 }
 
-export type AdminInsight = Article & { status: Status; updated: string }
-export type AdminWork = Work & { status: Status; updated: string; leadName: string }
+export type AdminInsight = Article & { status: Status; updated: string; owner: string }
+export type AdminWork = Work & { status: Status; updated: string; leadName: string; owner: string }
 
 export function adminInsights(): AdminInsight[] {
   return ARTICLES.map(a => ({
     ...a,
     status: INSIGHT_STATUS[a.slug] ?? 'draft',
     updated: UPDATED[a.slug] ?? a.date,
+    owner: INSIGHT_OWNER[a.slug] ?? ADMIN_ACCOUNT,
   }))
 }
 
 export function adminWorks(): AdminWork[] {
   return WORKS.map(w => {
-    const lead = w.builders[0] ? builderBySlug(w.builders[0]) : undefined
+    const leadSlug = w.builders[0]
+    const lead = leadSlug ? builderBySlug(leadSlug) : undefined
     return {
       ...w,
       status: WORK_STATUS[w.slug] ?? 'draft',
       updated: UPDATED[w.slug] ?? `${w.year}.12.01`,
       leadName: lead?.name ?? '—',
+      owner: leadSlug ?? ADMIN_ACCOUNT,
     }
   })
 }

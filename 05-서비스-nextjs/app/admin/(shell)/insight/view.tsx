@@ -3,31 +3,49 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { Badge, Empty, FilterBar } from '../ui'
-import type { Status } from '../../_mock'
+import { useRole } from '../../role'
+import { STATUS_ORDER, countBy, type Status } from '../../_mock'
 
 type Row = {
   slug: string; title: string; catLabel: string; author: string
-  thumb: string; status: Status; updated: string
+  thumb: string; status: Status; updated: string; owner: string
 }
 
 export default function InsightListView({ rows, counts }: { rows: Row[]; counts: Record<Status | 'all', number> }) {
+  const { role, me } = useRole()
+  const isAdmin = role === 'admin'
   const [active, setActive] = useState<Status | 'all'>('all')
   const [query, setQuery] = useState('')
 
+  /* 빌더는 본인 글만 본다 (FR-A02-01).
+     ⚠ 목업이라 화면에서 거른다. 실제로는 쿼리에서 걸러야 하고 RLS 가 한 번 더 막는다 —
+     전체 목록을 브라우저로 내려보낸 뒤 감추는 구현은 요구사항 미충족이다. */
+  const mine = useMemo(() => (isAdmin ? rows : rows.filter(r => r.owner === me)), [rows, isAdmin, me])
+
+  const scoped = useMemo(() => {
+    if (isAdmin) return counts
+    const c = { all: mine.length } as Record<Status | 'all', number>
+    for (const s of STATUS_ORDER) c[s] = countBy(mine, s)
+    return c
+  }, [isAdmin, counts, mine])
+
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return rows.filter(r =>
+    return mine.filter(r =>
       (active === 'all' || r.status === active) &&
       (q === '' || r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q)))
-  }, [rows, active, query])
+  }, [mine, active, query])
 
   return (
     <main id="main">
       <div className="adm-top">
         <div>
           <h1>Insight 관리</h1>
-          {/* 빌더로 로그인하면 본인 글만 보인다 (FR-A02-01). 목업은 관리자 시점이다 */}
-          <p className="sub">관리자 시점 — 전체 {rows.length}건이 보입니다. 빌더 계정은 본인 글만 보입니다.</p>
+          <p className="sub">
+            {isAdmin
+              ? `운영 관리자 — 전체 ${rows.length}건`
+              : `빌더 리아 — 내가 쓴 ${mine.length}건만 보입니다`}
+          </p>
         </div>
         <div className="adm-top__r">
           <Link className="abtn abtn--ink" href="/admin/insight/new">＋ 새 글</Link>
@@ -36,7 +54,7 @@ export default function InsightListView({ rows, counts }: { rows: Row[]; counts:
 
       <div className="adm-body">
         <FilterBar
-          counts={counts} active={active} onActive={setActive}
+          counts={scoped} active={active} onActive={setActive}
           query={query} onQuery={setQuery} placeholder="제목 · 작성자 검색"
         />
 
@@ -69,9 +87,12 @@ export default function InsightListView({ rows, counts }: { rows: Row[]; counts:
                   <td className="muted num">{r.updated}</td>
                   <td className="right">
                     <span className="acts">
-                      <Link className="abtn abtn--sm" href={`/admin/insight/${encodeURIComponent(r.slug)}`}>편집</Link>
-                      {/* 삭제는 관리자만, 확인 모달을 거친다 (FR-A02-02 · FR-A00-06) */}
-                      <button className="abtn abtn--sm abtn--danger" type="button">삭제</button>
+                      {/* 제출한 글은 작성자가 편집할 수 없다 — 잠긴다 (DR-07) */}
+                      {!isAdmin && r.status === 'pending'
+                        ? <button className="abtn abtn--sm" type="button" disabled title="제출 후에는 편집할 수 없습니다">잠김</button>
+                        : <Link className="abtn abtn--sm" href={`/admin/insight/${encodeURIComponent(r.slug)}`}>편집</Link>}
+                      {/* 삭제는 관리자만 (FR-A02-02) — 빌더가 눌러도 서버가 403 을 낸다 */}
+                      {isAdmin && <button className="abtn abtn--sm abtn--danger" type="button">삭제</button>}
                     </span>
                   </td>
                 </tr>

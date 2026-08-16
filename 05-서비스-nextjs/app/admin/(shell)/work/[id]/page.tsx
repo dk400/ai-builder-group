@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { WORKS, workBySlug } from '@/app/_works'
 import { BUILDERS } from '@/app/_builders'
-import { adminWorks } from '../../../_mock'
+import { adminWorks, REJECT_REASON } from '../../../_mock'
 import WorkEditView from './view'
 
 /* A-05 Work 편집. id 가 'new' 면 빈 폼이다 */
@@ -20,7 +20,7 @@ export default async function AdminWorkEditPage({ params }: { params: Promise<{ 
     return (
       <WorkEditView
         isNew slug="" title="" summary="" tag="" year="" cover={null}
-        withPartner={false} builders={[]} status="draft" updated="—" roster={roster}
+        withPartner={false} builders={[]} status="draft" updated="—" rejectReason={null} roster={roster}
       />
     )
   }
@@ -42,6 +42,7 @@ export default async function AdminWorkEditPage({ params }: { params: Promise<{ 
       builders={w.builders}
       status={row.status}
       updated={row.updated}
+      rejectReason={REJECT_REASON[w.slug] ?? null}
       roster={roster}
     />
   )
