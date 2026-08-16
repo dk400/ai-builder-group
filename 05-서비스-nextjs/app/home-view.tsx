@@ -5,6 +5,8 @@ import { useEffect, type CSSProperties } from 'react'
 import { useRibbonFlow, useReplayOnView, useAccordion } from '@/components/fx'
 import FaqList from '@/components/FaqList'
 import { FAQ_HOME } from './_faq'
+import { WORKS } from './_works'
+import { CATEGORY_LABEL, latestArticles } from './_insights'
 
 /* 스테퍼 점등 순서를 CSS 변수로 넘긴다 (CSS 커스텀 속성이라 캐스트가 필요하다) */
 const step = (i: number) => ({ '--i': i }) as CSSProperties
@@ -580,55 +582,35 @@ export default function HomeView() {
               <Link className="more-link" href="/work">전체 보기</Link>
             </div>
             <p className="t-lead">실제로 수행한 프로젝트만 올립니다.</p>
+            {/* 카드 세 장이 /work 목록에 없는 프로젝트를 보여주고 있었다 — 기술 스택은 지어낸
+                샘플(data-sample="stack")이었고, 브라우저 프레임의 주소(consult-bot.app 등)도
+                실재하지 않는 도메인이었다. "실제로 수행한 프로젝트만 올립니다" 바로 아래 자리라
+                더 위험했다. 이제 WORKS 앞 세 건을 그대로 쓴다 (FR-P01-04: 발행된 Work 최신 3~4건).
+                프레임은 남기되 주소 칸은 뺐다 — 실서비스 URL 은 works.result_url 이 생기면 붙인다. */}
             <div className="wg">
-              <Link className="wcard" href="/work-detail" data-track="work_card" data-cursor="VIEW →">
-                <div className="slot mask">
-                  <div className="bf"><div className="bf__bar"><i></i><i></i><i></i><span className="url">consult-bot.app</span></div><img className="shot" src="/assets/img/ref-toktokhan.jpg" alt="" /></div>
-                  <div className="par"></div>
-                  <div className="slot__spec"><b>Asset — Work Cover</b><span>실서비스 메인 화면 (브라우저 프레임)</span><em>1520×1045px · 16:11 @2x</em></div>
-                </div>
-                <div className="meta">
-                  <div className="mrow"><span className="tag">AI Service</span><span className="yr num">2026 · 2wks</span></div>
-                  <h3>AI 상담 챗봇 구축</h3>
-                  <p>반복 문의 70%가 몰리던 고객센터의 상담 자동화 — 2주 PoC로 실데이터 검증 후 전환 프로젝트로 확장.</p>
-                  {/* 한 줄 텍스트였는데 테두리 칩으로 나눴다 — 항목 경계가 보여야 읽힌다 */}
-                  <div className="builders"><span>빌더 3인</span><span>Next.js</span><span>LLM API</span></div>
-                </div>
-              </Link>
-              <Link className="wcard" href="/work-detail" data-cursor="VIEW →">
-                <div className="slot mask">
-                  <div className="bf"><div className="bf__bar"><i></i><i></i><i></i><span className="url">brand-landing.kr</span></div><img className="shot" src="/assets/img/ref-builderschool.jpg" alt="" /></div>
-                  <div className="par"></div>
-                  <div className="slot__spec"><b>Asset — Work Cover</b><span>실서비스 히어로 화면</span><em>1520×1140px @2x</em></div>
-                </div>
-                <div className="meta">
-                  <div className="mrow"><span className="tag">Landing</span><span className="yr num">2026 · 3wks</span></div>
-                  <h3>수주용 브랜드 랜딩</h3>
-                  {/* 세 장의 구조를 맞춘다: 설명 한 줄 + 팀·스택 칩.
-                      전에는 '… · 빌더 2인' 처럼 인원이 설명 문장에 섞여 장마다 형태가 달랐다.
-
-                      ⚠ data-sample="stack" — 원문에 기술 스택이 없어 채워 넣은 샘플이다.
-                      실제 프로젝트 사실과 다를 수 있으니 발행 전 확인할 것.
-                      값은 지어내지 않고 사이트의 빌더 프로필에서 가져왔다
-                      (전환 트래킹 → 빌더 리아의 'GA4 설계'). 찾으려면 data-sample 로 grep. */}
-                  <p>수주 문의로 이어지는 흐름까지 설계한 브랜드 랜딩. 전환 트래킹 이벤트 정의를 포함합니다.</p>
-                  <div className="builders" data-sample="stack"><span>빌더 2인</span><span>Next.js</span><span>GA4</span></div>
-                </div>
-              </Link>
-              <Link className="wcard" href="/work-detail" data-cursor="VIEW →">
-                <div className="slot mask">
-                  <div className="bf"><div className="bf__bar"><i></i><i></i><i></i><span className="url">cms.studio.io</span></div><img className="shot" src="/assets/img/ref-codle.jpg" alt="" /></div>
-                  <div className="par"></div>
-                  <div className="slot__spec"><b>Asset — Work Cover</b><span>관리자 콘솔 화면</span><em>1520×855px · 16:9 @2x</em></div>
-                </div>
-                <div className="meta">
-                  <div className="mrow"><span className="tag">Platform</span><span className="yr num">2026 · 6wks</span></div>
-                  <h3>콘텐츠 관리 플랫폼</h3>
-                  <p>비개발자도 운영 가능한 관리자·에디터. 발행 워크플로와 권한 설계 포함.</p>
-                  {/* ⚠ 샘플 — 위 02 주석 참조 (권한 설계 → 빌더 도현의 'Supabase · RBAC') */}
-                  <div className="builders" data-sample="stack"><span>빌더 3인</span><span>Supabase</span><span>RBAC</span></div>
-                </div>
-              </Link>
+              {WORKS.slice(0, 3).map((w, i) => (
+                <Link className="wcard" href={`/work/${w.slug}`} data-cursor="VIEW →" key={w.slug}
+                  {...(i === 0 ? { 'data-track': 'work_card' } : {})}>
+                  <div className="slot mask">
+                    <div className="bf">
+                      <div className="bf__bar"><i></i><i></i><i></i></div>
+                      <img className="shot" src={`/assets/img/${w.cover}`} alt={w.coverAlt} />
+                    </div>
+                    <div className="par"></div>
+                    <div className="slot__spec"><b>Asset — Work Cover</b><span>실서비스 메인 화면 (브라우저 프레임)</span><em>1520×1045px · 16:11 @2x</em></div>
+                  </div>
+                  <div className="meta">
+                    <div className="mrow"><span className="tag">{w.tag}</span><span className="yr num">{w.year}</span></div>
+                    <h3>{w.title}</h3>
+                    <p>{w.summary}</p>
+                    {/* 한 줄 텍스트였는데 테두리 칩으로 나눴다 — 항목 경계가 보여야 읽힌다 */}
+                    <div className="builders">
+                      {w.withPartner && <span>똑똑한개발자</span>}
+                      <span>빌더 {w.builders.length}인</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -644,21 +626,13 @@ export default function HomeView() {
                 그 이미지들에는 각자 다른 글 제목이 박혀 있어서, 이 크기(96×64)에서는 질감으로만
                 읽히지만 확대하면 문구가 어긋난다. 글마다 전용 썸네일이 생기면 교체할 것.
                 찾으려면 grep -rn 'data-sample' app/ */}
-            <Link className="irow" href="/insight-detail">
-              <img className="ithumb" data-sample="thumb" src="/assets/img/ins/ins-turnkey.jpg" alt="" loading="lazy" decoding="async" />
-              <span className="t">바이브 코딩 외주, 잘하는 곳과 못하는 곳의 차이</span>
-              <span className="meta"><span className="tag">발주 가이드</span><span className="d num">2026.08.11</span></span>
-            </Link>
-            <Link className="irow" href="/insight-detail">
-              <img className="ithumb" data-sample="thumb" src="/assets/img/ins/ins-native.jpg" alt="" loading="lazy" decoding="async" />
-              <span className="t">우리가 3주 만에 랜딩 페이지를 만드는 순서</span>
-              <span className="meta"><span className="tag">일하는 방식</span><span className="d num">2026.08.09</span></span>
-            </Link>
-            <Link className="irow" href="/insight-detail">
-              <img className="ithumb" data-sample="thumb" src="/assets/img/ins/ins-poc.jpg" alt="" loading="lazy" decoding="async" />
-              <span className="t">새 AI 툴을 실무에 붙일 때 우리가 확인하는 것들</span>
-              <span className="meta"><span className="tag">AI 활용</span><span className="d num">2026.08.07</span></span>
-            </Link>
+            {latestArticles(3).map(a => (
+              <Link className="irow" href={`/insight/${a.slug}`} key={a.slug}>
+                <img className="ithumb" data-sample="thumb" src={`/assets/img/ins/${a.thumb}`} alt="" loading="lazy" decoding="async" />
+                <span className="t">{a.title}</span>
+                <span className="meta"><span className="tag">{CATEGORY_LABEL[a.cat]}</span><span className="d num">{a.date}</span></span>
+              </Link>
+            ))}
           </div>
         </section>
 

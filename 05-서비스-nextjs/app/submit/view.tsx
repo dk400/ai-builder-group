@@ -22,7 +22,7 @@ export default function SubmitView() {
         <p>담당자가 확인 후 남겨주신 연락처로 연락드리겠습니다.</p>
 
         <div className="next">
-          <Link className="ncard" href="/insight-detail">
+          <Link className="ncard" href="/insight/바이브코딩-외주-고르는법">
             <b>바이브 코딩 외주, 잘하는 곳과 못하는 곳의 차이</b>
           </Link>
           <Link className="ncard" href="/content">

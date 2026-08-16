@@ -9,7 +9,11 @@
 .wd-head .tags { display: flex; gap: 8px; margin: 20px 0 20px; }
 .wd-head h1 { margin: 0 0 14px; font-size: clamp(36px, 5vw, 60px); font-weight: 800; letter-spacing: -0.05em; line-height: 1.08; }
 .wd-head .sum { color: var(--muted); font-size: 17px; margin: 0; max-width: 56ch; word-break: keep-all; }
-.wd-cover .slot { aspect-ratio: 21/10; border-radius: 24px; }
+/* 21/10 이었다 — 목업 시절 커버는 CSS 로 그린 브라우저 프레임이라 비율을 마음대로 정할 수
+   있었다. 실제 커버 아홉 장은 전부 5:4(2400×1920)라 21/10 로 자르면 세로 절반이 날아가고,
+   로고 타일 두 장(iloom · DAEHONG)은 로고가 프레임 밖으로 밀려났다.
+   16/10 은 /work 목록 카드와 같은 프레이밍이다 — 목록에서 본 그림이 상세에서도 같아야 한다. */
+.wd-cover .slot { aspect-ratio: 16/10; border-radius: 24px; }
 .wd-body { display: grid; grid-template-columns: 1fr 300px; gap: 60px; padding: 56px 0 60px; align-items: start; }
 .wd-art h2 { font-size: 25px; margin: 52px 0 14px; letter-spacing: -0.035em; display: flex; align-items: baseline; gap: 14px; }
 .wd-art h2 .no { font-family: var(--mono); font-size: 13px; color: var(--muted-2); letter-spacing: .14em; font-weight: 500; }

@@ -11,7 +11,8 @@
 .art-head .meta b { color: var(--ink); }
 .art-body { display: grid; grid-template-columns: minmax(0, 720px) 220px; gap: 68px; justify-content: center; padding: 44px 0 76px; }
 .art { font-size: 16.5px; line-height: 1.9; color: var(--ink-2); }
-.art .ph { margin: 0 0 40px; }
+/* 커버. 썸네일이 800×450 이라 16/9 로 두면 확대 없이 딱 맞는다 */
+.art .art-cover { aspect-ratio: 16 / 9; margin: 0 0 40px; border-radius: 20px; }
 .art h2 { font-size: 25px; letter-spacing: -0.035em; margin: 50px 0 16px; scroll-margin-top: 96px; color: var(--ink); }
 .art p { margin: 0 0 19px; word-break: keep-all; }
 .art blockquote { margin: 32px 0; padding: 24px 30px; border-left: 3px solid var(--lime); background: var(--paper-2);
