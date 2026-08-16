@@ -180,6 +180,13 @@ body:has(.adm)::after { display: none; }
 .f > label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
 .f > label .req { color: #A02D1F; margin-left: 3px; }
 .f > label .opt { color: var(--adm-dim); font-weight: 600; margin-left: 6px; font-size: 12px; }
+/* 글자 수 표시가 붙는 라벨만 가로로 편다 — 나머지 라벨의 조판은 건드리지 않는다 */
+.f > label.with-cc { display: flex; align-items: baseline; }
+.cc { margin-left: auto; font-family: var(--mono); font-size: 12px; font-weight: 700;
+  color: var(--adm-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 권장치를 넘으면 주의, 상한을 넘으면 경고. 색만으로 알리지 않도록 상한 초과는 밑줄도 준다 */
+.cc--warn { color: #8A5A00; }
+.cc--over { color: #A02D1F; text-decoration: underline; text-underline-offset: 3px; }
 .f input[type="text"], .f input[type="email"], .f input[type="password"], .f textarea, .f select {
   width: 100%; box-sizing: border-box; padding: 10px 13px; border: 1px solid var(--line-2); border-radius: 9px;
   background: var(--paper); font-family: var(--sans); font-size: 14px; color: var(--ink); }

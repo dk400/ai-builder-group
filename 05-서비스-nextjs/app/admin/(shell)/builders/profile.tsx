@@ -3,8 +3,22 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { SPECIALTIES } from '@/app/_builders'
+import CharCount from '../charcount'
 
 const OTHER = '__other__'
+
+/* 한 줄 소개 길이 — /work 빌더 그리드의 카드에서 실측한 값이다.
+
+     화면 폭     글상자    2줄 유지   3줄 유지
+     1440px     218px     44자      64자
+     1100px     185px     34자      52자   ← 가장 빡빡한 지점
+
+   5열 그리드가 1100px 까지 유지돼서 그 구간의 카드가 제일 좁다. 여기서 52자를 넘기면
+   네 줄이 되고, 그리드 행 높이는 가장 큰 카드에 맞춰지므로 같은 줄의 나머지 넉 장에
+   빈 공간이 생긴다. 권장 45자는 상한까지 일곱 자 여유를 둔 값이다.
+   (모바일 700px 미만에서는 이 문단이 display:none 이라 길이가 영향을 주지 않는다.) */
+const BLURB_REC = 45
+const BLURB_MAX = 52
 
 export type Profile = {
   slug: string
@@ -38,6 +52,7 @@ export type Profile = {
 export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEditAccount: boolean }) {
   const [slug, setSlug] = useState(p.slug)
   const [stack, setStack] = useState(p.stack.join(', '))
+  const [blurb, setBlurb] = useState(p.blurb)
 
   /* 저장된 값이 목록에 없으면 '기타'로 열어 둔 채 그 값을 그대로 보여 준다.
      목록에 없다고 값을 비워 버리면, 폼을 열기만 해도 프로필이 지워진다. */
@@ -127,8 +142,16 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
           </p>
         </div>
         <div className="f">
-          <label htmlFor="blurb">한 줄 소개 <span className="req">*</span> <span className="opt">빌더 카드에 노출</span></label>
-          <textarea id="blurb" defaultValue={p.blurb} onChange={touch} style={{ minHeight: 58 }} />
+          <label className="with-cc" htmlFor="blurb">
+            한 줄 소개 <span className="req">*</span> <span className="opt">빌더 카드에 노출</span>
+            <CharCount value={blurb} rec={BLURB_REC} max={BLURB_MAX} />
+          </label>
+          <textarea id="blurb" value={blurb} style={{ minHeight: 58 }}
+            onChange={e => { setBlurb(e.target.value); touch() }} />
+          <p className="hint">
+            <b>{BLURB_REC}자 이내</b>를 권합니다. {BLURB_MAX}자를 넘으면 화면이 좁을 때(1100px, 5열) 네 줄로 넘어가고,
+            그 카드만 높아져 같은 줄의 나머지 넉 장에 빈 공간이 생깁니다.
+          </p>
         </div>
         <div className="f">
           <label htmlFor="bio">소개 <span className="opt">프로필 상단 본문</span></label>
