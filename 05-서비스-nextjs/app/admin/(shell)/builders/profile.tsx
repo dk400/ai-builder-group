@@ -38,6 +38,21 @@ const BLURB_MAX = 52
 const BIO_REC = 90
 const BIO_MAX = 140
 
+/* 일하는 원칙 — /builder 의 .pr-card 3열 그리드에서 실측.
+
+     제목(18px)            1줄 유지 최대        설명(14.5px)          2줄 유지 최대
+     1440px · 384px        25자                 1440px · 384px        79자
+     1100px · 324px        21자  ← 가장 빡빡    1100px · 324px        62자  ← 가장 빡빡
+      390px · 342px        22자                  390px · 342px        68자
+
+   1100px 구간에서 3열이 유지되면서 카드가 제일 좁다. 이 칸들도 그리드라 한 장이 길어지면
+   행 높이가 따라 올라가고 나머지 두 장 아래에 빈 공간이 생긴다.
+   지금 열 명 × 3개는 제목 6~14자, 설명 23~50자로 전부 안쪽이다. */
+const PR_TITLE_REC = 16
+const PR_TITLE_MAX = 21
+const PR_DESC_REC = 50
+const PR_DESC_MAX = 62
+
 export type Profile = {
   slug: string
   no: string
@@ -91,6 +106,15 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
 
   /* 목록에 없는 값(직접 추가한 스택)도 칩으로 보여야 지울 수 있다 */
   const stackOptions = [...STACKS, ...stack.filter(s => !(STACKS as readonly string[]).includes(s))]
+
+  /* 원칙 세 줄. 세 칸이 고정이라 빈 자리는 빈 문자열로 채워 길이를 맞춘다 */
+  const [prs, setPrs] = useState<Array<[string, string]>>(
+    [0, 1, 2].map(i => [p.principles[i]?.[0] ?? '', p.principles[i]?.[1] ?? '']) as Array<[string, string]>
+  )
+  const setPr = (i: number, col: 0 | 1, v: string) => {
+    setPrs(prev => prev.map((row, j) => (j === i ? (col === 0 ? [v, row[1]] : [row[0], v]) : row)))
+    touch()
+  }
 
   const focusKnown = (FOCUS_AREAS as readonly string[]).includes(p.focus)
   const [focus, setFocus] = useState(focusKnown ? p.focus : OTHER)
@@ -263,22 +287,27 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
         <h2>일하는 원칙 <em>3개 고정</em></h2>
         {/* 공개 프로필이 3열 그리드라 개수가 셋으로 묶여 있다. 늘리려면 그쪽 레이아웃부터
             바꿔야 하므로 추가 버튼을 두지 않았다. */}
-        {[0, 1, 2].map(i => {
-          const pr = p.principles[i]
-          return (
-            <div className="prof-pr" key={i}>
-              <span className="no">0{i + 1}</span>
-              <div className="f">
-                <input type="text" defaultValue={pr?.[0] ?? ''} onChange={touch}
-                  aria-label={`원칙 ${i + 1} 제목`} placeholder="한 사람이 끝까지" />
-              </div>
-              <div className="f">
-                <input type="text" defaultValue={pr?.[1] ?? ''} onChange={touch}
-                  aria-label={`원칙 ${i + 1} 설명`} placeholder="한 문장으로 풀어 씁니다" />
-              </div>
+        {/* 칸이 여섯 개라 숫자를 늘 띄우면 소음이다 — 권장치를 넘었을 때만 나타난다 */}
+        <p className="hint" style={{ margin: '0 0 12px' }}>
+          제목 <b>{PR_TITLE_REC}자</b>·설명 <b>{PR_DESC_REC}자</b> 이내를 권합니다.
+          제목 {PR_TITLE_MAX}자, 설명 {PR_DESC_MAX}자를 넘으면 화면이 좁을 때(1100px, 3열) 줄이 하나 늘고,
+          그 장만 높아져 나머지 두 장 아래에 빈 공간이 생깁니다.
+        </p>
+        {prs.map(([t, d], i) => (
+          <div className="prof-pr" key={i}>
+            <span className="no">0{i + 1}</span>
+            <div className="f">
+              <input type="text" value={t} onChange={e => setPr(i, 0, e.target.value)}
+                aria-label={`원칙 ${i + 1} 제목`} placeholder="한 사람이 끝까지" />
+              <CharCount value={t} rec={PR_TITLE_REC} max={PR_TITLE_MAX} quiet />
             </div>
-          )
-        })}
+            <div className="f">
+              <input type="text" value={d} onChange={e => setPr(i, 1, e.target.value)}
+                aria-label={`원칙 ${i + 1} 설명`} placeholder="한 문장으로 풀어 씁니다" />
+              <CharCount value={d} rec={PR_DESC_REC} max={PR_DESC_MAX} quiet />
+            </div>
+          </div>
+        ))}
       </section>
 
       {/* ── 공개 주소 ── */}

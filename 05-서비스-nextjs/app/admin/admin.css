@@ -307,7 +307,12 @@ body:has(.adm)::after { display: none; }
 .prof-pr { display: grid; grid-template-columns: 26px minmax(0, 210px) minmax(0, 1fr); gap: 10px;
   align-items: center; margin-bottom: 9px; }
 .prof-pr .no { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--adm-dim); }
-.prof-pr .f { margin-bottom: 0; }
+/* 글자 수가 넘칠 때만 입력칸 오른쪽 안쪽에 뜬다. 자리를 늘 비워 두면 짧은 원칙 제목이
+   가운데로 밀려 보이므로 padding 이 아니라 겹쳐 놓고 배경으로 글자를 가린다. */
+.prof-pr .f { margin-bottom: 0; position: relative; }
+.prof-pr .cc { position: absolute; right: 1px; top: 1px; bottom: 1px; margin-left: 0;
+  display: flex; align-items: center; padding: 0 12px 0 10px; border-radius: 0 8px 8px 0;
+  background: linear-gradient(to right, transparent, var(--paper) 12px); pointer-events: none; }
 
 .prof-slug { display: flex; gap: 8px; align-items: center; }
 .prof-slug .slug-row { flex: 1; min-width: 0; }

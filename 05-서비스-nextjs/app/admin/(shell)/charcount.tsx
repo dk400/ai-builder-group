@@ -8,9 +8,15 @@
 
    막지 않고 알려만 준다. maxLength 로 잘라 버리면 붙여넣기가 조용히 잘려서, 쓴 사람은
    무엇이 사라졌는지도 모른 채 저장하게 된다. */
-export default function CharCount({ value, rec, max }: { value: string; rec: number; max: number }) {
+export default function CharCount({ value, rec, max, quiet }: {
+  value: string; rec: number; max: number
+  /** 권장치 안에서는 감춘다. 칸이 여럿 붙어 있는 자리(일하는 원칙 3행)에서 숫자 여섯 개가
+      늘 떠 있으면 그게 소음이 된다 — 넘었을 때만 나타나게 한다. */
+  quiet?: boolean
+}) {
   const n = value.length
   const state = n > max ? 'over' : n > rec ? 'warn' : 'ok'
+  if (quiet && state === 'ok') return null
   return (
     <span className={`cc cc--${state}`} aria-live="polite">
       {n} / {max}
