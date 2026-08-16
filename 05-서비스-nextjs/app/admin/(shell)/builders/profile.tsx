@@ -2,10 +2,13 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { SPECIALTIES } from '@/app/_builders'
+import { FOCUS_AREAS, SPECIALTIES, STACKS } from '@/app/_builders'
 import CharCount from '../charcount'
 
 const OTHER = '__other__'
+
+/* 카드에 나가는 스택 개수 — work/view.tsx 의 stack.slice(0, 2) 와 같은 값이어야 한다 */
+const STACK_ON_CARD = 2
 
 /* 한 줄 소개 길이 — /work 빌더 그리드의 카드에서 실측한 값이다.
 
@@ -66,9 +69,32 @@ export type Profile = {
    · 계정 정보는 읽기 전용이라 맨 아래 한 줄로 내렸다 */
 export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEditAccount: boolean }) {
   const [slug, setSlug] = useState(p.slug)
-  const [stack, setStack] = useState(p.stack.join(', '))
   const [blurb, setBlurb] = useState(p.blurb)
   const [bio, setBio] = useState(p.bio)
+
+  /* 주요 스택은 순서가 의미를 갖는다 (앞 두 개가 카드에 나감) — Set 이 아니라 배열로 둔다.
+     다시 누르면 빼고, 새로 누르면 뒤에 붙인다. */
+  const [stack, setStack] = useState<string[]>(p.stack)
+  const [stackAdd, setStackAdd] = useState('')
+
+  const toggleStack = (s: string) => {
+    setStack(prev => (prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]))
+    touch()
+  }
+  const addStack = () => {
+    const v = stackAdd.trim()
+    if (!v || stack.includes(v)) { setStackAdd(''); return }
+    setStack(prev => [...prev, v])
+    setStackAdd('')
+    touch()
+  }
+
+  /* 목록에 없는 값(직접 추가한 스택)도 칩으로 보여야 지울 수 있다 */
+  const stackOptions = [...STACKS, ...stack.filter(s => !(STACKS as readonly string[]).includes(s))]
+
+  const focusKnown = (FOCUS_AREAS as readonly string[]).includes(p.focus)
+  const [focus, setFocus] = useState(focusKnown ? p.focus : OTHER)
+  const [focusOther, setFocusOther] = useState(focusKnown ? '' : p.focus)
 
   /* 저장된 값이 목록에 없으면 '기타'로 열어 둔 채 그 값을 그대로 보여 준다.
      목록에 없다고 값을 비워 버리면, 폼을 열기만 해도 프로필이 지워진다. */
@@ -182,21 +208,54 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
             {BIO_MAX}자를 넘으면 데스크톱도 네 줄, 모바일은 여섯 줄이 됩니다.
           </p>
         </div>
-        <div className="f2">
-          {/* 위 '전문 분야'가 분류라면 이쪽은 실제로 맡는 일이다 — 둘 다 '전문 분야'라
-              부르고 있어서 무엇을 적는 칸인지 알 수 없었다. 공개 프로필의 라벨도 함께 맞췄다. */}
-          <div className="f">
-            <label htmlFor="focus">주로 맡는 일</label>
-            <input id="focus" type="text" defaultValue={p.focus} onChange={touch}
-              placeholder="수주용 랜딩 · 브랜드 사이트" />
-          </div>
-          <div className="f">
-            <label htmlFor="stack">주요 스택 <span className="opt">쉼표로 구분</span></label>
-            <input id="stack" type="text" value={stack}
-              onChange={e => { setStack(e.target.value); touch() }} />
-            <p className="hint">카드에는 앞의 두 개만 나옵니다.</p>
-          </div>
+        {/* 위 '전문 분야'가 분류라면 이쪽은 실제로 맡는 일이다 — 둘 다 '전문 분야'라
+            부르고 있어서 무엇을 적는 칸인지 알 수 없었다. 공개 프로필의 라벨도 함께 맞췄다. */}
+        <div className="f">
+          <label htmlFor="focus">주로 맡는 일</label>
+          <select id="focus" value={focus} onChange={e => { setFocus(e.target.value); touch() }}>
+            {FOCUS_AREAS.map(s => <option key={s} value={s}>{s}</option>)}
+            <option value={OTHER}>기타 — 직접 입력</option>
+          </select>
+          {focus === OTHER && (
+            <input type="text" value={focusOther} style={{ marginTop: 8 }}
+              onChange={e => { setFocusOther(e.target.value); touch() }}
+              aria-label="주로 맡는 일 직접 입력"
+              placeholder="예) 사용성 테스트 · 리서치 설계" />
+          )}
+          <p className="hint">프로필의 Builder Sheet 한 줄에 그대로 들어갑니다.</p>
         </div>
+      </section>
+
+      {/* ── 주요 스택 ── */}
+      <section className="prof-sec">
+        <h2>주요 스택 <em>{stack.length}개 선택 · 앞의 {STACK_ON_CARD}개가 카드에 노출</em></h2>
+        {/* 자유 입력이면 'Next.js' 와 'NextJS' 가 섞인다. 목록에서 고르게 하고,
+            없는 기술만 직접 추가한다. 순서가 곧 우선순위라 누른 차례대로 번호를 보여 준다. */}
+        <div className="bpick bpick--plain">
+          {stackOptions.map(s => {
+            const i = stack.indexOf(s)
+            const on = i >= 0
+            return (
+              <button key={s} type="button" className={on ? 'on' : undefined}
+                aria-pressed={on} onClick={() => toggleStack(s)}>
+                {on && <span className="ord">{i + 1}</span>}
+                {s}
+                {on && i < STACK_ON_CARD && <span className="r">카드</span>}
+              </button>
+            )
+          })}
+        </div>
+        <div className="prof-slug" style={{ marginTop: 12 }}>
+          <input type="text" value={stackAdd} aria-label="스택 직접 추가"
+            placeholder="목록에 없는 기술을 직접 추가"
+            onChange={e => setStackAdd(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addStack() } }} />
+          <button className="abtn abtn--sm" type="button" onClick={addStack}>추가</button>
+        </div>
+        <p className="hint">
+          누른 차례가 곧 순서입니다. <b>앞의 {STACK_ON_CARD}개</b>가 빌더 카드에 나가고,
+          프로필에는 전부 표시됩니다. 다시 누르면 빠집니다.
+        </p>
       </section>
 
       {/* ── 일하는 원칙 ── */}

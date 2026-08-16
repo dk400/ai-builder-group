@@ -198,6 +198,35 @@ export const SPECIALTIES = [
   '운영 · 인프라',
 ] as const
 
+/* 주로 맡는 일 — 전문 분야보다 한 단계 구체적인 표기다.
+   빌더 프로필의 Builder Sheet 한 줄에 그대로 들어간다. */
+export const FOCUS_AREAS = [
+  '프로덕트 전체 · MVP · 검증',
+  '수주용 랜딩 · 브랜드 사이트',
+  '어드민 · 정산 · 권한 설계',
+  'LLM 연동 · 에이전트 · PoC',
+  '모바일 앱 · 스토어 출시',
+  '데이터 파이프라인 · 자동화',
+  '디자인 시스템 · 모션',
+  '결제 연동 · 주문·정산',
+  '검색 유입 · 콘텐츠 구조',
+  '배포 자동화 · 모니터링',
+] as const
+
+/* 주요 스택 — 고를 수 있는 기술 목록.
+
+   자유 입력이면 'Next.js' 와 'NextJS' 와 '넥스트' 가 섞인다. 빌더 카드의 칩과 프로필의
+   '주요 스택' 줄에 그대로 나가는 값이라 표기가 흔들리면 바로 보인다.
+   ⚠ 순서가 의미를 갖는다 — 카드에는 앞의 두 개만 나온다 (work/view.tsx 의 stack.slice(0,2)). */
+export const STACKS = [
+  'Next.js', 'React Native', 'Flutter', 'Python', 'Supabase', 'RBAC',
+  'LLM API', 'Agents', 'RAG', 'n8n',
+  'Design System', 'Motion', 'Interaction',
+  'PG 연동', '구독 결제',
+  'GA4 설계', 'SEO', 'Analytics',
+  'CI/CD', '모니터링', '스토어 배포',
+] as const
+
 export function builderBySlug(slug: string): Builder | undefined {
   return BUILDERS.find(b => b.slug === slug)
 }

@@ -252,12 +252,19 @@ body:has(.adm)::after { display: none; }
 .bpick { display: flex; flex-wrap: wrap; gap: 7px; }
 .bpick button { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line-2); background: var(--paper);
   border-radius: 999px; padding: 5px 12px 5px 5px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink);
-  transition: border-color var(--hover), background var(--hover); }
+  min-height: 32px; transition: border-color var(--hover), background var(--hover); }
 .bpick button i { width: 20px; height: 20px; border-radius: 50%; background-size: cover; background-position: center; }
 .bpick button:hover { border-color: var(--ink); }
 .bpick button.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .bpick button.on .r { color: var(--lime); }
 .bpick .r { font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--adm-dim); }
+/* 아바타가 없는 칩 묶음 (주요 스택) */
+.bpick--plain button { padding: 6px 13px; }
+/* 누른 차례 = 우선순위. 번호를 보여 줘야 '앞의 두 개'가 무엇인지 알 수 있다 */
+.bpick--plain .ord { font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+  min-width: 17px; height: 17px; border-radius: 50%; display: inline-grid; place-items: center;
+  background: var(--lime); color: var(--ink); }
+.bpick--plain button.on .r { color: var(--lime); }
 
 /* 하단 액션 바 */
 .adm-actions { position: sticky; bottom: 0; margin-top: 22px; padding: 14px 0;
