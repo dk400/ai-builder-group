@@ -26,6 +26,9 @@
   display: grid; place-items: center; font-size: 18px; transition: transform .3s; box-shadow: 0 12px 40px rgba(216,255,61,.25); }
 .art .yt:hover .play i { transform: scale(1.12); }
 .art .yt-link { font-size: 14.5px; margin: 0 0 30px; }
+/* 링크 높이가 글자 높이(16px)뿐이라 WCAG 2.2 (2.5.8) 최소 24px 에 미달했다.
+   글자 크기는 그대로, 세로 여백만 준다 — inline-block 이라야 패딩이 먹는다. */
+.art .yt-link a { display: inline-block; padding: 5px 0; }
 .toc { position: sticky; top: 96px; font-size: 15px; align-self: start; }
 .toc b { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .2em; color: var(--muted-2); margin-bottom: 14px; text-transform: uppercase; }
 .toc a { display: block; text-decoration: none; color: var(--muted); padding: 8px 0 8px 15px; border-left: 2px solid var(--line); transition: .15s; line-height: 1.5; }
