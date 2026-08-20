@@ -69,7 +69,7 @@ export default function SlugField({ name, base, title, initial, published, hint,
             <span className="pre">{base}</span>
             <input
               id={name} name={name} type="text" value={value} disabled={disabled}
-              placeholder="제목을 쓰면 자동으로 만들어집니다"
+              placeholder="제목에서 자동 생성"
               onChange={e => {
                 /* 손으로 고치는 순간 자동 추종을 끈다 — 쓰던 값이 다음 타이핑에 덮이면 안 된다 */
                 setAutoFollow(false)

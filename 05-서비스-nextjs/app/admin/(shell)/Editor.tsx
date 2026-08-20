@@ -3,7 +3,7 @@
 import { useEditor, EditorContent, type Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder } from '@tiptap/extensions'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /* 본문 에디터 — FR-A03-01 (Tiptap 필수) · FR-A03-02 (h1 차단)
 
@@ -34,6 +34,12 @@ type Props = {
 
 export default function BodyEditor({ name, defaultValue, onDirty, editable = true }: Props) {
   const [html, setHtml] = useState(defaultValue ?? '')
+  /* 🔴 Tiptap 은 생성 시점에도 문서를 바꾸는 트랜잭션을 낸다(StarterKit 의 TrailingNode 가
+     끝에 빈 문단을 붙인다). 그걸 그대로 onUpdate 로 흘리면 **새 글을 열자마자**
+     "저장하지 않은 변경이 있습니다"가 떠 있다 — 경고가 늘 떠 있으면 아무도 안 읽는다.
+     그래서 실제 사용자 조작(키 입력·붙여넣기·드롭·툴바)이 한 번이라도 있었을 때만 알린다. */
+  const interacted = useRef(false)
+  const markInteracted = () => { interacted.current = true }
   const [linkOpen, setLinkOpen] = useState(false)
   const [linkValue, setLinkValue] = useState('')
 
@@ -62,6 +68,14 @@ export default function BodyEditor({ name, defaultValue, onDirty, editable = tru
     ],
     content: defaultValue ?? '',
     editorProps: {
+      /* 이 이벤트들은 사람이 건드려야만 발생한다. 초기화 트랜잭션과 확실히 구분된다.
+         false 를 돌려주면 Tiptap 기본 처리를 그대로 이어간다. */
+      handleDOMEvents: {
+        keydown: () => { markInteracted(); return false },
+        paste: () => { markInteracted(); return false },
+        drop: () => { markInteracted(); return false },
+        cut: () => { markInteracted(); return false },
+      },
       attributes: {
         class: 'ed__body',
         'aria-label': '본문',
@@ -71,7 +85,7 @@ export default function BodyEditor({ name, defaultValue, onDirty, editable = tru
     },
     onUpdate({ editor }) {
       setHtml(editor.isEmpty ? '' : editor.getHTML())
-      onDirty?.()
+      if (interacted.current) onDirty?.()
     },
   })
 
@@ -106,22 +120,23 @@ export default function BodyEditor({ name, defaultValue, onDirty, editable = tru
     }
     setLinkOpen(false)
     setLinkValue('')
+    markInteracted()
     onDirty?.()
   }
 
   return (
     <div className="ed">
       {editable && <div className="ed__bar" role="toolbar" aria-label="본문 서식">
-        <Tool ed={editor} on="heading" attrs={{ level: 2 }} run={e => e.toggleHeading({ level: 2 })} label="H2" title="소제목" />
-        <Tool ed={editor} on="heading" attrs={{ level: 3 }} run={e => e.toggleHeading({ level: 3 })} label="H3" title="작은 소제목" />
+        <Tool ed={editor} onAct={markInteracted} on="heading" attrs={{ level: 2 }} run={e => e.toggleHeading({ level: 2 })} label="H2" title="소제목" />
+        <Tool ed={editor} onAct={markInteracted} on="heading" attrs={{ level: 3 }} run={e => e.toggleHeading({ level: 3 })} label="H3" title="작은 소제목" />
         <span className="sep" aria-hidden="true" />
-        <Tool ed={editor} on="bold" run={e => e.toggleBold()} label="B" title="굵게" />
-        <Tool ed={editor} on="italic" run={e => e.toggleItalic()} label="I" title="기울임" />
-        <Tool ed={editor} on="strike" run={e => e.toggleStrike()} label="S" title="취소선" />
+        <Tool ed={editor} onAct={markInteracted} on="bold" run={e => e.toggleBold()} label="B" title="굵게" />
+        <Tool ed={editor} onAct={markInteracted} on="italic" run={e => e.toggleItalic()} label="I" title="기울임" />
+        <Tool ed={editor} onAct={markInteracted} on="strike" run={e => e.toggleStrike()} label="S" title="취소선" />
         <span className="sep" aria-hidden="true" />
-        <Tool ed={editor} on="blockquote" run={e => e.toggleBlockquote()} label="“”" title="인용" />
-        <Tool ed={editor} on="bulletList" run={e => e.toggleBulletList()} label="•" title="글머리 목록" />
-        <Tool ed={editor} on="orderedList" run={e => e.toggleOrderedList()} label="1." title="번호 목록" />
+        <Tool ed={editor} onAct={markInteracted} on="blockquote" run={e => e.toggleBlockquote()} label="“”" title="인용" />
+        <Tool ed={editor} onAct={markInteracted} on="bulletList" run={e => e.toggleBulletList()} label="•" title="글머리 목록" />
+        <Tool ed={editor} onAct={markInteracted} on="orderedList" run={e => e.toggleOrderedList()} label="1." title="번호 목록" />
         <span className="sep" aria-hidden="true" />
         <button
           type="button" title="링크"
@@ -132,7 +147,8 @@ export default function BodyEditor({ name, defaultValue, onDirty, editable = tru
             setLinkOpen(v => !v)
           }}
         >🔗</button>
-        <button type="button" title="구분선" onClick={() => { editor.chain().focus().setHorizontalRule().run(); onDirty?.() }}>⌗</button>
+        <button type="button" title="구분선"
+          onClick={() => { markInteracted(); editor.chain().focus().setHorizontalRule().run(); onDirty?.() }}>⌗</button>
         <span className="note">H1 없음 — 페이지 제목이 h1</span>
       </div>}
 
@@ -167,7 +183,7 @@ export default function BodyEditor({ name, defaultValue, onDirty, editable = tru
 /* 툴바 버튼 하나. 활성 상태를 aria-pressed 로도 알린다 — 색만으로 상태를 전하면
    스크린리더에서는 아무 차이가 없다 (NFR-07 · NFR-08). */
 function Tool({
-  ed, on, attrs, run, label, title,
+  ed, on, attrs, run, label, title, onAct,
 }: {
   ed: Editor
   on: string
@@ -175,13 +191,14 @@ function Tool({
   run: (chain: ReturnType<Editor['chain']>) => { run: () => boolean }
   label: string
   title: string
+  onAct: () => void
 }) {
   const active = attrs ? ed.isActive(on, attrs) : ed.isActive(on)
   return (
     <button
       type="button" title={title} aria-pressed={active}
       className={active ? 'on' : undefined}
-      onClick={() => run(ed.chain().focus()).run()}
+      onClick={() => { onAct(); run(ed.chain().focus()).run() }}
     >{label}</button>
   )
 }
