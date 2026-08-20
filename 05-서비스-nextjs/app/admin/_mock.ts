@@ -21,7 +21,9 @@ import type { Status } from './_transitions'
 
 const INSIGHT_STATUS: Record<string, Status> = {
   '바이브코딩-외주-고르는법': 'published',
-  '3주-랜딩페이지-제작순서': 'pending',
+  /* 공개 사이트에 이미 나가 있는 글이다. 'pending' 으로 두면 어드민 상태와 실제
+     노출이 어긋나고, 데모의 승인대기 샘플과도 중복된다 */
+  '3주-랜딩페이지-제작순서': 'published',
   'ai툴-실무도입-검증기준': 'draft',
   'ai-poc-도입전-검증': 'published',
   'ai에이전트-도입-체크리스트': 'published',
@@ -78,6 +80,7 @@ const UPDATED: Record<string, string> = {
 
 /* 반려 사유는 필수 입력이다 (FR-A07-04) — 반려된 건에는 반드시 값이 있다 */
 export const REJECT_REASON: Record<string, string> = {
+  '샘플-반려된-글': '두 번째 소제목의 주장에 근거가 없습니다. 실제로 겪은 사례나 수치를 한 줄 넣어 다시 제출해 주세요. 그리고 썸네일이 본문 내용과 맞지 않습니다.',
   '기업ai-도입-거버넌스': '3장 도입부의 통계 출처가 빠졌습니다. 원 자료 링크를 달아 다시 제출해 주세요.',
   '플랫폼-돌봄-연결': '히어로 이미지에 실제 이용자 얼굴이 그대로 보입니다. 마스킹하거나 다른 컷으로 교체 후 다시 제출해 주세요.',
 }
@@ -100,34 +103,44 @@ export type AdminWork = Work & { status: Status; updated: string; leadName: stri
    Supabase 가 붙으면 이 배열은 사라지고 실제 행이 그 자리를 대신한다. */
 const DEMO_INSIGHTS: AdminInsight[] = [
   {
-    slug: '샘플-승인대기-글',
-    cat: 'how',
-    title: '[샘플] 검토를 요청한 글 — 관리자 승인 대기',
-    excerpt: '빌더가 제출해 검수를 기다리는 상태입니다. 관리자에게는 승인·반려 버튼이 보이고, 작성자에게는 폼이 잠깁니다.',
-    thumb: 'ins-native.jpg',
-    source: 'own',
-    author: '빌더 리아',
-    date: '2026.08.20',
-    readMin: 3,
-    bodyHtml: '<h2 id="이-글의-용도">이 글의 용도</h2><p>승인 흐름을 눌러 보기 위한 샘플입니다. 공개 사이트에는 나가지 않습니다.</p><h2 id="확인할-것">확인할 것</h2><ul><li>관리자로 보면 <strong>승인 · 공개</strong> 와 <strong>반려</strong> 가 보입니다.</li><li>반려를 누르면 사유 입력이 열리고, 비어 있으면 보낼 수 없습니다.</li><li>빌더로 보면 폼 전체가 잠기고 이유가 표시됩니다.</li></ul>',
-    status: 'pending',
-    updated: '2026.08.20',
-    owner: BUILDER_ME,
+    slug: '샘플-작성중-글', cat: 'guide',
+    title: '[샘플 ①] 작성 중 — 자유롭게 수정할 수 있습니다',
+    excerpt: '아직 제출하지 않은 초안입니다. 제목·본문·썸네일·주소를 모두 고칠 수 있고, 다 되면 검토를 요청합니다.',
+    thumb: 'ins-turnkey.jpg', source: 'own', author: '빌더 리아', date: '2026.08.21', readMin: 2,
+    bodyHtml: '<h2 id="여기를-고쳐-보세요">여기를 고쳐 보세요</h2><p>툴바로 소제목·굵게·목록·링크를 넣어 볼 수 있습니다. H1 은 없습니다 — 페이지 제목이 h1 이라 본문은 H2 부터 시작합니다.</p><h2 id="다음-단계">다음 단계</h2><p>아래 <strong>검토 요청</strong> 을 누르면 ② 상태로 넘어가고, 그때부터 작성자는 수정할 수 없습니다.</p>',
+    status: 'draft', updated: '2026.08.21', owner: BUILDER_ME,
   },
   {
-    slug: '샘플-작성중-글',
-    cat: 'guide',
-    title: '[샘플] 작성 중인 글 — 자유롭게 수정할 수 있습니다',
-    excerpt: '아직 제출하지 않은 초안입니다. 제목·본문·썸네일·주소를 모두 고칠 수 있고, 다 되면 검토를 요청합니다.',
-    thumb: 'ins-turnkey.jpg',
-    source: 'own',
-    author: '빌더 리아',
-    date: '2026.08.21',
-    readMin: 2,
-    bodyHtml: '<h2 id="여기를-고쳐-보세요">여기를 고쳐 보세요</h2><p>툴바로 소제목·굵게·목록·링크를 넣어 볼 수 있습니다. H1 은 없습니다 — 페이지 제목이 h1 이라 본문은 H2 부터 시작합니다.</p><h2 id="주소는-제목을-따라온다">주소는 제목을 따라온다</h2><p>새 글에서는 제목을 쓰면 주소가 자동으로 만들어집니다. 이미 저장된 글은 잠겨 있고 “주소 수정”을 눌러야 열립니다.</p>',
-    status: 'draft',
-    updated: '2026.08.21',
-    owner: BUILDER_ME,
+    slug: '샘플-승인대기-글', cat: 'how',
+    title: '[샘플 ②] 검토 요청됨 — 관리자 승인 대기',
+    excerpt: '빌더가 제출해 검수를 기다리는 상태입니다. 관리자에게는 승인·반려가 보이고, 작성자에게는 폼이 잠깁니다.',
+    thumb: 'ins-native.jpg', source: 'own', author: '빌더 리아', date: '2026.08.20', readMin: 3,
+    bodyHtml: '<h2 id="확인할-것">확인할 것</h2><p>관리자로 보면 <strong>승인 · 공개</strong> 와 <strong>반려</strong> 가 보입니다. 반려를 누르면 사유 입력이 열리고, 비어 있으면 보낼 수 없습니다.</p><h2 id="빌더로-보면">빌더로 보면</h2><p>폼 전체가 잠기고 왜 잠겼는지가 표시됩니다. 검수 중에 원본이 바뀌면 승인한 내용과 공개된 내용이 달라지기 때문입니다.</p>',
+    status: 'pending', updated: '2026.08.20', owner: BUILDER_ME,
+  },
+  {
+    slug: '샘플-반려된-글', cat: 'how',
+    title: '[샘플 ③] 반려됨 — 사유를 보고 다시 고칩니다',
+    excerpt: '관리자가 사유와 함께 돌려보낸 상태입니다. 작성자는 사유를 보고 고친 뒤 다시 검토를 요청합니다.',
+    thumb: 'ins-gov.jpg', source: 'own', author: '빌더 리아', date: '2026.08.19', readMin: 2,
+    bodyHtml: '<h2 id="반려의-의미">반려의 의미</h2><p>거절이 아니라 되돌림입니다. 화면 맨 위에 사유가 붙어 있고, 폼은 다시 열려 있습니다.</p><h2 id="사유가-필수인-이유">사유가 필수인 이유</h2><p>사유 없는 반려는 “안 됨”만 전달합니다. 무엇을 고쳐야 하는지 없으면 다시 올라오는 것도 같은 상태입니다.</p>',
+    status: 'rejected', updated: '2026.08.19', owner: BUILDER_ME,
+  },
+  {
+    slug: '샘플-발행된-글', cat: 'project',
+    title: '[샘플 ④] 발행됨 — 공개 중, 내릴 수 있습니다',
+    excerpt: '승인되어 공개된 상태입니다. 작성자는 더 이상 손대지 못하고, 관리자만 수정하거나 내릴 수 있습니다.',
+    thumb: 'ins-ax.jpg', source: 'own', author: '빌더 리아', date: '2026.08.18', readMin: 3,
+    bodyHtml: '<h2 id="여기서부터는-관리자-몫">여기서부터는 관리자 몫</h2><p>공개 중인 글이 검수 없이 바뀌면 안 되기 때문입니다(PRD §7.3 편집 주체 = 관리자).</p><h2 id="내리면">내리면</h2><p><strong>내리기</strong> 를 누르면 ⑤ 보관 상태가 되고, 그 주소는 404 가 아니라 목록으로 301 됩니다 — 색인과 공유 링크를 버리지 않습니다.</p>',
+    status: 'published', updated: '2026.08.18', owner: BUILDER_ME,
+  },
+  {
+    slug: '샘플-보관된-글', cat: 'project',
+    title: '[샘플 ⑤] 보관됨 — 내려간 글, 다시 공개할 수 있습니다',
+    excerpt: '공개에서 내려간 상태입니다. 지운 것이 아니라 보관입니다 — 관리자가 다시 공개할 수 있습니다.',
+    thumb: 'ins-toss.jpg', source: 'own', author: '빌더 리아', date: '2026.08.17', readMin: 2,
+    bodyHtml: '<h2 id="지우지-않는-이유">지우지 않는 이유</h2><p>지우면 작성자 연결과 이력이 함께 사라집니다. 상태를 삭제 플래그로 겸하지 않는 것도 같은 이유입니다.</p><h2 id="주소는-살아-있다">주소는 살아 있다</h2><p>보관된 글의 주소는 목록으로 301 됩니다(DR-08).</p>',
+    status: 'archived', updated: '2026.08.17', owner: BUILDER_ME,
   },
 ]
 

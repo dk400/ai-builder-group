@@ -7,7 +7,7 @@ import { useRole } from '../../../role'
 import BodyEditor from '../../Editor'
 import ImageDrop from '../../ImageDrop'
 import SlugField from '../../SlugField'
-import { allowedTransitions, canEdit, type Status } from '../../../_transitions'
+import { allowedTransitions, canEdit, lockReason, type Status } from '../../../_transitions'
 
 type Props = {
   isNew: boolean
@@ -44,6 +44,7 @@ export default function InsightEditView(p: Props) {
   /* DR-07 — 제출한 글은 작성자가 편집할 수 없다. 검수 중에 원본이 바뀌면
      승인한 것과 공개된 것이 달라진다. */
   const locked = !canEdit(p.status, role)
+  const lock = lockReason(p.status, role)
   const actions = allowedTransitions(p.status, role)
 
   return (
@@ -71,24 +72,19 @@ export default function InsightEditView(p: Props) {
           </div>
         )}
 
-        {locked && (
+        {lock && (
           <div className="notice notice--lock">
             <span className="notice__ico" aria-hidden="true">🔒</span>
-            <b>검토 중입니다 — 지금은 수정할 수 없습니다</b>
-            <p>
-              제출한 글은 검수가 끝날 때까지 잠깁니다. 검수 중에 원본이 바뀌면 승인한 내용과
-              공개된 내용이 달라지기 때문입니다. 고칠 곳을 찾았다면 관리자에게 반려를 요청하세요 —
-              반려되면 사유와 함께 다시 편집할 수 있습니다.
-            </p>
+            <b>{lock.title}</b>
+            <p>{lock.body}</p>
             {/* 목업에서 "왜 아무것도 안 눌리지"의 실제 원인은 대부분 역할 스위치다.
-                kbd 로 조판한다 — 조작부 라벨을 가리키는 태그이고, 제목용 b 규칙과 부딪히지 않는다.
                 인증이 붙으면 이 줄과 스위치가 함께 사라진다. */}
             <p className="notice__hint">
               <span>화면 맨 위 “보는 사람”</span>
               <kbd>빌더</kbd>
               <span aria-hidden="true">→</span>
               <kbd>운영 관리자</kbd>
-              <span>로 바꾸면 승인 · 반려가 보입니다</span>
+              <span>로 바꾸면 할 수 있는 일이 보입니다</span>
             </p>
           </div>
         )}
@@ -194,7 +190,7 @@ export default function InsightEditView(p: Props) {
         <div className="adm-actions">
           {locked ? (
             /* 버튼이 사라진 자리에 이유를 둔다. 빈 바는 아무것도 설명하지 않는다 */
-            <span className="locked">🔒 검토 중이라 수정할 수 없습니다 · 관리자의 승인 또는 반려를 기다립니다</span>
+            <span className="locked">🔒 {lock?.title ?? '지금은 수정할 수 없습니다'}</span>
           ) : (
             <span className="warn">
               {dirty

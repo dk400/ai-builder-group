@@ -71,11 +71,39 @@ export function canTransition(from: Status, to: Status, role: Role): boolean {
   return t !== undefined && (role === 'admin' || !t.adminOnly)
 }
 
-/** DR-07 — 제출한 글은 작성자가 편집할 수 없다.
-    검수 중에 원본이 바뀌면 승인한 것과 공개된 것이 달라진다. */
+/** 이 상태를 이 역할이 편집할 수 있는가 — PRD §7.3 "편집 주체" 열 그대로.
+
+    ⚠ 이전 구현은 pending 만 잠갔다. 표는 published · archived 도 관리자 전용으로 적어 놓았는데
+      빌더가 발행된 글을 고칠 수 있는 상태였다. 공개 중인 글이 검수 없이 바뀌는 경로다. */
 export function canEdit(status: Status, role: Role): boolean {
   if (role === 'admin') return true
-  return status !== 'pending'
+  return status === 'draft' || status === 'rejected'
+}
+
+export type LockNotice = { title: string; body: string }
+
+/** 왜 잠겼는지. 화면마다 다르게 적으면 같은 상태에 다른 설명이 붙는다 — 문구도 한 곳에 둔다 */
+export function lockReason(status: Status, role: Role): LockNotice | null {
+  if (canEdit(status, role)) return null
+  switch (status) {
+    case 'pending':
+      return {
+        title: '검토 중입니다 — 지금은 수정할 수 없습니다',
+        body: '제출한 글은 검수가 끝날 때까지 잠깁니다. 검수 중에 원본이 바뀌면 승인한 내용과 공개된 내용이 달라지기 때문입니다. 고칠 곳을 찾았다면 관리자에게 반려를 요청하세요 — 반려되면 사유와 함께 다시 편집할 수 있습니다.',
+      }
+    case 'published':
+      return {
+        title: '이미 발행된 글입니다',
+        body: '공개 중인 글은 관리자가 수정합니다. 고칠 곳이 있으면 관리자에게 알려 주세요. 관리자가 글을 내리면(보관) 다시 작업할 수 있습니다.',
+      }
+    case 'archived':
+      return {
+        title: '보관된 글입니다',
+        body: '공개에서 내려간 글입니다. 다시 공개하거나 수정하는 것은 관리자만 할 수 있습니다.',
+      }
+    default:
+      return { title: '지금은 수정할 수 없습니다', body: '' }
+  }
 }
 
 /** DR-08 — 내린 글의 주소는 404 가 아니라 301 이다. 색인과 공유 링크를 버리지 않는다 */
