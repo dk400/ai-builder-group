@@ -80,6 +80,45 @@ npm run verify     # 커밋 전 게이트
 
 ---
 
+## 배포
+
+`main` 에 푸시하면 Vercel 이 프로덕션으로 배포합니다 (2026-08-20 부터 GitHub 연동).
+`feat/*` 푸시는 프리뷰 URL 이 자동으로 생깁니다.
+
+```
+GitHub      dk400/ai-builder-group        ← 연결된 저장소
+Vercel      ai-builder-school / ai-builder-group-dk
+프로덕션     https://ai-builder-group-dk.vercel.app
+```
+
+프로젝트 설정 두 개가 **이 저장소 구조에 맞춰 손으로 맞춰져 있습니다. 바꾸지 마세요.**
+
+| 설정 | 값 | 이유 |
+|---|---|---|
+| Root Directory | `05-서비스-nextjs` | 앱이 루트가 아니라 이 폴더 안에 있습니다 |
+| Include files outside the root directory | **Disabled** | 켜면 빌드 컨텍스트가 저장소 루트가 됩니다 |
+
+### 🔴 한글 폴더 이름과 Turbopack
+
+앱이 **한글이 든 폴더**(`05-서비스-nextjs`) 안에 있습니다. Turbopack 은 경로 문자열을
+바이트 단위로 자르는 코드가 있어서, 버전에 따라 한글 글자 중간을 쪼개고 죽습니다.
+
+```
+FATAL: An unexpected Turbopack error occurred:
+start byte index 10 is not a char boundary; it is inside '스' (bytes 9..12 of string)
+```
+
+**Next 16.3.0 에서 실제로 프로덕션 빌드가 두 번 깨졌고, 16.3.1 에서 고쳐져 있습니다.**
+그래서 `next` · `react` · `react-dom` 의 버전을 `latest` 에서 **고정으로 바꿨습니다.**
+
+- **`latest` 로 되돌리지 마세요.** 락파일과 어긋나는 순간 로컬과 CI 가 다른 버전으로
+  빌드하고, 그 차이는 배포가 깨지고 나서야 드러납니다 (실제로 그렇게 드러났습니다).
+- Next 를 올릴 때는 **배포까지 확인**하세요. 로컬 `npm run build` 통과가 증거가 되지
+  않습니다 — 로컬은 앱 폴더 안에서 돌아서 상대 경로에 한글이 안 들어갑니다.
+- 폴더 이름을 영문으로 바꾸는 선택지는 남아 있지만, 문서·스크립트·설정이 전부 따라
+  바뀌어야 하므로 최후의 수단입니다.
+
+---
 ## 코드 규칙
 
 전체는 `README.md` §페이지 구성 패턴. 요약:
