@@ -5,7 +5,7 @@ import { canEdit, canTransition, findTransition, type Role, type Status } from '
 
 /* 권한 판정 — NFR-11 의 "서버 액션" 층.
 
-   미들웨어는 **인증**만 본다(로그인했는가). 여기서는 **권한**을 본다(이걸 할 수 있는가).
+   proxy.ts 는 **인증**만 본다(로그인했는가). 여기서는 **권한**을 본다(이걸 할 수 있는가).
    역할은 DB 의 `builders.role` 이 원천이다 — 클라이언트가 보낸 값이나 목업의 역할 스위치를
    절대 믿지 않는다.
 

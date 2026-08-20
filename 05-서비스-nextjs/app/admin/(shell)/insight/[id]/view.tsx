@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Badge } from '../../ui'
 import { useRole } from '../../../role'
+import BodyEditor from '../../Editor'
 import type { Status } from '../../../_mock'
 
 type Props = {
@@ -20,15 +21,6 @@ type Props = {
   rejectReason: string | null
   cats: Array<{ value: string; label: string }>
 }
-
-/* 툴바에 H1 이 없는 것은 의도다 — 페이지 제목이 h1 이라 본문에 또 두면 문서에 h1 이 둘이 된다
-   (FR-A03-02: 툴바에서 차단 + 서버에서 강등). 그래서 H2 부터 시작한다. */
-const TOOLS = [
-  ['H2', 'H3'],
-  ['B', 'I', 'S'],
-  ['“”', '•', '1.'],
-  ['🔗', '🖼', '⌗'],
-]
 
 export default function InsightEditView(p: Props) {
   const { role } = useRole()
@@ -87,26 +79,7 @@ export default function InsightEditView(p: Props) {
                 <span>{p.bodyHtml ? '작성됨' : '비어 있음'}</span>
               </div>
               <div className="card__b">
-                <div className="ed">
-                  <div className="ed__bar">
-                    {TOOLS.map((group, gi) => (
-                      <div key={gi} style={{ display: 'contents' }}>
-                        {gi > 0 && <span className="sep" aria-hidden="true" />}
-                        {group.map(t => <button key={t} type="button" title={t}>{t}</button>)}
-                      </div>
-                    ))}
-                    <span className="note">H1 없음 — 페이지 제목이 h1</span>
-                  </div>
-                  {/* 목업이라 편집이 되지 않는다. 실제로는 Tiptap 이 이 자리에 마운트되고,
-                      저장 시 서버에서 sanitize 한다 (FR-A03-01·03). */}
-                  {p.bodyHtml
-                    ? <div className="ed__body" dangerouslySetInnerHTML={{ __html: p.bodyHtml }} />
-                    : (
-                      <div className="ed__body ed__body--empty">
-                        <p>여기에 본문을 씁니다. 소제목은 H2 부터 시작합니다.</p>
-                      </div>
-                    )}
-                </div>
+                <BodyEditor name="bodyHtml" defaultValue={p.bodyHtml} onDirty={touch} />
               </div>
             </div>
           </div>

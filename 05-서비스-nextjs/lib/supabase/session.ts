@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { supabaseEnv } from './env'
 
-/* 미들웨어에서 세션을 갱신하고 사용자 정보를 돌려준다.
+/* proxy(구 middleware)에서 세션을 갱신하고 사용자 정보를 돌려준다.
 
    서버 컴포넌트는 렌더 중에 쿠키를 쓸 수 없어서 토큰을 갱신하지 못한다. 그 일을 매 요청마다
    여기서 한다 — 이 파일이 없으면 액세스 토큰이 만료되는 순간 사용자가 로그아웃된다.
