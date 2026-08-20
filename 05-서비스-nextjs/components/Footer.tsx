@@ -37,7 +37,15 @@ export default function Footer() {
         </div>
         <div className="ft__bottom">
           <span>© 2026 AI Builder Group</span>
-          <Link href="/privacy">개인정보처리방침</Link>
+          {/* 링크를 한 덩어리로 묶는다 — space-between 이라 그냥 늘어놓으면 셋이 균등 분산된다 */}
+          <span className="ft__util">
+            <Link href="/privacy">개인정보처리방침</Link>
+            {/* 관리자 진입점. FR-C-05 의 인수 조건("공개 HTML 에 /admin 0건")을 벗어나는
+                의도된 예외다 — 검수 중 어드민에 바로 들어갈 통로가 필요하다는 요청.
+                GNB 에는 넣지 않는다(요구사항 본문). /admin 은 noindex + robots 차단이라
+                색인에는 영향이 없고, 서버 차단은 미들웨어 게이트(FR-A00-01)가 붙을 때 생긴다. */}
+            <Link href="/admin">관리자</Link>
+          </span>
         </div>
       </div>
     </footer>

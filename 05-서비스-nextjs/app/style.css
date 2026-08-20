@@ -338,6 +338,7 @@ footer { border-top: 1px solid var(--line); padding: 60px 0 52px; background: va
   font-family: var(--mono); font-size: 12px; letter-spacing: .06em; color: var(--muted-ink); text-transform: uppercase; }
 /* 11px 글자 = 18px 높이. 개인정보처리방침은 법적으로 닿아야 하는 링크인데 가장 누르기 어려웠다. */
 .ft__bottom a { text-decoration: none; display: inline-block; padding: 4px 0; }
+.ft__util { display: inline-flex; gap: 18px; flex-wrap: wrap; }
 .ft__bottom a:hover { color: var(--ink); text-decoration: underline; }
 /* 다크 페이지 푸터 대응 */
 body.dark footer { background: #131310; border-top-color: var(--d-line); }

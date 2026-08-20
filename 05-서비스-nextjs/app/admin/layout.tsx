@@ -13,7 +13,9 @@ import { RoleProvider, RoleSwitch } from './role'
    · 이 layout 의 robots noindex/nofollow
    · robots.txt 의 Disallow: /admin
    · sitemap 미포함
-   공개 페이지에서 /admin 으로 가는 링크는 한 곳도 없다 (FR-C-05). */
+   진입점은 푸터 하단 유틸 줄 한 곳뿐이다. GNB 에는 넣지 않는다 (FR-C-05 본문).
+   ⚠ 링크가 있다는 것과 접근이 막혀 있다는 것은 다른 문제다 — 색인은 아래 세 겹이 막지만
+     아무나 들어오는 것은 미들웨어 게이트가 붙어야 막힌다. */
 export const metadata: Metadata = {
   title: '관리자 — AI 빌더 그룹',
   robots: { index: false, follow: false, nocache: true },
