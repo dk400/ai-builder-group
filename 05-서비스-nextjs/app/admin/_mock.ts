@@ -85,13 +85,63 @@ export const REJECT_REASON: Record<string, string> = {
 export type AdminInsight = Article & { status: Status; updated: string; owner: string }
 export type AdminWork = Work & { status: Status; updated: string; leadName: string; owner: string }
 
+/* 검수 흐름을 실제로 걸어 보기 위한 데모 글 두 건.
+
+   ⚠ **ARTICLES 에 넣지 않는다.** 그 배열은 공개 사이트(/insight · sitemap · llms.txt)의
+     원천이라, 거기 넣으면 초안·승인대기 글이 그대로 공개된다. 어드민에서만 보이는
+     픽스처는 여기 따로 둔다.
+
+   왜 필요했나 — 빌더 시점으로 보면 **편집할 수 있는 글이 하나도 없었다.** 리아가 가진 글은
+   승인대기 한 건뿐이고 그건 DR-07 로 잠긴다. 잠긴 화면만 보이면 "고장났나"로 읽힌다.
+
+     샘플-승인대기-글   관리자: 승인 · 반려를 눌러 본다  /  빌더: 잠금 안내를 본다
+     샘플-작성중-글     빌더가 자유롭게 고치고 "검토 요청"까지 눌러 본다
+
+   Supabase 가 붙으면 이 배열은 사라지고 실제 행이 그 자리를 대신한다. */
+const DEMO_INSIGHTS: AdminInsight[] = [
+  {
+    slug: '샘플-승인대기-글',
+    cat: 'how',
+    title: '[샘플] 검토를 요청한 글 — 관리자 승인 대기',
+    excerpt: '빌더가 제출해 검수를 기다리는 상태입니다. 관리자에게는 승인·반려 버튼이 보이고, 작성자에게는 폼이 잠깁니다.',
+    thumb: 'ins-native.jpg',
+    source: 'own',
+    author: '빌더 리아',
+    date: '2026.08.20',
+    readMin: 3,
+    bodyHtml: '<h2 id="이-글의-용도">이 글의 용도</h2><p>승인 흐름을 눌러 보기 위한 샘플입니다. 공개 사이트에는 나가지 않습니다.</p><h2 id="확인할-것">확인할 것</h2><ul><li>관리자로 보면 <strong>승인 · 공개</strong> 와 <strong>반려</strong> 가 보입니다.</li><li>반려를 누르면 사유 입력이 열리고, 비어 있으면 보낼 수 없습니다.</li><li>빌더로 보면 폼 전체가 잠기고 이유가 표시됩니다.</li></ul>',
+    status: 'pending',
+    updated: '2026.08.20',
+    owner: BUILDER_ME,
+  },
+  {
+    slug: '샘플-작성중-글',
+    cat: 'guide',
+    title: '[샘플] 작성 중인 글 — 자유롭게 수정할 수 있습니다',
+    excerpt: '아직 제출하지 않은 초안입니다. 제목·본문·썸네일·주소를 모두 고칠 수 있고, 다 되면 검토를 요청합니다.',
+    thumb: 'ins-turnkey.jpg',
+    source: 'own',
+    author: '빌더 리아',
+    date: '2026.08.21',
+    readMin: 2,
+    bodyHtml: '<h2 id="여기를-고쳐-보세요">여기를 고쳐 보세요</h2><p>툴바로 소제목·굵게·목록·링크를 넣어 볼 수 있습니다. H1 은 없습니다 — 페이지 제목이 h1 이라 본문은 H2 부터 시작합니다.</p><h2 id="주소는-제목을-따라온다">주소는 제목을 따라온다</h2><p>새 글에서는 제목을 쓰면 주소가 자동으로 만들어집니다. 이미 저장된 글은 잠겨 있고 “주소 수정”을 눌러야 열립니다.</p>',
+    status: 'draft',
+    updated: '2026.08.21',
+    owner: BUILDER_ME,
+  },
+]
+
+/** 데모 글을 포함한 어드민 목록. 공개 화면은 절대 이 함수를 부르지 않는다 */
 export function adminInsights(): AdminInsight[] {
-  return ARTICLES.map(a => ({
-    ...a,
-    status: INSIGHT_STATUS[a.slug] ?? 'draft',
-    updated: UPDATED[a.slug] ?? a.date,
-    owner: INSIGHT_OWNER[a.slug] ?? ADMIN_ACCOUNT,
-  }))
+  return [
+    ...DEMO_INSIGHTS,
+    ...ARTICLES.map(a => ({
+      ...a,
+      status: INSIGHT_STATUS[a.slug] ?? 'draft',
+      updated: UPDATED[a.slug] ?? a.date,
+      owner: INSIGHT_OWNER[a.slug] ?? ADMIN_ACCOUNT,
+    })),
+  ]
 }
 
 export function adminWorks(): AdminWork[] {

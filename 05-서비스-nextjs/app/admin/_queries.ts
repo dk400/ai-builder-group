@@ -205,6 +205,58 @@ export async function navCounts() {
   return { counts, myCounts }
 }
 
+/** 편집 화면 한 건.
+
+    ⚠ 공개 데이터(_insights.ARTICLES)에서 직접 찾으면 안 된다. 어드민에는 아직 공개되지
+      않은 글(초안·승인대기·데모 픽스처)이 있고 그것들은 ARTICLES 에 없다. 목록과 편집이
+      서로 다른 원천을 보면 "목록엔 있는데 눌러도 안 열리는 글"이 생긴다 — 실제로 겪었다. */
+export async function getInsightForEdit(raw: string) {
+  const id = safeDecode(raw)
+  const rows = await listInsights()
+  const row = rows.find(r => r.slug === id) ?? rows.find(r => r.slug === raw)
+  if (!row) return null
+
+  if (!isSupabaseConfigured) {
+    const full = adminInsights().find(a => a.slug === row.slug)
+    if (!full) return null
+    return {
+      slug: full.slug,
+      title: full.title,
+      excerpt: full.excerpt,
+      cat: full.cat as string,
+      author: full.author,
+      thumb: `/assets/img/ins/${full.thumb}`,
+      bodyHtml: full.bodyHtml ?? null,
+      status: full.status,
+      updated: full.updated,
+    }
+  }
+
+  const supabase = await createSupabaseServerClient()
+  const { data } = await supabase
+    .from('insights')
+    .select('slug, title, excerpt, body_html, thumb_url, category_id, status, updated_at')
+    .eq('slug', row.slug)
+    .maybeSingle()
+  if (!data) return null
+  return {
+    slug: data.slug as string,
+    title: data.title as string,
+    excerpt: (data.excerpt as string | null) ?? '',
+    cat: (data.category_id as string | null) ?? '',
+    author: row.author,
+    thumb: (data.thumb_url as string | null) ?? '',
+    bodyHtml: (data.body_html as string | null) ?? null,
+    status: data.status as Status,
+    updated: ymd(data.updated_at as string | null),
+  }
+}
+
+/* 슬러그가 한글이라 이중 인코딩된 요청이 들어와도 살아남게 한 번 더 벗긴다 */
+function safeDecode(v: string): string {
+  try { return decodeURIComponent(v) } catch { return v }
+}
+
 /** 반려 사유 — 편집 화면 상단에 띄운다 (FR-A07-04) */
 export async function rejectReasonOf(kind: 'insight' | 'work', slug: string): Promise<string | null> {
   if (!isSupabaseConfigured) return REJECT_REASON[slug] ?? null

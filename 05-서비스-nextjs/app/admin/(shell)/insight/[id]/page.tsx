@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
-import { CATEGORY_LABEL, articleBySlug, type InsightCategory } from '@/app/_insights'
-import { listInsights, rejectReasonOf } from '../../../_queries'
+import { CATEGORY_LABEL, type InsightCategory } from '@/app/_insights'
+import { getInsightForEdit, rejectReasonOf } from '../../../_queries'
 import InsightEditView from './view'
 
 /* A-03 Insight 편집. id 가 'new' 면 빈 폼이다.
@@ -11,11 +11,9 @@ const CATS: InsightCategory[] = ['ai-ax', 'guide', 'how', 'project']
 
 export default async function AdminInsightEditPage({ params }: { params: Promise<{ id: string }> }) {
   const raw = (await params).id
-  const id = decodeURIComponent(raw)
-
   const cats = CATS.map(c => ({ value: c, label: CATEGORY_LABEL[c] }))
 
-  if (id === 'new') {
+  if (raw === 'new') {
     return (
       <InsightEditView
         isNew slug="" title="" excerpt="" cat="guide" author="빌더 조쉬"
@@ -24,10 +22,9 @@ export default async function AdminInsightEditPage({ params }: { params: Promise
     )
   }
 
-  const a = articleBySlug(id) ?? articleBySlug(raw)
+  /* 어드민 목록과 같은 원천에서 찾는다 — 공개 데이터에는 초안·승인대기·데모 글이 없다 */
+  const a = await getInsightForEdit(raw)
   if (!a) notFound()
-  const rows = await listInsights()
-  const row = rows.find(x => x.slug === a.slug)
 
   return (
     <InsightEditView
@@ -37,10 +34,10 @@ export default async function AdminInsightEditPage({ params }: { params: Promise
       excerpt={a.excerpt}
       cat={a.cat}
       author={a.author}
-      thumb={`/assets/img/ins/${a.thumb}`}
-      bodyHtml={a.bodyHtml ?? null}
-      status={row?.status ?? 'draft'}
-      updated={row?.updated ?? '—'}
+      thumb={a.thumb || null}
+      bodyHtml={a.bodyHtml}
+      status={a.status}
+      updated={a.updated}
       rejectReason={await rejectReasonOf('insight', a.slug)}
       cats={cats}
     />
