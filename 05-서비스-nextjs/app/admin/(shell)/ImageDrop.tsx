@@ -8,6 +8,11 @@ import { useEffect, useId, useRef, useState } from 'react'
      써 두고 놓으면 아무 일도 일어나지 않았다. **없는 것보다 나쁘다** — 사용자는 자기가
      뭘 잘못했는지 찾느라 시간을 쓴다.
 
+   🔴 그 뒤에도 "어떻게 등록하냐"는 질문이 나왔다. 이유는 **이미 이미지가 있을 때**였다:
+      바꾸는 방법이 호버해야 뜨는 오버레이 하나뿐이었고(터치 기기에는 호버가 없다),
+      저장된 이미지를 지우는 방법은 아예 없었다(제거 버튼이 새로 고른 파일에만 떴다).
+      → 미리보기 아래에 **항상 보이는 버튼 줄**을 둔다. 호버 오버레이는 보조일 뿐이다.
+
    여기서 하는 일:
    · 클릭·키보드·드래그 앤 드롭 세 경로 모두 지원 (라벨 + 실제 file input)
    · 형식·용량 검증을 **고르는 즉시** 한다 (NFR-14: jpg·png·webp·avif, 5MB 이하).
@@ -15,8 +20,7 @@ import { useEffect, useId, useRef, useState } from 'react'
    · 미리보기. 목록 카드·상세 커버·OG 카드에 같은 이미지가 쓰이므로 잘림을 미리 보여준다
 
    ⚠ 실제 업로드(Supabase Storage)는 키가 들어온 뒤에 붙는다. 지금은 파일이 폼에 실려
-     서버 액션까지 가고, 액션이 "연결되지 않았습니다"를 돌려준다. 화면이 거짓말하지 않도록
-     그 사실을 아래 안내에 적어 둔다. */
+     서버 액션까지 가고, 액션이 "연결되지 않았습니다"를 돌려준다. */
 
 const ACCEPT = 'image/jpeg,image/png,image/webp,image/avif'
 const MAX_BYTES = 5 * 1024 * 1024
@@ -39,6 +43,9 @@ export default function ImageDrop({ name, current, spec, onDirty, disabled }: Pr
   const [fileName, setFileName] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [over, setOver] = useState(false)
+  /* 저장된 이미지를 지웠다는 사실은 서버가 알아야 한다 — 파일이 안 실렸다는 것만으로는
+     "안 바꿨다"와 "지웠다"를 구분할 수 없다 */
+  const [cleared, setCleared] = useState(false)
 
   /* createObjectURL 은 명시적으로 해제하지 않으면 탭이 닫힐 때까지 메모리에 남는다 */
   useEffect(() => {
@@ -56,6 +63,7 @@ export default function ImageDrop({ name, current, spec, onDirty, disabled }: Pr
       return
     }
     setError(null)
+    setCleared(false)
     setPreview(prev => {
       if (prev && prev.startsWith('blob:')) URL.revokeObjectURL(prev)
       return URL.createObjectURL(file)
@@ -71,6 +79,7 @@ export default function ImageDrop({ name, current, spec, onDirty, disabled }: Pr
     })
     setFileName(null)
     setError(null)
+    setCleared(true)
     if (inputRef.current) inputRef.current.value = ''
     onDirty?.()
   }
@@ -91,8 +100,13 @@ export default function ImageDrop({ name, current, spec, onDirty, disabled }: Pr
       >
         {preview
           ? <img src={preview} alt="" />
-          : <span className="drop__ph">이미지를 끌어다 놓거나 눌러서 고르세요<em>{spec}</em></span>}
-        {preview && <span className="drop__swap">{disabled ? '' : '바꾸려면 누르세요'}</span>}
+          : (
+            <span className="drop__ph">
+              {disabled ? '등록된 이미지가 없습니다' : '이미지를 끌어다 놓거나 눌러서 고르세요'}
+              <em>{spec}</em>
+            </span>
+          )}
+        {preview && !disabled && <span className="drop__swap">눌러서 바꾸기</span>}
       </label>
 
       <input
@@ -100,15 +114,28 @@ export default function ImageDrop({ name, current, spec, onDirty, disabled }: Pr
         className="visually-hidden" disabled={disabled}
         onChange={e => accept(e.target.files?.[0])}
       />
+      {cleared && <input type="hidden" name={`${name}Cleared`} value="1" readOnly />}
 
       {error && <p className="fielderr" role="alert">{error}</p>}
 
-      {fileName && !error && (
-        <p className="hint" style={{ marginTop: 8 }}>
-          고른 파일 <b>{fileName}</b>
-          <button type="button" className="linkbtn" onClick={clear}>제거</button>
-        </p>
-      )}
+      {/* 🔴 호버에 기대지 않는다. 이미지가 있으면 바꾸는 길과 지우는 길이 항상 보여야 한다 */}
+      <div className="drop__acts">
+        {disabled ? (
+          <span className="hint">검토 중에는 바꿀 수 없습니다</span>
+        ) : preview ? (
+          <>
+            <button type="button" className="abtn abtn--sm" onClick={() => inputRef.current?.click()}>
+              이미지 교체
+            </button>
+            <button type="button" className="abtn abtn--sm" onClick={clear}>제거</button>
+            {fileName && <span className="drop__file" title={fileName}>{fileName}</span>}
+          </>
+        ) : (
+          <button type="button" className="abtn abtn--sm" onClick={() => inputRef.current?.click()}>
+            이미지 고르기
+          </button>
+        )}
+      </div>
     </>
   )
 }
