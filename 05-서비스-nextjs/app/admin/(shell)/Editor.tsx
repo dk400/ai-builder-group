@@ -26,15 +26,20 @@ type Props = {
   /** 초기 HTML. 서버에서 이미 sanitize 된 값이다 */
   defaultValue: string | null
   onDirty?: () => void
+  /* 🔴 fieldset[disabled] 로는 이 에디터를 막을 수 없다. 그 속성은 폼 컨트롤
+     (input·textarea·select·button)만 비활성화하고 contenteditable 은 건드리지 않는다.
+     잠긴 화면에서 본문만 편집되는 상태가 실제로 있었다. */
+  editable?: boolean
 }
 
-export default function BodyEditor({ name, defaultValue, onDirty }: Props) {
+export default function BodyEditor({ name, defaultValue, onDirty, editable = true }: Props) {
   const [html, setHtml] = useState(defaultValue ?? '')
   const [linkOpen, setLinkOpen] = useState(false)
   const [linkValue, setLinkValue] = useState('')
 
   const editor = useEditor({
     immediatelyRender: false,
+    editable,
     extensions: [
       StarterKit.configure({
         /* 본문에는 h2~h4 만 존재한다. h1 은 페이지 제목의 몫이다 */
@@ -70,6 +75,9 @@ export default function BodyEditor({ name, defaultValue, onDirty }: Props) {
     },
   })
 
+  /* 잠금이 바뀌면 에디터에도 반영한다. useEditor 옵션은 최초 1회만 읽힌다 */
+  useEffect(() => { editor?.setEditable(editable) }, [editor, editable])
+
   /* 언마운트 정리는 useEditor 가 하지만, 폼이 다른 글로 갈아끼워질 때 초기값을 다시 넣어야 한다 */
   useEffect(() => {
     if (editor && defaultValue !== null && editor.isEmpty && defaultValue !== '') {
@@ -103,7 +111,7 @@ export default function BodyEditor({ name, defaultValue, onDirty }: Props) {
 
   return (
     <div className="ed">
-      <div className="ed__bar" role="toolbar" aria-label="본문 서식">
+      {editable && <div className="ed__bar" role="toolbar" aria-label="본문 서식">
         <Tool ed={editor} on="heading" attrs={{ level: 2 }} run={e => e.toggleHeading({ level: 2 })} label="H2" title="소제목" />
         <Tool ed={editor} on="heading" attrs={{ level: 3 }} run={e => e.toggleHeading({ level: 3 })} label="H3" title="작은 소제목" />
         <span className="sep" aria-hidden="true" />
@@ -126,11 +134,11 @@ export default function BodyEditor({ name, defaultValue, onDirty }: Props) {
         >🔗</button>
         <button type="button" title="구분선" onClick={() => { editor.chain().focus().setHorizontalRule().run(); onDirty?.() }}>⌗</button>
         <span className="note">H1 없음 — 페이지 제목이 h1</span>
-      </div>
+      </div>}
 
       {/* 링크 입력. window.prompt 를 쓰지 않는다 — 모달이 뜨는 동안 선택 영역이 풀리고,
           모바일에서는 붙여넣기가 어렵다. */}
-      {linkOpen && (
+      {editable && linkOpen && (
         <div className="ed__link">
           <input
             type="url" value={linkValue} autoFocus

@@ -72,11 +72,15 @@ export default function InsightEditView(p: Props) {
 
         {locked && (
           <div className="notice notice--lock">
-            <b>검토 중입니다</b>
+            <b>검토 중입니다 — 지금은 수정할 수 없습니다</b>
             <p>
-              제출한 글은 검수가 끝날 때까지 수정할 수 없습니다. 고칠 곳을 찾았다면
-              관리자에게 반려를 요청하세요 — 반려되면 사유와 함께 다시 편집할 수 있습니다.
+              제출한 글은 검수가 끝날 때까지 잠깁니다. 검수 중에 원본이 바뀌면 승인한 내용과
+              공개된 내용이 달라지기 때문입니다. 고칠 곳을 찾았다면 관리자에게 반려를 요청하세요 —
+              반려되면 사유와 함께 다시 편집할 수 있습니다.
             </p>
+            {/* 목업에서 "왜 아무것도 안 눌리지"의 실제 원인은 대부분 역할 스위치다.
+                인증이 붙으면 이 줄과 스위치가 함께 사라진다. */}
+            <span className="who">화면 맨 위 “보는 사람”이 <b>빌더</b>입니다 — <b>운영 관리자</b>로 바꾸면 승인·반려가 보입니다</span>
           </div>
         )}
 
@@ -107,7 +111,7 @@ export default function InsightEditView(p: Props) {
                 <span>{p.bodyHtml ? '작성됨' : '비어 있음'}</span>
               </div>
               <div className="card__b">
-                <BodyEditor name="bodyHtml" defaultValue={p.bodyHtml} onDirty={touch} />
+                <BodyEditor name="bodyHtml" defaultValue={p.bodyHtml} onDirty={touch} editable={!locked} />
               </div>
             </div>
           </div>
@@ -178,11 +182,16 @@ export default function InsightEditView(p: Props) {
         )}
 
         <div className="adm-actions">
-          <span className="warn">
-            {dirty
-              ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다'
-              : 'Supabase 연결 전이라 아직 저장되지 않습니다'}
-          </span>
+          {locked ? (
+            /* 버튼이 사라진 자리에 이유를 둔다. 빈 바는 아무것도 설명하지 않는다 */
+            <span className="locked">🔒 검토 중이라 수정할 수 없습니다 · 관리자의 승인 또는 반려를 기다립니다</span>
+          ) : (
+            <span className="warn">
+              {dirty
+                ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다'
+                : 'Supabase 연결 전이라 아직 저장되지 않습니다'}
+            </span>
+          )}
 
           {!locked && <button className="abtn" type="button">임시저장</button>}
 
