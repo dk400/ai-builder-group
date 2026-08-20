@@ -27,11 +27,13 @@ type Props = {
   /** 저장돼 있는 슬러그. 비어 있으면 새 글이다 */
   initial: string
   published: boolean
+  /** 종류별 규칙 안내. Work 는 "고객사명 제외"가 필수 고지다 (FR-A05-03) */
+  hint?: React.ReactNode
   onDirty?: () => void
   disabled?: boolean
 }
 
-export default function SlugField({ name, base, title, initial, published, onDirty, disabled }: Props) {
+export default function SlugField({ name, base, title, initial, published, hint, onDirty, disabled }: Props) {
   const isNew = initial === ''
   const [value, setValue] = useState(initial)
   /* 새 글은 처음부터 제목을 따라간다. 저장된 글은 잠겨 있다 */
@@ -79,6 +81,7 @@ export default function SlugField({ name, base, title, initial, published, onDir
           {isNew && autoFollow && (
             <p className="hint">제목을 따라 자동으로 만들어집니다. 직접 고치면 그때부터 멈춥니다.</p>
           )}
+          {hint && <div className="hint">{hint}</div>}
         </>
       )}
 

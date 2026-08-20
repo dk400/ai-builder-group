@@ -4,7 +4,9 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Badge } from '../../ui'
 import { useRole } from '../../../role'
-import type { Status } from '../../../_mock'
+import ImageDrop from '../../ImageDrop'
+import SlugField from '../../SlugField'
+import { allowedTransitions, canEdit, type Status } from '../../../_transitions'
 
 type Roster = { slug: string; name: string; avatar: string; role: string }
 
@@ -24,13 +26,22 @@ type Props = {
   roster: Roster[]
 }
 
+/* A-05 Work 편집.
+
+   Insight 편집(A-03)과 같은 결함이 그대로 있었다 — 동작하지 않는 드롭존, 손으로 쓰는 슬러그,
+   상태와 무관하게 박힌 버튼 세 개. 같은 부품(ImageDrop · SlugField · 상태 머신)을 쓴다.
+   두 화면이 다른 방식으로 같은 일을 하면, 고칠 때마다 한쪽만 고쳐진다. */
 export default function WorkEditView(p: Props) {
   const { role } = useRole()
-  const isAdmin = role === 'admin'
-  const [slug, setSlug] = useState(p.slug)
+  const [title, setTitle] = useState(p.title)
   const [picked, setPicked] = useState<string[]>(p.builders)
   const [dirty, setDirty] = useState(false)
+  const [rejectOpen, setRejectOpen] = useState(false)
+  const [reason, setReason] = useState('')
   const touch = () => setDirty(true)
+
+  const locked = !canEdit(p.status, role)
+  const actions = allowedTransitions(p.status, role)
 
   const toggle = (s: string) => {
     setPicked(prev => (prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]))
@@ -51,36 +62,54 @@ export default function WorkEditView(p: Props) {
       </div>
 
       <div className="adm-body">
-        {/* 반려된 건에는 사유가 반드시 붙어 있다 (FR-A07-04) */}
         {p.rejectReason && (
-          <div className="card" style={{ marginBottom: 18, borderColor: '#E3C4BE', background: '#FBF2F0' }}>
-            <div className="card__b" style={{ padding: '14px 18px' }}>
-              <b style={{ fontSize: 13, color: '#A02D1F' }}>반려 사유</b>
-              <p style={{ margin: '5px 0 0', fontSize: 13.5, color: 'var(--ink-2)', lineHeight: 1.7 }}>{p.rejectReason}</p>
-            </div>
+          <div className="notice notice--reject">
+            <span className="notice__ico" aria-hidden="true">↩</span>
+            <b>반려되었습니다</b>
+            <p>{p.rejectReason}</p>
           </div>
         )}
 
-        <div className="adm-edit">
+        {locked && (
+          <div className="notice notice--lock">
+            <span className="notice__ico" aria-hidden="true">🔒</span>
+            <b>검토 중입니다 — 지금은 수정할 수 없습니다</b>
+            <p>
+              제출한 건은 검수가 끝날 때까지 잠깁니다. 검수 중에 원본이 바뀌면 승인한 내용과
+              공개된 내용이 달라지기 때문입니다. 고칠 곳을 찾았다면 관리자에게 반려를 요청하세요.
+            </p>
+            <p className="notice__hint">
+              <span>화면 맨 위 “보는 사람”</span>
+              <kbd>빌더</kbd>
+              <span aria-hidden="true">→</span>
+              <kbd>운영 관리자</kbd>
+              <span>로 바꾸면 승인 · 반려가 보입니다</span>
+            </p>
+          </div>
+        )}
+
+        <fieldset className="adm-edit" disabled={locked}>
           <div>
             <div className="card">
               <div className="card__b">
                 <div className="f">
                   <label htmlFor="ttl">프로젝트명 <span className="req">*</span></label>
-                  <input id="ttl" type="text" defaultValue={p.title} onChange={touch} />
+                  <input id="ttl" name="title" type="text" value={title}
+                    onChange={e => { setTitle(e.target.value); touch() }} />
                 </div>
                 <div className="f">
                   <label htmlFor="sum">개요 <span className="req">*</span> <span className="opt">목록 카드에 노출</span></label>
-                  <textarea id="sum" defaultValue={p.summary} onChange={touch} style={{ minHeight: 62 }} />
+                  <textarea id="sum" name="excerpt" defaultValue={p.summary} onChange={touch} style={{ minHeight: 62 }} />
                 </div>
                 <div className="f2">
                   <div className="f">
                     <label htmlFor="tag">분야 <span className="req">*</span></label>
-                    <input id="tag" type="text" defaultValue={p.tag} onChange={touch} placeholder="Commerce · AI · AX …" />
+                    <input id="tag" name="tag" type="text" defaultValue={p.tag} onChange={touch}
+                      placeholder="Commerce · AI · AX …" />
                   </div>
                   <div className="f">
                     <label htmlFor="yr">연도 <span className="req">*</span></label>
-                    <input id="yr" type="text" defaultValue={p.year} onChange={touch} placeholder="2026" />
+                    <input id="yr" name="year" type="text" defaultValue={p.year} onChange={touch} placeholder="2026" />
                   </div>
                 </div>
               </div>
@@ -94,15 +123,18 @@ export default function WorkEditView(p: Props) {
               <div className="card__b">
                 <div className="f">
                   <label htmlFor="b1">01 문제 <span className="req">*</span></label>
-                  <textarea id="b1" onChange={touch} placeholder="클라이언트가 어떤 상황이었나 — 숫자가 있으면 숫자로" />
+                  <textarea id="b1" name="bodyProblem" onChange={touch}
+                    placeholder="클라이언트가 어떤 상황이었나 — 숫자가 있으면 숫자로" />
                 </div>
                 <div className="f">
                   <label htmlFor="b2">02 해결 <span className="req">*</span></label>
-                  <textarea id="b2" onChange={touch} placeholder="무엇을 어떻게 했나 · 어떤 판단을 내렸나" />
+                  <textarea id="b2" name="bodySolution" onChange={touch}
+                    placeholder="무엇을 어떻게 했나 · 어떤 판단을 내렸나" />
                 </div>
                 <div className="f">
                   <label htmlFor="b3">03 결과 <span className="req">*</span></label>
-                  <textarea id="b3" onChange={touch} placeholder="무엇이 달라졌나 · 다음 단계로 이어졌나" />
+                  <textarea id="b3" name="bodyResult" onChange={touch}
+                    placeholder="무엇이 달라졌나 · 다음 단계로 이어졌나" />
                 </div>
               </div>
             </div>
@@ -135,15 +167,43 @@ export default function WorkEditView(p: Props) {
 
           <div>
             <div className="card">
+              <div className="card__h"><span>히어로 이미지 <span className="req">*</span></span></div>
+              <div className="card__b">
+                <ImageDrop name="cover" current={p.cover} spec="2400×1920px · 5:4" onDirty={touch} disabled={locked} />
+                <p className="hint" style={{ marginTop: 10 }}>
+                  목록 카드 · 상세 히어로 · 공유 카드(OG)에 같은 이미지가 쓰입니다.
+                  지정하지 않으면 OG 는 기본 카드로 나갑니다.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card__h"><span>주소</span></div>
+              <div className="card__b">
+                <SlugField
+                  name="slug" base="/work/" title={title} initial={p.slug}
+                  published={p.status === 'published'} onDirty={touch} disabled={locked}
+                  hint={
+                    <>
+                      <b>업종·기술 + 프로젝트명</b> 으로 씁니다. 한글을 그대로 씁니다.<br />
+                      {/* 규칙 안내는 필수다 (FR-A05-03) — 고객사명이 URL 에 들어가면 되돌릴 수 없다 */}
+                      ⚠ <b>고객사명은 넣지 않습니다</b> — 공개 동의를 확인한 건만 예외입니다.<br />
+                      예 <code>커머스-리빙-리뉴얼</code> · <code>ai-업무플랫폼-daisy</code>
+                    </>
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="card">
               <div className="card__h"><span>발행 설정</span></div>
               <div className="card__b">
-                <div className="srow"><span className="k">상태</span><span className="v"><Badge status={p.status} /></span></div>
                 <div className="srow"><span className="k">수정일</span><span className="v num">{p.updated}</span></div>
                 <div className="srow">
                   <span className="k">함께한 팀</span>
                   <span className="v">
-                    <label style={{ fontWeight: 600, fontSize: 13, display: 'inline-flex', gap: 6, alignItems: 'center' }}>
-                      <input type="checkbox" defaultChecked={p.withPartner} onChange={touch} />
+                    <label className="chk">
+                      <input type="checkbox" name="withPartner" defaultChecked={p.withPartner} onChange={touch} />
                       똑똑한개발자
                     </label>
                   </span>
@@ -152,64 +212,65 @@ export default function WorkEditView(p: Props) {
             </div>
 
             <div className="card">
-              <div className="card__h"><span>주소</span></div>
-              <div className="card__b">
-                <div className="f">
-                  <label htmlFor="slug">슬러그 <span className="req">*</span></label>
-                  <div className="slug-row">
-                    <span className="pre">/work/</span>
-                    <input id="slug" type="text" value={slug}
-                      onChange={e => { setSlug(e.target.value); touch() }}
-                      placeholder="업종·기술-프로젝트명" />
-                  </div>
-                  {/* 규칙 안내는 필수다 (FR-A05-03) — 고객사명이 URL 에 들어가면 되돌릴 수 없다 */}
-                  <p className="hint">
-                    <b>업종·기술 + 프로젝트명</b> 으로 씁니다. 한글을 그대로 씁니다.<br />
-                    ⚠ <b>고객사명은 넣지 않습니다</b> — 공개 동의를 확인한 건만 예외입니다.<br />
-                    예 <code>커머스-리빙-리뉴얼</code> · <code>ai-업무플랫폼-daisy</code>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="card">
-              <div className="card__h"><span>히어로 이미지</span></div>
-              <div className="card__b">
-                <div className="drop">
-                  {p.cover && <img src={p.cover} alt="" />}
-                  {!p.cover && <span className="ph">이미지를 끌어다 놓으세요<em>2400×1920px · 5:4</em></span>}
-                </div>
-                <p className="hint" style={{ marginTop: 10 }}>
-                  목록 카드 · 상세 히어로 · OG 이미지에 함께 쓰입니다. 지정하지 않으면 OG 는 기본 카드로 나갑니다.
-                </p>
-              </div>
-            </div>
-
-            <div className="card">
-              <div className="card__h"><span>SEO 메타</span></div>
+              <div className="card__h"><span>SEO 메타 <span className="opt">선택</span></span></div>
               <div className="card__b">
                 <div className="f">
                   <label htmlFor="st">검색 제목</label>
-                  <input id="st" type="text" onChange={touch} placeholder="비워두면 프로젝트명을 씁니다" />
+                  <input id="st" name="seoTitle" type="text" onChange={touch}
+                    placeholder="비워두면 프로젝트명을 씁니다" />
                 </div>
                 <div className="f">
                   <label htmlFor="sd">검색 설명</label>
-                  <textarea id="sd" onChange={touch} style={{ minHeight: 62 }} placeholder="비워두면 개요에서 자동 생성됩니다" />
+                  <textarea id="sd" name="seoDescription" onChange={touch} style={{ minHeight: 62 }}
+                    placeholder="비워두면 개요에서 자동 생성됩니다" />
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </fieldset>
+
+        {rejectOpen && (
+          <div className="notice notice--reject" style={{ marginTop: 18 }}>
+            <span className="notice__ico" aria-hidden="true">↩</span>
+            <b>반려 사유 <span className="req">*</span></b>
+            <textarea
+              value={reason} autoFocus onChange={e => setReason(e.target.value)}
+              placeholder="무엇을 고쳐야 하는지 구체적으로 적습니다. 작성자에게 그대로 표시됩니다."
+              style={{ minHeight: 76, marginTop: 8 }}
+            />
+            <div className="notice__acts">
+              <button type="button" className="abtn abtn--sm"
+                onClick={() => { setRejectOpen(false); setReason('') }}>취소</button>
+              <button type="button" className="abtn abtn--sm abtn--danger" disabled={reason.trim() === ''}>
+                반려하고 사유 보내기
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="adm-actions">
-          <span className="warn">
-            {dirty
-              ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)'
-              : isAdmin ? '목업이라 저장되지 않습니다' : '빌더는 제출까지 할 수 있습니다 · 발행은 관리자 승인 후'}
-          </span>
-          <button className="abtn" type="button">임시저장</button>
-          <button className="abtn" type="button">제출 → 승인대기</button>
-          {isAdmin && <button className="abtn abtn--lime" type="button">발행</button>}
+          {locked ? (
+            <span className="locked">🔒 검토 중이라 수정할 수 없습니다 · 관리자의 승인 또는 반려를 기다립니다</span>
+          ) : (
+            <span className="warn">
+              {dirty
+                ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다'
+                : 'Supabase 연결 전이라 아직 저장되지 않습니다'}
+            </span>
+          )}
+
+          {!locked && <button className="abtn" type="button">임시저장</button>}
+
+          {actions.map(t => (
+            <button
+              key={t.to}
+              type="button"
+              className={'abtn' + (t.to === 'published' ? ' abtn--lime' : t.needsReason ? ' abtn--danger' : '')}
+              onClick={() => { if (t.needsReason) setRejectOpen(true) }}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
       </div>
     </main>

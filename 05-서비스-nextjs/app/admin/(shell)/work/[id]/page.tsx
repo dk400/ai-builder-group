@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation'
-import { WORKS, workBySlug } from '@/app/_works'
+import { workBySlug } from '@/app/_works'
 import { BUILDERS } from '@/app/_builders'
-import { adminWorks, REJECT_REASON } from '../../../_mock'
+import { listWorks, rejectReasonOf } from '../../../_queries'
 import WorkEditView from './view'
 
-/* A-05 Work 편집. id 가 'new' 면 빈 폼이다 */
-export function generateStaticParams() {
-  return [{ id: 'new' }, ...WORKS.map(w => ({ id: w.slug }))]
-}
+/* A-05 Work 편집. id 가 'new' 면 빈 폼이다.
+   generateStaticParams 를 두지 않는다 — 셸이 force-dynamic 이라 프리렌더 목록이 의미가 없고,
+   어드민 주소를 빌드 산출물에 박아 둘 이유도 없다. */
 
 export default async function AdminWorkEditPage({ params }: { params: Promise<{ id: string }> }) {
   const raw = (await params).id
@@ -27,7 +26,8 @@ export default async function AdminWorkEditPage({ params }: { params: Promise<{ 
 
   const w = workBySlug(id) ?? workBySlug(raw)
   if (!w) notFound()
-  const row = adminWorks().find(x => x.slug === w.slug)!
+  const rows = await listWorks()
+  const row = rows.find(x => x.slug === w.slug)
 
   return (
     <WorkEditView
@@ -40,9 +40,9 @@ export default async function AdminWorkEditPage({ params }: { params: Promise<{ 
       cover={`/assets/img/${w.cover}`}
       withPartner={w.withPartner}
       builders={w.builders}
-      status={row.status}
-      updated={row.updated}
-      rejectReason={REJECT_REASON[w.slug] ?? null}
+      status={row?.status ?? 'draft'}
+      updated={row?.updated ?? '—'}
+      rejectReason={await rejectReasonOf('work', w.slug)}
       roster={roster}
     />
   )

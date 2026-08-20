@@ -477,3 +477,7 @@ body:has(.adm)::after { display: none; }
 /* 잠겼을 때 액션 바 — 버튼이 사라진 자리에 이유를 둔다. 빈 바는 아무것도 설명하지 않는다 */
 .adm-actions .locked { font-size: 13px; font-weight: 700; color: var(--ink-2);
   display: inline-flex; align-items: center; gap: 7px; }
+
+/* 체크박스 한 줄. 인라인 style 로 흩어져 있던 것을 규칙 하나로 모았다 */
+.srow .chk { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; }
+.srow .chk input { accent-color: var(--ink); width: 15px; height: 15px; }
