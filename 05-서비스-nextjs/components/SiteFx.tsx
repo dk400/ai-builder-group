@@ -2,30 +2,32 @@
 
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
-
-declare global {
-  interface Window {
-    track?: (name: string, params?: Record<string, unknown>) => void
-  }
-}
+import { track, type TrackEvent, type TrackParams } from '@/app/_track'
 
 /* assets/app.js 공통 스크립트 이식 —
-   리빌/마스크 IntersectionObserver · GA4 스텁
+   리빌/마스크 IntersectionObserver · [data-track] 클릭 위임
    pathname이 바뀔 때마다 새 페이지의 .rv/.mask를 다시 관찰한다 */
 export default function SiteFx() {
   const pathname = usePathname()
 
-  /* GA4 이벤트 스텁 — [data-track] 클릭 위임 */
+  /* [data-track] 클릭 위임 — 발화 자체는 공통 래퍼(app/_track.ts)가 한다 (TR-03).
+
+     예전에는 이 effect 안에서 window.track 을 정의했는데, 그 시점이 페이지 컴포넌트의
+     effect 보다 늦어서 상세 페이지 첫 진입 이벤트(work_detail_view · insight_detail_view)가
+     통째로 사라졌다. 정의는 모듈로 옮겼고 여기는 위임만 남긴다. */
   useEffect(() => {
-    window.track = (name, params) => console.log('[GA4]', name, params || {})
     const onClick = (e: MouseEvent) => {
       const el = (e.target as Element | null)?.closest<HTMLElement>('[data-track]')
       if (!el) return
-      const p: Record<string, string> = {}
+      /* 마크업이 실어 보낼 수 있는 파라미터는 규약(PRD §8.2)에 있는 것만 받는다 */
+      const p: TrackParams = {}
       if (el.dataset.location) p.location = el.dataset.location
       if (el.dataset.slug) p.slug = el.dataset.slug
       if (el.dataset.topic) p.topic = el.dataset.topic
-      window.track!(el.dataset.track!, p)
+      if (el.dataset.category) p.category = el.dataset.category
+      if (el.dataset.videoId) p.video_id = el.dataset.videoId
+      if (el.dataset.utmCampaign) p.utm_campaign = el.dataset.utmCampaign
+      track(el.dataset.track as TrackEvent, p)
     }
     document.addEventListener('click', onClick)
     return () => document.removeEventListener('click', onClick)

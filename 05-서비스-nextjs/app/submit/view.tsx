@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { track } from '@/app/_track'
 
 export default function SubmitView() {
   /* ★ 전환 측정 지점 — 가짜 전환 방어: src=pluug 토큰 확인 (검증 통과 시에만 발화) */
   useEffect(() => {
     if (new URLSearchParams(location.search).get('src') === 'pluug') {
-      window.track?.('contact_submit', { verified: true })
+      track('contact_submit', { verified: true })
     }
   }, [])
 

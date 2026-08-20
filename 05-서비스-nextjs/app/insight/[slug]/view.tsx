@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { track } from '@/app/_track'
 
 type TocItem = { id: string; text: string }
 type Related = { slug: string; title: string; catLabel: string }
@@ -23,7 +24,7 @@ type Props = {
 
 export default function InsightDetailView(p: Props) {
   useEffect(() => {
-    window.track?.('insight_detail_view', { slug: p.slug, category: p.cat, author_type: p.authorType })
+    track('insight_detail_view', { slug: p.slug, category: p.cat, author_type: p.authorType })
   }, [p.slug, p.cat, p.authorType])
 
   /* 목차 현재 위치 하이라이트.

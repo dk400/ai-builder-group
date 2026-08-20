@@ -257,7 +257,9 @@ export default function HomeView() {
     const goTimers: number[] = []
     document.querySelectorAll('[data-expand]').forEach(v => {
       v.addEventListener('click', () => {
-        window.track?.('youtube_outbound', { utm: 'utm_source=builder-group&utm_medium=content' })
+        /* 여기서 youtube_outbound 를 쏘지 않는다 — 이 카드는 유튜브가 아니라 /content 로 간다.
+           내부 이동은 /content 의 page_view 로 잡히고, 실제 아웃바운드는 그 화면에서 발화한다.
+           규약(PRD §8.2) 밖의 이벤트를 늘리려면 PRD 를 먼저 고친다. */
         if (reduced || !ov) { window.location.href = '/content'; return }
         const r = v.getBoundingClientRect()
         ov.style.cssText = 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;opacity:1;'
@@ -657,7 +659,7 @@ export default function HomeView() {
             </div>
             <p className="t-lead">세 채널에서 매주 실전 바이브 코딩 콘텐츠가 올라옵니다.</p>
             <div className="vgrid">
-              <div className="vcell slot" data-expand data-track="youtube_outbound" data-slug="featured">
+              <div className="vcell slot" data-expand>
                 <img className="vimg" src="https://i.ytimg.com/vi/0dBSo3eDE-E/hqdefault.jpg" alt="똑똑한개발자 — 2025 상반기 워크샵" loading="lazy" />
                 <div className="vshade"></div>
                 <span className="dur num">15:47</span>

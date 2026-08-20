@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { track } from '@/app/_track'
 
 export type BuilderChip = { slug: string; name: string; avatar: string; roleLabel: string }
 
@@ -20,7 +21,7 @@ type Props = {
 
 export default function WorkDetailView(p: Props) {
   useEffect(() => {
-    window.track?.('work_detail_view', { slug: p.slug, category: p.cat })
+    track('work_detail_view', { slug: p.slug, category: p.cat })
   }, [p.slug, p.cat])
 
   return (

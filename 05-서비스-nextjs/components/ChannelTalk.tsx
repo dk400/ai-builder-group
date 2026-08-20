@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { CHANNEL_PLUGIN_KEY } from '@/app/_integrations'
+import { track } from '@/app/_track'
 
 declare global {
   interface Window {
@@ -47,7 +48,7 @@ export default function ChannelTalk() {
       if (err) return
       document.body.classList.add('ct-on')
       /* 대화가 실제로 시작된 시점만 계측한다. 위젯을 열고 닫는 건 UI 상태라 잡지 않는다. */
-      window.ChannelIO!('onChatCreated', () => window.track?.('chat_start', { section: 'channeltalk' }))
+      window.ChannelIO!('onChatCreated', () => track('chat_start', { section: 'channeltalk' }))
     })
 
     return () => {

@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, type CSSProperties } from 'react'
+import { type CSSProperties } from 'react'
+import { youtubeWatchUrl, utmUrl } from '@/app/_integrations'
 import { useRibbonFlow, useDock } from '@/components/fx'
 
 const durStyle: CSSProperties = {
@@ -19,6 +20,9 @@ const VIDEOS: Video[] = [
   { yt: 'LjrO4urq5gI', ch: 'AI 서대표', dur: '23:40', title: '10년차 IT 에이전시 대표가 푸는 개발 외주의 모든 것', sub: '예산·견적·계약' },
   { yt: 'gtZPILhrnl8', ch: 'AI 서대표', dur: '13:48', title: '오르카(Orca) 설치부터 AI 블로그 자동화 세팅까지', sub: 'NEW' },
 ]
+
+/* 관리자 지정 1건. 예전에는 영상 ID 가 썸네일 주소 안에만 문자열로 박혀 있었고 링크는 '#' 이었다 */
+const FEATURED = { yt: '0dBSo3eDE-E', ch: '똑똑한개발자', dur: '15:47', title: '2025 똑똑한개발자 상반기 워크샵', sub: '오피셜 · Featured' } as const
 
 const CHANNELS = [
   { name: 'AI 서대표', href: 'https://www.youtube.com/@AISeoceo', slug: 'seo-jangwon' },
@@ -42,17 +46,6 @@ export default function ContentView() {
     ],
   }, { rsC: 5000 })
   useDock('sub')
-
-  /* 유튜브 직행 + UTM (목업: 이동 대신 UTM 표시 + 콘솔 기록) */
-  useEffect(() => {
-    document.querySelectorAll<HTMLElement>('[data-yt]').forEach(v => {
-      v.addEventListener('click', e => {
-        e.preventDefault()
-        const utm = '?utm_source=builder-group&utm_medium=content&utm_content=' + v.dataset.utm
-        window.track?.('youtube_outbound', { utm })
-      })
-    })
-  }, [])
 
   return (
     <>
@@ -79,19 +72,36 @@ export default function ContentView() {
         <section>
           <div className="wrap">
             {/* 피처드 (관리자 지정 1건) */}
-            <a className="vcell feat" href="#" data-yt data-utm="featured">
+            <a
+              className="vcell feat"
+              href={youtubeWatchUrl(FEATURED.yt, 'featured')}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="youtube_outbound"
+              data-video-id={FEATURED.yt}
+              data-utm-campaign={FEATURED.yt}
+            >
               {/* 피처드는 이 화면의 LCP 요소다 — 지연 로드하지 않고 우선순위를 올린다 */}
-              <img className="vimg" src="https://i.ytimg.com/vi/0dBSo3eDE-E/hqdefault.jpg" alt="" fetchPriority="high" decoding="async" />
+              <img className="vimg" src={`https://i.ytimg.com/vi/${FEATURED.yt}/hqdefault.jpg`} alt="" fetchPriority="high" decoding="async" />
               <div className="vshade"></div>
-              <span className="chbadge">똑똑한개발자</span>
-              <span className="dur" style={durStyle}>15:47</span>
+              <span className="chbadge">{FEATURED.ch}</span>
+              <span className="dur" style={durStyle}>{FEATURED.dur}</span>
               <div className="play"><i>▶</i></div>
-              <div className="cap"><b>2025 똑똑한개발자 상반기 워크샵</b><span>오피셜 · Featured</span></div>
+              <div className="cap"><b>{FEATURED.title}</b><span>{FEATURED.sub}</span></div>
             </a>
 
             <div className="vg">
               {VIDEOS.map(v => (
-                <a className="vcell" href="#" data-yt data-utm="grid" key={v.yt}>
+                <a
+                  className="vcell"
+                  href={youtubeWatchUrl(v.yt, 'list_item')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track="youtube_outbound"
+                  data-video-id={v.yt}
+                  data-utm-campaign={v.yt}
+                  key={v.yt}
+                >
                   {/* 그리드는 전부 첫 화면 아래 — 외부(i.ytimg.com) 이미지 6장을 선점하지 않게 */}
                   <img className="vimg" src={`https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg`} alt="" loading="lazy" decoding="async" />
                   <div className="vshade"></div>
@@ -110,7 +120,15 @@ export default function ContentView() {
               </div>
               <nav className="channel-tabs" aria-label="유튜브 채널">
                 {CHANNELS.map(channel => (
-                  <a className="channel-tab" href={channel.href} target="_blank" rel="noopener noreferrer" data-track="youtube_channel_click" data-location={`content_${channel.slug}`} key={channel.slug}>
+                  <a
+                    className="channel-tab"
+                    href={utmUrl(channel.href, { medium: 'content', campaign: channel.slug, content: 'channel_tab' })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-track="youtube_channel_click"
+                    data-location={`content_${channel.slug}`}
+                    key={channel.slug}
+                  >
                     {channel.name}<span aria-hidden="true">↗</span>
                   </a>
                 ))}

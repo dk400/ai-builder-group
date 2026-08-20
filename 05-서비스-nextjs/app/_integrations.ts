@@ -38,3 +38,49 @@ export function pluugUrl(section: string, refContent?: string): string {
   }
   return u.toString()
 }
+
+/* ── GA4 (TR-01 · IR-05) ────────────────────────────────────────────────
+   측정 ID 는 **클라이언트 계정**에서 발급받은 값을 넣는다. 우리 계정을 만들지 않는다.
+   비어 있으면 gtag.js 를 아예 싣지 않는다 — 채널톡·pluug 과 같은 규칙이다. */
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? ''
+
+/* ── UTM (TR-05 · TR-06) ────────────────────────────────────────────────
+   TR-06 이 "UTM 은 단일 헬퍼 함수로 생성한다(수기 문자열 금지)"를 인수 조건으로 걸었다.
+   실제로 홈 S8 에는 `utm_source=builder-group&utm_medium=content` 가 문자열로 박혀 있었고,
+   그 값은 위 UTM_SOURCE(`ai-builder-group`)와도 달랐다 — 같은 사이트가 두 이름으로
+   집계되고 있었다는 뜻이다. 그래서 생성 경로를 여기 하나로 모은다.
+
+   ⚠ PRD §8.3 은 utm_source 를 `builder-group` 으로 적어 뒀지만, 실제 운영값은
+     환경변수(NEXT_PUBLIC_UTM_SOURCE = ai-builder-group)이고 pluug 리드도 그 값으로
+     쌓이는 중이다. 두 채널의 소스명이 갈리면 GA4 에서 한 사이트가 둘로 보인다.
+     → 환경변수를 단일 원천으로 삼고, PRD 문구는 이관 문서에서 확인받는다. */
+export type UtmMedium = 'content' | 'insight' | 'work' | 'website'
+
+/** 노출 위치. PRD §8.3 의 utm_content 예시를 그대로 쓴다 */
+export type UtmContent = 'hero_card' | 'list_item' | 'related' | 'featured' | 'channel_tab'
+
+export function utmUrl(
+  base: string,
+  opts: { medium: UtmMedium; campaign: string; content?: UtmContent },
+): string {
+  let u: URL
+  try {
+    u = new URL(base)
+  } catch {
+    return base   /* 주소가 깨져 있어도 링크 자체는 살려 둔다 */
+  }
+  u.searchParams.set('utm_source', UTM_SOURCE)
+  u.searchParams.set('utm_medium', opts.medium)
+  u.searchParams.set('utm_campaign', opts.campaign)
+  if (opts.content) u.searchParams.set('utm_content', opts.content)
+  return u.toString()
+}
+
+/** 유튜브 영상 주소 + UTM. 영상 ID 만 데이터에 두고 주소는 여기서 만든다 (IR-08 — 수동 등록) */
+export function youtubeWatchUrl(videoId: string, content?: UtmContent): string {
+  return utmUrl(`https://www.youtube.com/watch?v=${videoId}`, {
+    medium: 'content',
+    campaign: videoId,
+    content,
+  })
+}

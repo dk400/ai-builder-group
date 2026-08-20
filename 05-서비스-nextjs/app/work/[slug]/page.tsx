@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { pageMeta } from '@/app/_meta'
 import { WORKS, workBySlug } from '@/app/_works'
 import { builderBySlug } from '@/app/_builders'
+import { workLd, breadcrumbLd } from '@/app/_jsonld'
+import JsonLd from '@/components/JsonLd'
 import './detail.css'
 import WorkDetailView from './view'
 
@@ -46,17 +48,39 @@ export default async function WorkDetailPage({ params }: Props) {
   })
 
   return (
-    <WorkDetailView
-      slug={work.slug}
-      cat={work.cat}
-      title={work.title}
-      summary={work.summary}
-      tag={work.tag}
-      year={work.year}
-      cover={work.cover}
-      coverAlt={work.coverAlt}
-      withPartner={work.withPartner}
-      builders={builders}
-    />
+    <>
+      {/* SR-04 — 상세는 구조화 데이터를 두 벌 낸다. 목록→상세 경로(BreadcrumbList)가 있어야
+          검색 결과에 도메인 대신 `AI 빌더 그룹 > Work > …` 로 표시된다. */}
+      <JsonLd
+        data={workLd({
+          slug: work.slug,
+          title: work.title,
+          summary: work.summary,
+          cover: work.cover,
+          tag: work.tag,
+          year: work.year,
+          builders,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: '홈', path: '/' },
+          { name: 'Work', path: '/work' },
+          { name: work.title, path: `/work/${work.slug}` },
+        ])}
+      />
+      <WorkDetailView
+        slug={work.slug}
+        cat={work.cat}
+        title={work.title}
+        summary={work.summary}
+        tag={work.tag}
+        year={work.year}
+        cover={work.cover}
+        coverAlt={work.coverAlt}
+        withPartner={work.withPartner}
+        builders={builders}
+      />
+    </>
   )
 }

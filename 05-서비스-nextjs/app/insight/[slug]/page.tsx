@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { pageMeta } from '@/app/_meta'
 import { ARTICLES, CATEGORY_LABEL, articleBySlug, tocOf } from '@/app/_insights'
+import { articleLd, breadcrumbLd } from '@/app/_jsonld'
+import JsonLd from '@/components/JsonLd'
 import './detail.css'
 import InsightDetailView from './view'
 
@@ -40,19 +42,30 @@ export default async function InsightDetailPage({ params }: Props) {
     .map(x => ({ slug: x.slug, title: x.title, catLabel: CATEGORY_LABEL[x.cat] }))
 
   return (
-    <InsightDetailView
-      slug={a.slug}
-      cat={a.cat}
-      catLabel={CATEGORY_LABEL[a.cat]}
-      title={a.title}
-      thumb={a.thumb}
-      author={a.author}
-      authorType={a.source === 'own' ? 'team' : 'partner'}
-      date={a.date}
-      readMin={a.readMin ?? null}
-      bodyHtml={a.bodyHtml ?? null}
-      toc={a.bodyHtml ? tocOf(a.bodyHtml) : []}
-      related={related}
-    />
+    <>
+      {/* SR-04 — Article + BreadcrumbList */}
+      <JsonLd data={articleLd(a)} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: '홈', path: '/' },
+          { name: 'Insight', path: '/insight' },
+          { name: a.title, path: `/insight/${a.slug}` },
+        ])}
+      />
+      <InsightDetailView
+        slug={a.slug}
+        cat={a.cat}
+        catLabel={CATEGORY_LABEL[a.cat]}
+        title={a.title}
+        thumb={a.thumb}
+        author={a.author}
+        authorType={a.source === 'own' ? 'team' : 'partner'}
+        date={a.date}
+        readMin={a.readMin ?? null}
+        bodyHtml={a.bodyHtml ?? null}
+        toc={a.bodyHtml ? tocOf(a.bodyHtml) : []}
+        related={related}
+      />
+    </>
   )
 }
