@@ -91,7 +91,7 @@ export default function ImageDrop({ name, current, spec, onDirty, disabled }: Pr
       >
         {preview
           ? <img src={preview} alt="" />
-          : <span className="ph">이미지를 끌어다 놓거나 눌러서 고르세요<em>{spec}</em></span>}
+          : <span className="drop__ph">이미지를 끌어다 놓거나 눌러서 고르세요<em>{spec}</em></span>}
         {preview && <span className="drop__swap">{disabled ? '' : '바꾸려면 누르세요'}</span>}
       </label>
 
