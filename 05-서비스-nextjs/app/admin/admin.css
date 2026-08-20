@@ -151,11 +151,12 @@ body:has(.adm)::after { display: none; }
 .adm-table td.thumb { width: 74px; padding-right: 0; }
 .adm-table td.thumb img { width: 58px; height: 38px; object-fit: cover; border-radius: 6px; display: block; background: var(--paper-3); }
 /* 콘텐츠 목록(Work · Insight)의 썸네일은 크게 본다.
-   58×38 은 "이미지가 있다"까지만 알려주고 무엇이 찍혔는지는 못 알려준다. 이 열의 목적이
+   58×38 은 "이미지가 있다"까지만 알려주고, 무엇이 찍혔는지도 글자가 읽히는지도 못 알려준다.
+   이 열의 목적이
    발행 전에 잘못된 썸네일을 걸러내는 것이라, 판단이 되는 크기여야 의미가 있다.
    빌더 목록(원형 아바타)은 인라인 스타일로 크기를 따로 잡으므로 여기 영향받지 않는다. */
-.adm-table--media td.thumb { width: 130px; }
-.adm-table--media td.thumb img { width: 112px; height: 70px; border-radius: 8px; }
+.adm-table--media td.thumb { width: 228px; }
+.adm-table--media td.thumb img { width: 200px; height: 125px; border-radius: 10px; }
 
 /* ── 상태 배지 ── */
 .st { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em;
@@ -376,6 +377,10 @@ body:has(.adm)::after { display: none; }
   .adm-search input { width: 100%; box-sizing: border-box; }
   .appr__row { grid-template-columns: 1fr; }
   .appr__row img { width: 100%; height: 150px; }
+  /* 사이드바가 가로 바로 접히면서 표가 전체 폭을 쓰지만, 200px 열을 그대로 두면
+     제목·상태·작업이 밀린다. 한 단계 줄여서 판단은 되되 표는 안 깨지게 한다. */
+  .adm-table--media td.thumb { width: 184px; }
+  .adm-table--media td.thumb img { width: 160px; height: 100px; }
 }
 @media (max-width: 640px) {
   .f2 { grid-template-columns: 1fr; }
@@ -383,6 +388,6 @@ body:has(.adm)::after { display: none; }
   /* 썸네일은 발행 판단의 근거다. 좁은 화면이라고 감추면 그 화면에서는 판단을 못 한다.
      빌더는 폰으로 자기 글을 확인하는 경우가 많아 여기서 숨기면 역할별로 보이는 정보가 갈린다. */
   .adm-table--media td.thumb, .adm-table--media th.thumb { display: table-cell; }
-  .adm-table--media td.thumb { width: 84px; }
-  .adm-table--media td.thumb img { width: 72px; height: 45px; }
+  .adm-table--media td.thumb { width: 144px; }
+  .adm-table--media td.thumb img { width: 128px; height: 80px; }
 }
