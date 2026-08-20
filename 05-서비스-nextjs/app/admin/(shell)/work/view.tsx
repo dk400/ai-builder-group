@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { Badge, Empty, FilterBar } from '../ui'
 import { useRole } from '../../role'
-import { STATUS_ORDER, countBy, type Status } from '../../_mock'
+import { canEdit, lockReason, STATUS_ORDER, type Status } from '../../_transitions'
+import { countBy } from '../../_mock'
 
 type Row = {
   slug: string; title: string; tag: string; thumb: string
@@ -86,9 +87,15 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
                   <td className="muted num">{r.updated}</td>
                   <td className="right">
                     <span className="acts">
-                      {!isAdmin && r.status === 'pending'
-                        ? <button className="abtn abtn--sm" type="button" disabled title="제출 후에는 편집할 수 없습니다">잠김</button>
-                        : <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}>편집</Link>}
+                      {/* 편집 가능 여부는 _transitions.canEdit 하나로 판정한다.
+                          여기에 규칙을 다시 적었더니 published·archived 가 어긋났다 — 목록에는 "편집"이
+                          떠 있는데 들어가면 잠긴 화면이 나왔다. 잠긴 이유도 상태마다 다르다. */}
+                      {canEdit(r.status, role) ? (
+                        <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}>편집</Link>
+                      ) : (
+                        <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}
+                          title={lockReason(r.status, role)?.title ?? ''}>보기</Link>
+                      )}
                       {isAdmin && <button className="abtn abtn--sm abtn--danger" type="button">삭제</button>}
                     </span>
                   </td>
