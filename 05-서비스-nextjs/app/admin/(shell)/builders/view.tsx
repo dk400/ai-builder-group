@@ -18,8 +18,10 @@ export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles
      한 줄짜리 표에 '편집' 버튼을 두면 클릭이 한 번 늘 뿐이다. 바로 편집 폼을 연다. */
   if (!isAdmin) {
     const mine = profiles.find(p => p.slug === me)
+    /* 단일 컬럼 화면이다. 넓은 화면에서 왼쪽에만 붙어 있으면 오른쪽 절반이 통째로 비어
+       균형이 깨진다 — .adm-narrow 가 머리말과 본문을 같은 축으로 가운데 정렬한다 */
     return (
-      <main id="main">
+      <main id="main" className="adm-narrow">
         <div className="adm-top">
           <div>
             <h1>내 프로필</h1>

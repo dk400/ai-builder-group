@@ -320,7 +320,19 @@ body:has(.adm)::after { display: none; }
 /* ── 프로필 편집 ──
    목록과 달리 밀도를 올릴 이유가 없는 화면이다. 한 사람이 자기 정보를 손보는 자리라
    720px 한 열로 세우고 여백을 넉넉히 준다. 2열 카드 폼으로 짰을 때 복잡해 보였다. */
-.prof { max-width: 720px; }
+.prof { max-width: 720px; margin-inline: auto; }
+
+/* 단일 컬럼 화면(내 프로필)의 가운데 정렬.
+
+   머리말(.adm-top)은 스티키라 배경은 화면 끝까지 가야 하고, 안의 글자는 본문과 같은 축에
+   서야 한다. 그래서 폭을 줄이는 대신 **안쪽 여백을 키운다** — 배경은 그대로 전체 폭이다.
+   max() 의 바닥값이 좁은 화면을 맡는다: 콘텐츠 영역이 720px 보다 좁아지면 18px 로 떨어진다.
+
+   ⚠ .prof 안에 있는 액션 바의 음수 마진(-30px 전체 폭 블리드)은 여기서 기준이 어긋난다.
+     폼 폭에 맞춘 푸터로 되돌린다. */
+.adm-narrow .adm-top,
+.adm-narrow .adm-body { padding-inline: max(18px, calc((100% - 720px) / 2)); }
+.adm-narrow .adm-actions { margin-inline: 0; padding-inline: 0; }
 
 .prof-hero { display: flex; gap: 20px; align-items: center; padding: 18px;
   background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 34px; }
