@@ -63,7 +63,7 @@ export default function AdminNav({ counts, myCounts }: { counts: Counts; myCount
           </span>
         </div>
         <Link href="/admin/login">
-          <i aria-hidden="true">⇦</i>로그아웃
+          <i aria-hidden="true">←</i>로그아웃
         </Link>
       </div>
     </nav>

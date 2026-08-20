@@ -155,7 +155,9 @@ export default function BodyEditor({ name, defaultValue, onDirty, editable = tru
         </div>
       )}
 
-      <EditorContent editor={editor} />
+      {!editable && editor.isEmpty
+        ? <div className="ed__body ed__body--empty"><p>본문이 아직 비어 있습니다.</p></div>
+        : <EditorContent editor={editor} />}
       {/* 서버 액션은 formData 로 받는다. 에디터 상태를 부모로 끌어올릴 이유가 없다 */}
       <input type="hidden" name={name} value={html} readOnly />
     </div>

@@ -76,7 +76,10 @@ body:has(.adm)::after { display: none; }
   color: rgba(244,241,234,.74); text-decoration: none; font-size: 14px; font-weight: 600; transition: background var(--hover), color var(--hover); }
 .adm-nav a:hover { background: var(--d-line2); color: var(--paper); }
 .adm-nav a.on { background: var(--paper); color: var(--ink); }
-.adm-nav a i { font-style: normal; width: 17px; text-align: center; opacity: .85; }
+/* flex 아이템은 min-width:auto 라 글리프가 슬롯보다 넓으면 옆 글자를 밀거나 겹친다.
+   로그아웃 화살표가 실제로 "로"를 덮고 있었다. 폭을 고정하고 넘치면 자른다. */
+.adm-nav a i { font-style: normal; flex: 0 0 17px; width: 17px; text-align: center;
+  opacity: .85; overflow: hidden; line-height: 1; }
 .adm-nav a .n { margin-left: auto; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
   background: var(--d-line2); }
 .adm-nav a.on .n { background: var(--paper-3); }
@@ -98,7 +101,8 @@ body:has(.adm)::after { display: none; }
 .adm-top .sub a, .adm-login .foot a { display: inline-block; padding: 7px 0; }
 .ed__body .yt-link a { display: inline-block; padding: 5px 0; }
 .adm-top__r { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-.adm-body { padding: 22px 30px 0; }
+/* 아래 여백이 0 이면 스크롤을 끝까지 내려도 마지막 카드가 고정 바에 가린다 */
+.adm-body { padding: 22px 30px 28px; }
 
 /* ── 버튼 ── */
 .abtn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line-2); background: var(--paper-2);
@@ -185,7 +189,8 @@ body:has(.adm)::after { display: none; }
 .adm-edit[disabled] input, .adm-edit[disabled] textarea, .adm-edit[disabled] select {
   background: var(--paper-3); color: var(--ink-2); cursor: not-allowed; }
 .adm-edit[disabled] .card__h { color: var(--adm-dim); }
-.card { background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px; }
+.card { background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(24,23,20,.04), 0 8px 24px -20px rgba(24,23,20,.18); }
 .card__h { padding: 12px 18px; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 700;
   letter-spacing: -0.01em; color: var(--ink-2); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .card__b { padding: 18px; }
@@ -294,9 +299,13 @@ body:has(.adm)::after { display: none; }
 .bpick--plain button.on .r { color: var(--lime); }
 
 /* 하단 액션 바 */
-.adm-actions { position: sticky; bottom: 0; margin-top: 22px; padding: 14px 0;
-  background: linear-gradient(to top, var(--paper-3) 72%, transparent);
-  display: flex; gap: 8px; align-items: center; }
+/* 🔴 배경이 linear-gradient(…, transparent) 였다. 위쪽 28% 가 투명이라 아래 카드가
+   그대로 비쳐 보였고, 스크롤 중에는 버튼이 SEO 카드 위에 겹쳐 찍혔다 — 화면이 깨진 것처럼
+   읽힌다. 고정 바는 불투명해야 한다. 대신 경계선과 그림자로 "떠 있는 층"임을 알린다. */
+.adm-actions { position: sticky; bottom: 0; z-index: 15; margin: 22px -30px 0; padding: 14px 30px;
+  background: var(--paper-3); border-top: 1px solid var(--line);
+  box-shadow: 0 -8px 20px -12px rgba(0,0,0,.22);
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .adm-actions .warn { font-size: 13px; color: var(--adm-dim); margin-right: auto; }
 
 /* ── 프로필 편집 ──
