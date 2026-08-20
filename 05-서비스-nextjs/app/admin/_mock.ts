@@ -12,18 +12,12 @@ import { WORKS, type Work } from '@/app/_works'
 import { ARTICLES, type Article } from '@/app/_insights'
 import { BUILDERS, builderBySlug } from '@/app/_builders'
 
-export type Status = 'draft' | 'pending' | 'published' | 'rejected' | 'archived'
-
-export const STATUS_LABEL: Record<Status, string> = {
-  draft: '초안',
-  pending: '승인대기',
-  published: '발행',
-  rejected: '반려',
-  archived: '보관',
-}
-
-/* 상태 머신(§7.3)에서 각 상태가 할 수 있는 일. 목록의 버튼을 이 표로 그린다 */
-export const STATUS_ORDER: Status[] = ['draft', 'pending', 'published', 'rejected', 'archived']
+/* 상태 머신은 목업 소유가 아니다. 이 파일은 4단계에서 사라지지만 상태 규칙은 남는다 —
+   정의는 ./_transitions.ts 한 곳이고 여기서는 다시 내보내기만 한다.
+   (같은 유니온을 두 곳에 적어 두면 한쪽만 고쳐지는 날이 온다) */
+export type { Status } from './_transitions'
+export { STATUS_LABEL, STATUS_ORDER } from './_transitions'
+import type { Status } from './_transitions'
 
 const INSIGHT_STATUS: Record<string, Status> = {
   '바이브코딩-외주-고르는법': 'published',
