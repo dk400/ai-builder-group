@@ -65,13 +65,15 @@ export default function InsightEditView(p: Props) {
         {/* 반려된 글에는 사유가 반드시 붙어 있다 (FR-A07-04) — 무엇을 고칠지 알아야 다시 올린다 */}
         {p.rejectReason && (
           <div className="notice notice--reject">
-            <b>반려 사유</b>
+            <span className="notice__ico" aria-hidden="true">↩</span>
+            <b>반려되었습니다</b>
             <p>{p.rejectReason}</p>
           </div>
         )}
 
         {locked && (
           <div className="notice notice--lock">
+            <span className="notice__ico" aria-hidden="true">🔒</span>
             <b>검토 중입니다 — 지금은 수정할 수 없습니다</b>
             <p>
               제출한 글은 검수가 끝날 때까지 잠깁니다. 검수 중에 원본이 바뀌면 승인한 내용과
@@ -79,8 +81,15 @@ export default function InsightEditView(p: Props) {
               반려되면 사유와 함께 다시 편집할 수 있습니다.
             </p>
             {/* 목업에서 "왜 아무것도 안 눌리지"의 실제 원인은 대부분 역할 스위치다.
+                kbd 로 조판한다 — 조작부 라벨을 가리키는 태그이고, 제목용 b 규칙과 부딪히지 않는다.
                 인증이 붙으면 이 줄과 스위치가 함께 사라진다. */}
-            <span className="who">화면 맨 위 “보는 사람”이 <b>빌더</b>입니다 — <b>운영 관리자</b>로 바꾸면 승인·반려가 보입니다</span>
+            <p className="notice__hint">
+              <span>화면 맨 위 “보는 사람”</span>
+              <kbd>빌더</kbd>
+              <span aria-hidden="true">→</span>
+              <kbd>운영 관리자</kbd>
+              <span>로 바꾸면 승인 · 반려가 보입니다</span>
+            </p>
           </div>
         )}
 
@@ -165,6 +174,7 @@ export default function InsightEditView(p: Props) {
         {/* 반려는 사유가 필수다 (FR-A07-04). 사유 없는 반려는 "안 됨"만 전달한다 */}
         {rejectOpen && (
           <div className="notice notice--reject" style={{ marginTop: 18 }}>
+            <span className="notice__ico" aria-hidden="true">↩</span>
             <b>반려 사유 <span className="req">*</span></b>
             <textarea
               value={reason} autoFocus onChange={e => setReason(e.target.value)}

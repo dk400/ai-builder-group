@@ -414,18 +414,38 @@ body:has(.adm)::after { display: none; }
 
 /* ── 편집 화면 보조 UI ─────────────────────────────────────────────── */
 
-/* 화면 위쪽에 뜨는 안내. 반려 사유와 잠금 안내가 같은 모양을 쓴다 —
-   둘 다 "지금 이 글에 무슨 일이 있는지"를 알리는 같은 층의 정보다. */
-.notice { border: 1px solid var(--line-2); border-radius: 12px; padding: 14px 18px; margin-bottom: 18px;
-  background: var(--paper-2); }
-.notice b { display: block; font-size: 13px; letter-spacing: -0.01em; }
-.notice p { margin: 5px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.7; }
+/* 화면 위쪽에 뜨는 안내. 반려 사유와 잠금 안내가 같은 골격을 쓴다 —
+   둘 다 "지금 이 글에 무슨 일이 있는지"를 알리는 같은 층의 정보다.
+
+   ⚠ 셀렉터를 `.notice b` 로 두었더니 본문 안의 강조까지 block 이 되어 글자마다 줄이
+     끊겼다. 자식 선택자로 좁힌다 — 제목은 직계 b 하나뿐이다. */
+.notice { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 0 14px;
+  border: 1px solid var(--line-2); border-left-width: 3px; border-radius: 13px;
+  padding: 16px 20px; margin-bottom: 18px; background: var(--paper-2); }
+.notice > :not(.notice__ico) { grid-column: 2; }
+.notice__ico { grid-column: 1; grid-row: 1 / -1; width: 34px; height: 34px; border-radius: 10px;
+  display: grid; place-items: center; font-size: 15px; background: var(--paper);
+  border: 1px solid var(--line-2); }
+.notice > b { font-size: 14px; letter-spacing: -0.02em; line-height: 1.5; }
+.notice > p { margin: 5px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.72;
+  max-width: 72ch; }
 .notice textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; padding: 10px 12px;
   border: 1px solid var(--line-2); border-radius: 9px; background: var(--paper); color: var(--ink); resize: vertical; }
 .notice__acts { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
-.notice--reject { border-color: #E3C4BE; background: #FBF2F0; }
-.notice--reject b { color: #A02D1F; }
-.notice--lock { border-color: var(--line-2); background: var(--paper-3); }
+
+/* 보조 힌트 한 줄. 스위치 라벨은 kbd 로 — "이렇게 쓰인 조작부"를 가리키는 태그이고,
+   덕분에 제목용 b 규칙과 부딪히지 않는다. */
+.notice__hint { display: flex; align-items: center; flex-wrap: wrap; gap: 7px;
+  margin-top: 13px; padding-top: 12px; border-top: 1px dashed var(--line-2);
+  font-size: 12.5px; color: var(--adm-dim); }
+.notice__hint kbd { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line-2); border-bottom-width: 2px;
+  border-radius: 6px; padding: 3px 8px; }
+
+.notice--reject { border-color: #E3C4BE; border-left-color: #A02D1F; background: #FBF2F0; }
+.notice--reject > b { color: #A02D1F; }
+.notice--reject .notice__ico { background: #fff; border-color: #E3C4BE; }
+.notice--lock { border-color: var(--line-2); border-left-color: var(--ink); background: var(--paper-3); }
 
 /* 썸네일 드롭존 — 라벨이라 클릭·키보드·드래그가 모두 같은 input 으로 간다 */
 .drop--pick { cursor: pointer; display: grid; }
@@ -457,6 +477,3 @@ body:has(.adm)::after { display: none; }
 /* 잠겼을 때 액션 바 — 버튼이 사라진 자리에 이유를 둔다. 빈 바는 아무것도 설명하지 않는다 */
 .adm-actions .locked { font-size: 13px; font-weight: 700; color: var(--ink-2);
   display: inline-flex; align-items: center; gap: 7px; }
-.notice--lock .who { display: inline-block; margin-top: 8px; font-size: 12.5px;
-  font-family: var(--mono); background: var(--paper); border: 1px solid var(--line-2);
-  border-radius: 7px; padding: 5px 9px; }
