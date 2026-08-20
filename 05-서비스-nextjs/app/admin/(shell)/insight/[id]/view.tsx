@@ -5,7 +5,9 @@ import { useState } from 'react'
 import { Badge } from '../../ui'
 import { useRole } from '../../../role'
 import BodyEditor from '../../Editor'
-import type { Status } from '../../../_mock'
+import ImageDrop from '../../ImageDrop'
+import SlugField from '../../SlugField'
+import { allowedTransitions, canEdit, type Status } from '../../../_transitions'
 
 type Props = {
   isNew: boolean
@@ -22,12 +24,27 @@ type Props = {
   cats: Array<{ value: string; label: string }>
 }
 
+/* A-03 Insight 편집.
+
+   ⚠ 버튼을 상태와 무관하게 세 개(임시저장·제출·발행) 박아 두면 화면이 거짓말을 한다 —
+     승인대기 중인 글에 "제출 → 승인대기"가 떠 있는 식이었다. 지금은 상태 머신
+     (_transitions.ts)에서 **지금 이 상태에서 이 역할이 할 수 있는 것만** 그린다.
+     서버와 DB 가 같은 표를 보므로 화면·요청·저장이 갈리지 않는다.
+
+   ⚠ 상태 배지도 머리말과 사이드에 두 번 떠 있었다. 같은 정보를 두 곳에 두면 하나를
+     고칠 때 다른 하나가 남는다. 머리말 한 곳만 남겼다. */
 export default function InsightEditView(p: Props) {
   const { role } = useRole()
-  const isAdmin = role === 'admin'
-  const [slug, setSlug] = useState(p.slug)
+  const [title, setTitle] = useState(p.title)
   const [dirty, setDirty] = useState(false)
+  const [rejectOpen, setRejectOpen] = useState(false)
+  const [reason, setReason] = useState('')
   const touch = () => setDirty(true)
+
+  /* DR-07 — 제출한 글은 작성자가 편집할 수 없다. 검수 중에 원본이 바뀌면
+     승인한 것과 공개된 것이 달라진다. */
+  const locked = !canEdit(p.status, role)
+  const actions = allowedTransitions(p.status, role)
 
   return (
     <main id="main">
@@ -36,7 +53,7 @@ export default function InsightEditView(p: Props) {
           <h1>{p.isNew ? '새 글 작성' : 'Insight 편집'}</h1>
           <p className="sub">
             <Link href="/admin/insight" style={{ color: 'inherit' }}>← 목록으로</Link>
-            {!p.isNew && <> · 마지막 수정 {p.updated}</>}
+            {!p.isNew && <> · {p.author} · 마지막 수정 {p.updated}</>}
           </p>
         </div>
         <div className="adm-top__r">
@@ -45,37 +62,48 @@ export default function InsightEditView(p: Props) {
       </div>
 
       <div className="adm-body">
-        {/* 반려된 글에는 사유가 반드시 붙어 있다 (FR-A07-04) — 작성자가 무엇을 고칠지 알아야 한다 */}
+        {/* 반려된 글에는 사유가 반드시 붙어 있다 (FR-A07-04) — 무엇을 고칠지 알아야 다시 올린다 */}
         {p.rejectReason && (
-          <div className="card" style={{ marginBottom: 18, borderColor: '#E3C4BE', background: '#FBF2F0' }}>
-            <div className="card__b" style={{ padding: '14px 18px' }}>
-              <b style={{ fontSize: 13, color: '#A02D1F' }}>반려 사유</b>
-              <p style={{ margin: '5px 0 0', fontSize: 13.5, color: 'var(--ink-2)', lineHeight: 1.7 }}>{p.rejectReason}</p>
-            </div>
+          <div className="notice notice--reject">
+            <b>반려 사유</b>
+            <p>{p.rejectReason}</p>
           </div>
         )}
 
-        <div className="adm-edit">
+        {locked && (
+          <div className="notice notice--lock">
+            <b>검토 중입니다</b>
+            <p>
+              제출한 글은 검수가 끝날 때까지 수정할 수 없습니다. 고칠 곳을 찾았다면
+              관리자에게 반려를 요청하세요 — 반려되면 사유와 함께 다시 편집할 수 있습니다.
+            </p>
+          </div>
+        )}
+
+        <fieldset className="adm-edit" disabled={locked}>
           {/* ── 본문 ── */}
           <div>
             <div className="card">
               <div className="card__b">
                 <div className="f">
                   <label htmlFor="ttl">제목 <span className="req">*</span></label>
-                  <input id="ttl" type="text" defaultValue={p.title} onChange={touch}
-                    placeholder="발주자가 검색할 표현으로 씁니다" />
+                  <input
+                    id="ttl" name="title" type="text" value={title}
+                    onChange={e => { setTitle(e.target.value); touch() }}
+                    placeholder="발주자가 검색할 표현으로 씁니다"
+                  />
                 </div>
                 <div className="f">
                   <label htmlFor="exc">요약 <span className="opt">목록 카드와 검색 결과에 노출</span></label>
-                  <textarea id="exc" defaultValue={p.excerpt} onChange={touch} style={{ minHeight: 62 }}
-                    placeholder="두 줄 이내로 씁니다" />
+                  <textarea id="exc" name="excerpt" defaultValue={p.excerpt} onChange={touch}
+                    style={{ minHeight: 62 }} placeholder="두 줄 이내로 씁니다" />
                 </div>
               </div>
             </div>
 
             <div className="card">
               <div className="card__h">
-                <span>본문 — Tiptap</span>
+                <span>본문</span>
                 <span>{p.bodyHtml ? '작성됨' : '비어 있음'}</span>
               </div>
               <div className="card__b">
@@ -87,35 +115,25 @@ export default function InsightEditView(p: Props) {
           {/* ── 사이드 ── */}
           <div>
             <div className="card">
-              <div className="card__h"><span>발행 설정</span></div>
+              <div className="card__h"><span>썸네일 <span className="req">*</span></span></div>
               <div className="card__b">
-                <div className="srow"><span className="k">상태</span><span className="v"><Badge status={p.status} /></span></div>
-                <div className="srow"><span className="k">작성자</span><span className="v">{p.author}</span></div>
-                <div className="srow"><span className="k">수정일</span><span className="v num">{p.updated}</span></div>
+                <ImageDrop name="thumb" current={p.thumb} spec="800×450px · 16:9" onDirty={touch} disabled={locked} />
+                <p className="hint" style={{ marginTop: 10 }}>
+                  목록 카드 · 상세 커버 · 공유 카드(OG)에 같은 이미지가 쓰입니다.
+                </p>
               </div>
             </div>
 
             <div className="card">
               <div className="card__h"><span>주소 · 분류</span></div>
               <div className="card__b">
-                <div className="f">
-                  <label htmlFor="slug">슬러그 <span className="req">*</span></label>
-                  <div className="slug-row">
-                    <span className="pre">/insight/</span>
-                    <input id="slug" type="text" value={slug}
-                      onChange={e => { setSlug(e.target.value); touch() }}
-                      placeholder="핵심-키워드-조합" />
-                  </div>
-                  {/* 슬러그는 필수이고 중복이면 저장이 거부된다 (FR-A03-04).
-                      발행 후 바꾸면 301 을 자동 생성한다 (FR-A03-05 · SR-06). */}
-                  <p className="hint">
-                    핵심 키워드를 조합합니다. 한글을 그대로 씁니다 — 예 <code>바이브코딩-외주-고르는법</code><br />
-                    {p.status === 'published' && <b>발행 후 슬러그를 바꾸면 구 주소에 301 리다이렉트가 자동 생성됩니다.</b>}
-                  </p>
-                </div>
+                <SlugField
+                  name="slug" base="/insight/" title={title} initial={p.slug}
+                  published={p.status === 'published'} onDirty={touch} disabled={locked}
+                />
                 <div className="f">
                   <label htmlFor="cat">카테고리 <span className="req">*</span></label>
-                  <select id="cat" defaultValue={p.cat} onChange={touch}>
+                  <select id="cat" name="cat" defaultValue={p.cat} onChange={touch}>
                     {p.cats.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
@@ -123,44 +141,64 @@ export default function InsightEditView(p: Props) {
             </div>
 
             <div className="card">
-              <div className="card__h"><span>썸네일</span></div>
-              <div className="card__b">
-                <div className="drop">
-                  {p.thumb && <img src={p.thumb} alt="" />}
-                  {!p.thumb && <span className="ph">이미지를 끌어다 놓으세요<em>800×450px · 16:9</em></span>}
-                </div>
-                <p className="hint" style={{ marginTop: 10 }}>목록 카드 · 상세 커버 · OG 이미지에 함께 쓰입니다.</p>
-              </div>
-            </div>
-
-            <div className="card">
-              <div className="card__h"><span>SEO 메타</span></div>
+              <div className="card__h"><span>SEO 메타 <span className="opt">선택</span></span></div>
               <div className="card__b">
                 <div className="f">
                   <label htmlFor="st">검색 제목</label>
-                  <input id="st" type="text" onChange={touch} placeholder="비워두면 제목을 그대로 씁니다" />
+                  <input id="st" name="seoTitle" type="text" onChange={touch}
+                    placeholder="비워두면 제목을 그대로 씁니다" />
                 </div>
                 <div className="f">
                   <label htmlFor="sd">검색 설명</label>
-                  <textarea id="sd" onChange={touch} style={{ minHeight: 62 }} placeholder="비워두면 요약에서 자동 생성됩니다" />
+                  <textarea id="sd" name="seoDescription" onChange={touch} style={{ minHeight: 62 }}
+                    placeholder="비워두면 요약에서 자동 생성됩니다" />
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </fieldset>
 
-        {/* 상태 머신대로만 움직인다 (§7.3 · FR-A03-07). 발행은 관리자만 누를 수 있다 */}
+        {/* 반려는 사유가 필수다 (FR-A07-04). 사유 없는 반려는 "안 됨"만 전달한다 */}
+        {rejectOpen && (
+          <div className="notice notice--reject" style={{ marginTop: 18 }}>
+            <b>반려 사유 <span className="req">*</span></b>
+            <textarea
+              value={reason} autoFocus onChange={e => setReason(e.target.value)}
+              placeholder="무엇을 고쳐야 하는지 구체적으로 적습니다. 작성자에게 그대로 표시됩니다."
+              style={{ minHeight: 76, marginTop: 8 }}
+            />
+            <div className="notice__acts">
+              <button type="button" className="abtn abtn--sm"
+                onClick={() => { setRejectOpen(false); setReason('') }}>취소</button>
+              <button type="button" className="abtn abtn--sm abtn--danger" disabled={reason.trim() === ''}>
+                반려하고 사유 보내기
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="adm-actions">
           <span className="warn">
             {dirty
-              ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)'
-              : isAdmin ? '목업이라 저장되지 않습니다' : '빌더는 제출까지 할 수 있습니다 · 발행은 관리자 승인 후'}
+              ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다'
+              : 'Supabase 연결 전이라 아직 저장되지 않습니다'}
           </span>
-          <button className="abtn" type="button">임시저장</button>
-          <button className="abtn" type="button">제출 → 승인대기</button>
-          {/* 발행은 관리자만 (§7.3 상태 전이표). 빌더에게는 버튼 자체를 주지 않는다 —
-              눌러도 서버가 403 을 내지만, 있는데 안 되는 버튼은 화면이 거짓말하는 것이다 */}
-          {isAdmin && <button className="abtn abtn--lime" type="button">발행</button>}
+
+          {!locked && <button className="abtn" type="button">임시저장</button>}
+
+          {/* 지금 상태에서 이 역할이 할 수 있는 것만 그린다.
+              권한 없는 버튼은 비활성으로 보여주지 않고 아예 두지 않는다 —
+              누를 수 없는 버튼은 "권한이 없다"가 아니라 "고장났다"로 읽힌다 */}
+          {actions.map(t => (
+            <button
+              key={t.to}
+              type="button"
+              className={'abtn' + (t.to === 'published' ? ' abtn--lime' : t.needsReason ? ' abtn--danger' : '')}
+              onClick={() => { if (t.needsReason) setRejectOpen(true) }}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
       </div>
     </main>
