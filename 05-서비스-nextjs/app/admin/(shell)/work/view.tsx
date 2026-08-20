@@ -60,7 +60,7 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
         {shown.length === 0 ? (
           <Empty title="조건에 맞는 프로젝트가 없습니다" desc="필터를 바꾸거나 검색어를 지워보세요." />
         ) : (
-          <table className="adm-table">
+          <table className="adm-table adm-table--media">
             <thead>
               <tr>
                 <th className="thumb"></th>
