@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
   const { data: builder } = await supabase
     .from('builders')
-    .select('id, is_active')
+    .select('id, is_active, role')
     .eq('auth_user_id', auth.user.id)
     .maybeSingle()
 
@@ -63,6 +63,13 @@ export async function GET(request: NextRequest) {
   if (!builder.is_active && !isApplicant) {
     await supabase.auth.signOut()
     return fail('inactive')
+  }
+
+  /* 관리자 입구(/admin/login)로 시작한 구글 로그인은 관리자 계정만 통과시킨다.
+     비밀번호 경로(admin/login/_actions.ts)와 같은 규칙이다 — 문이 자격을 본다. */
+  if (loginPath === '/admin/login' && builder.role !== 'admin') {
+    await supabase.auth.signOut()
+    return fail('not-admin')
   }
 
   return NextResponse.redirect(`${origin}${builder.is_active ? next : '/admin/builder/profile'}`)

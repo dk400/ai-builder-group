@@ -18,6 +18,9 @@ const ERROR_MESSAGE: Record<string, string> = {
      알려 주지 않으면 무엇을 해야 할지 알 수 없다 — 계정 발급이 관리자 몫이기 때문이다. */
   'no-account': '발급된 계정이 없는 구글 계정입니다. 관리자에게 계정 발급을 요청하세요.',
   inactive: '해지된 계정입니다. 관리자에게 문의하세요.',
+  /* 관리자 입구에 빌더 계정으로 들어온 경우. 계정이 있고 인증도 통과했으므로
+     '없는 계정' 과 구분해 알려 준다 — 어디로 가야 하는지가 이 화면의 유일한 다음 행동이다 */
+  'not-admin': '운영 관리자 계정이 아닙니다. 빌더 로그인(/builder/login)으로 들어와 주세요.',
 }
 
 export default async function AdminLoginPage({

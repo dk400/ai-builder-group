@@ -106,7 +106,7 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
 
   const { data: builder } = await supabase
     .from('builders')
-    .select('is_active')
+    .select('is_active, role')
     .eq('auth_user_id', userId)
     .maybeSingle()
 
@@ -119,6 +119,16 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
   if (!builder.is_active && !isApplicant) {
     await supabase.auth.signOut()
     redirect(`${loginPath}?error=inactive&next=${encodeURIComponent(next)}`)
+  }
+  /* 입구가 자격을 검사한다 — 관리자 로그인(/admin/login)은 관리자 계정만 통과시킨다.
+
+     인증에 성공했다는 것과 이 문으로 들어와도 된다는 것은 다른 이야기다. 예전에는 빌더
+     계정으로도 관리자 입구를 통과했고, 들어간 뒤 영역 가드가 /admin/builder 로 되돌려
+     보냈다 — 되돌려 보내는 것과 처음부터 막는 것은 다르다. 세션을 즉시 없애서
+     "관리자 화면에 로그인된 상태" 자체를 만들지 않는다. */
+  if (loginPath === '/admin/login' && builder.role !== 'admin') {
+    await supabase.auth.signOut()
+    redirect(`${loginPath}?error=not-admin&next=${encodeURIComponent(next)}`)
   }
 
   const cookieStore = await cookies()
