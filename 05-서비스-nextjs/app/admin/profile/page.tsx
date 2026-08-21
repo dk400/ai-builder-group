@@ -23,7 +23,7 @@ export default async function MyProfilePage({ searchParams }: {
     .eq('id', viewer.builderId).single(), supabase.auth.getUser()])
   if (!data) redirect('/builder/login?error=no-account')
 
-  const rawProfile = auth.user?.app_metadata.builder_profile
+  const rawProfile = auth.user?.user_metadata.builder_profile ?? auth.user?.app_metadata.builder_profile
   const extra = rawProfile && typeof rawProfile === 'object' ? rawProfile as Record<string, unknown> : {}
   const principles = Array.isArray(extra.principles)
     ? extra.principles.filter((row): row is [string, string] => Array.isArray(row) && typeof row[0] === 'string' && typeof row[1] === 'string').slice(0, 3)
