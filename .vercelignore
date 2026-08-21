@@ -1,0 +1,14 @@
+# Vercel CLI 로 배포할 때 올리지 않을 것 (git 연동 배포에는 영향 없음)
+#
+# 왜 필요했나 — `vercel deploy` 를 저장소 루트에서 돌렸더니 30,122개 파일이 올라갔고
+# 빌드가 깨졌다. 원인 둘:
+#   .next          로컬(Windows) 빌드 산출물이 섞여 Turbopack 이 경로를 잘못 잘랐다
+#                  ("You should not upload the `.next` directory" 경고가 실제로 떴다)
+#   .env.local     빌드 로그에 "Environments: .env.local" 로 찍혔다. 로컬 비밀값이
+#                  배포 아카이브에 그대로 담긴다 — 환경변수는 Vercel 대시보드에만 둔다.
+node_modules
+.next
+.env
+.env.local
+.env.*.local
+.git
