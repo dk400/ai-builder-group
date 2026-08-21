@@ -14,6 +14,9 @@ type Counts = { insight: number; work: number; approvals: number; builders: numb
    빌더로 보면 '승인 대기'가 사라지고 나머지가 '내 …' 로 바뀐다 (PRD §2.2).
    메뉴에서 감추는 것은 안내일 뿐이고, 실제 차단은 서버가 한다 (FR-A07-05 — 빌더 접근 403). */
 const NAV = [
+  /* 대시보드는 원작자 설계엔 없던 추가 화면이라 배지(건수)가 없다 — key 를 두지 않는다.
+     로그인 후 기본 진입점은 그대로 콘텐츠 목록이고, 여기는 눌러 들어오는 현황 화면이다. */
+  { href: '/admin/dashboard', builderHref: '/admin/builder/dashboard', icon: '▦', label: '대시보드', sec: '현황' },
   { href: '/admin/insight', builderHref: '/admin/builder', icon: '✎', label: 'Insight 관리', key: 'insight' as const, sec: '콘텐츠', builderLabel: '내 글' },
   { href: '/admin/work', builderHref: '/admin/builder/work', icon: '▣', label: 'Work 관리', key: 'work' as const, sec: '콘텐츠', builderLabel: '내 프로젝트' },
   { href: '/admin/approvals', icon: '✓', label: '승인 대기', key: 'approvals' as const, sec: '운영', adminOnly: true, hot: true },
@@ -53,7 +56,8 @@ export default function AdminNav({ counts, myCounts }: { counts: Counts; myCount
         /* /admin/insight/[id] 에서도 'Insight 관리'가 켜져 있어야 한다 */
         const href = hrefOf(item)
         const on = href === activeHref
-        const count = n[item.key]
+        /* 대시보드는 key 가 없다(배지 없음). 그 외 항목만 건수를 읽는다 */
+        const count = item.key ? n[item.key] : 0
         const label = !isAdmin && item.builderLabel ? item.builderLabel : item.label
         return (
           <div key={item.href}>
@@ -61,8 +65,9 @@ export default function AdminNav({ counts, myCounts }: { counts: Counts; myCount
             <Link className={on ? 'on' : undefined} href={href}>
               <i aria-hidden="true">{item.icon}</i>
               {label}
-              {/* 승인 대기 건수만 라임으로 세운다 — 여기만 사람이 뭔가 해야 하는 숫자다 */}
-              {!(item.key === 'builders' && !isAdmin) && (
+              {/* 승인 대기 건수만 라임으로 세운다 — 여기만 사람이 뭔가 해야 하는 숫자다.
+                  대시보드(key 없음)와 빌더의 '내 프로필'에는 배지를 달지 않는다 */}
+              {item.key && !(item.key === 'builders' && !isAdmin) && (
                 <span className={'n' + (item.hot && count > 0 ? ' n--hot' : '')}>{count}</span>
               )}
             </Link>

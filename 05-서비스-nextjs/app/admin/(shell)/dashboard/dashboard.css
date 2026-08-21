@@ -1,0 +1,72 @@
+/* 대시보드 전용 스타일.
+
+   admin.css 를 건드리지 않고 여기만 얹는다 — 원작자 파일과의 충돌을 피하려는 것이다.
+   클래스는 전부 .dash- 로 접두해 전역 CSS 오염을 막는다. 색·서체는 style.css 의 토큰을
+   그대로 쓴다(새 색을 들이지 않는다). 상태 색은 admin.css 의 .st--* 팔레트와 맞춘다.
+
+   ⚠ 라임(--lime)은 배경으로만 쓴다. 크림 위에서 글자색으로 쓰면 사라진다 —
+     '승인 대기' 타일은 라임을 채우고 그 위에 잉크 글자를 얹는다. */
+
+.dash { display: grid; gap: 20px; }
+
+/* ── KPI 타일 ── */
+.dash-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 900px) { .dash-kpis { grid-template-columns: repeat(2, 1fr); } }
+.dash-kpi { display: block; text-decoration: none; color: var(--ink); background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 16px;
+  transition: border-color var(--hover), transform var(--hover); }
+a.dash-kpi:hover { border-color: var(--ink); transform: translateY(-1px); }
+.dash-kpi__n { font-family: var(--mono); font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.dash-kpi__n small { font-size: 15px; font-weight: 700; color: var(--adm-dim); margin-left: 4px; }
+.dash-kpi__label { margin-top: 10px; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.dash-kpi__cap { margin-top: 3px; font-size: 12.5px; color: var(--adm-dim); }
+/* 사람이 뭔가 해야 하는 숫자만 라임으로 세운다 (승인 대기). 0 이면 보통 타일로 둔다 */
+.dash-kpi--hot { background: var(--lime); border-color: var(--lime); }
+.dash-kpi--hot .dash-kpi__cap { color: var(--ink-2); }
+
+/* ── 카드 ── */
+.dash-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .dash-cards { grid-template-columns: 1fr; } }
+.dash-card { background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 20px; }
+.dash-card__h { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.dash-card__h h2 { margin: 0; font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.dash-card__h a { font-size: 13px; font-weight: 700; color: var(--ink-2); text-decoration: none; }
+.dash-card__h a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.dash-card__total { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--adm-dim); }
+
+/* 상태 분포 막대 — 다섯 상태를 한 줄에 이어 붙인다 */
+.dash-bar { display: flex; height: 16px; border-radius: 999px; overflow: hidden; background: var(--paper-3); }
+.dash-seg { height: 100%; min-width: 2px; }
+.dash-seg--published { background: #3E8E52; }
+.dash-seg--pending   { background: #C98A1E; }
+.dash-seg--draft     { background: #B8B6AA; }
+.dash-seg--rejected  { background: #C6483A; }
+.dash-seg--archived  { background: #8E8C80; }
+.dash-bar--empty { background: var(--paper-3); }
+
+/* 범례 — 상태 · 건수 */
+.dash-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; }
+.dash-leg { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink-2); }
+.dash-leg i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.dash-leg b { font-family: var(--mono); font-weight: 700; color: var(--ink); }
+.dash-leg--0 { opacity: .45; }
+.dash-leg .dash-seg--published { }
+
+/* ── 할 일 · 최근 목록 ── */
+.dash-panel { background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 8px; }
+.dash-panel > h2 { margin: 0 0 4px; font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.dash-panel > .sub { margin: 0 0 10px; font-size: 12.5px; color: var(--adm-dim); }
+.dash-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line);
+  text-decoration: none; color: var(--ink); }
+.dash-row:first-of-type { border-top: 0; }
+.dash-row:hover .dash-row__t { text-decoration: underline; text-underline-offset: 3px; }
+.dash-row__k { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .02em;
+  color: var(--adm-dim); border: 1px solid var(--line-2); border-radius: 6px; padding: 2px 7px; flex: none; }
+.dash-row__t { min-width: 0; flex: 1; font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-row__meta { flex: none; font-family: var(--mono); font-size: 12px; color: var(--adm-dim); }
+.dash-empty { padding: 24px 0 28px; text-align: center; color: var(--adm-dim); font-size: 13.5px; }
+
+/* 아래 절반 — 할 일 · 최근을 두 칸으로 */
+.dash-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .dash-bottom { grid-template-columns: 1fr; } }
