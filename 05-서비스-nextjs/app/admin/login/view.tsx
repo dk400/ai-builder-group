@@ -39,6 +39,17 @@ export default function LoginView({ configured, next, error }: Props) {
           <p className="adm-login__err" role="alert">{error}</p>
         )}
 
+        {/* 키가 없으면 인증이 통째로 꺼져 있다. 상단 목업 띠가 "동작하지 않는다"까지는
+            알려 주지만, 처음 온 사람은 **무엇을 입력해야 하는지**를 모른다. 시연 링크를
+            받은 사람이 로그인 화면에서 막히는 게 실제로 가장 흔한 이탈이다. */}
+        {!configured && (
+          <p className="adm-login__demo">
+            <b className="t">시연용 목업입니다</b>
+            아무 이메일·비밀번호를 넣거나 아래 구글 버튼을 눌러도 그대로 들어갑니다.
+            들어간 뒤 화면 맨 위에서 <b>운영 관리자 ↔ 빌더 리아</b> 를 바꿔 가며 볼 수 있습니다.
+          </p>
+        )}
+
         {/* 구글 로그인을 위에 둔다 — 실제로 동작하는 쪽이고, 비밀번호를 새로 외우지 않아도 된다.
             서버 액션 폼이라 브라우저는 Supabase 를 직접 부르지 않는다 (DR-02). */}
         <form action={signInWithGoogle}>
@@ -48,12 +59,6 @@ export default function LoginView({ configured, next, error }: Props) {
             Google 계정으로 로그인
           </button>
         </form>
-        {!configured && (
-          <p className="hint adm-login__mock">
-            지금은 목업입니다 — 눌러도 구글로 가지 않고 바로 들어갑니다.
-          </p>
-        )}
-
         <div className="adm-login__or"><span>또는</span></div>
 
         <form onSubmit={onSubmit}>

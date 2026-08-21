@@ -429,7 +429,12 @@ body:has(.adm)::after { display: none; }
 .adm-login .abtn--google { gap: 10px; background: #fff; color: var(--ink); border: 1px solid var(--line-2); font-weight: 700; }
 .adm-login .abtn--google:hover { background: var(--paper); border-color: var(--ink-2); }
 .adm-login .abtn--google svg { flex: 0 0 18px; }
-.adm-login__mock { margin: 8px 0 0; text-align: center; }
+/* 시연 안내. 라임을 글자색으로 쓰지 않는다 — 종이 위에서 사라진다. 라임은 배경으로만 */
+.adm-login__demo { margin: 0 0 20px; padding: 12px 14px; border-radius: 12px;
+  background: var(--paper-3); border: 1px solid var(--line); font-size: 13px; line-height: 1.65; color: var(--ink-2); }
+/* ⚠ `.adm-login__demo b` 로 잡지 않는다. 예전에 `.notice b { display:block }` 이 본문
+   강조까지 먹어서 강조한 낱말마다 줄이 바뀌었다. 제목만 클래스로 집는다. */
+.adm-login__demo .t { display: block; color: var(--ink); margin-bottom: 2px; }
 /* 두 로그인 수단 사이의 구분선. 선 위에 라벨을 얹는 흔한 형태 */
 .adm-login__or { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--adm-dim); font-size: 12.5px; }
 .adm-login__or::before, .adm-login__or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
