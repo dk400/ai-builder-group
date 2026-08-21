@@ -2,9 +2,10 @@
 
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
-import { safeNext } from './_next'
+import { safeLoginPath, safeNext } from './_next'
 
 /* A-01 로그인 — Google OAuth (FR-A01-01)
 
@@ -59,4 +60,63 @@ export async function signInWithGoogle(formData: FormData): Promise<void> {
 
   /* redirect() 는 예외를 던져 흐름을 끊는다 — 아래에 코드를 두지 말 것 */
   redirect(data.url)
+}
+
+const passwordLoginSchema = z.object({
+  email: z.email().trim(),
+  password: z.string().min(8).max(200),
+  next: z.string().optional(),
+})
+
+/** 이메일·비밀번호 로그인. 실패 사유는 계정 존재 여부가 드러나지 않게 하나로 합친다. */
+export async function signInWithPassword(formData: FormData): Promise<void> {
+  const loginPath = safeLoginPath(formData.get('loginPath')?.toString())
+  const parsed = passwordLoginSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password'),
+    next: formData.get('next')?.toString(),
+  })
+  const next = safeNext(parsed.success ? parsed.data.next : undefined)
+  const fail = (reason: string): never =>
+    redirect(`${loginPath}?error=${reason}&next=${encodeURIComponent(next)}`)
+
+  if (!isSupabaseConfigured) redirect(next)
+  if (!parsed.success) {
+    redirect(`${loginPath}?error=credentials&next=${encodeURIComponent(next)}`)
+  }
+  const credentials = parsed.data
+
+  const supabase = await createSupabaseServerClient()
+  const { error } = await supabase.auth.signInWithPassword({
+    email: credentials.email,
+    password: credentials.password,
+  })
+  if (error) fail('credentials')
+
+  const { data: auth } = await supabase.auth.getUser()
+  if (!auth.user) {
+    redirect(`${loginPath}?error=credentials&next=${encodeURIComponent(next)}`)
+  }
+  const userId = auth.user.id
+
+  const { data: builder } = await supabase
+    .from('builders')
+    .select('is_active')
+    .eq('auth_user_id', userId)
+    .maybeSingle()
+
+  if (!builder || !builder.is_active) {
+    await supabase.auth.signOut()
+    fail(builder ? 'inactive' : 'no-account')
+  }
+
+  redirect(next)
+}
+
+export async function signOut(): Promise<void> {
+  if (isSupabaseConfigured) {
+    const supabase = await createSupabaseServerClient()
+    await supabase.auth.signOut()
+  }
+  redirect('/admin/login')
 }

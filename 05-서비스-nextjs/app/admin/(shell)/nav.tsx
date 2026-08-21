@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useRole } from '../role'
+import { signOut } from '../login/_actions'
 
 type Counts = { insight: number; work: number; approvals: number; builders: number }
 
@@ -20,7 +21,7 @@ const NAV = [
 
 export default function AdminNav({ counts, myCounts }: { counts: Counts; myCounts: Counts }) {
   const pathname = usePathname()
-  const { role } = useRole()
+  const { role, name } = useRole()
   const isAdmin = role === 'admin'
   const n = isAdmin ? counts : myCounts
   let lastSec = ''
@@ -56,15 +57,17 @@ export default function AdminNav({ counts, myCounts }: { counts: Counts; myCount
       <div className="adm-nav__foot">
         {/* 로그아웃·비밀번호 재설정은 별도 화면을 만들지 않고 여기서 처리한다 (D2 · FR-A00-04·05) */}
         <div className="adm-who">
-          <i aria-hidden="true">{isAdmin ? '조' : '리'}</i>
+          <i aria-hidden="true">{name.trim().charAt(0) || (isAdmin ? '관' : '빌')}</i>
           <span>
-            <b>{isAdmin ? '빌더 조쉬' : '빌더 리아'}</b>
+            <b>{name}</b>
             <span>{isAdmin ? 'ADMIN' : 'BUILDER'}</span>
           </span>
         </div>
-        <Link href="/admin/login">
-          <i aria-hidden="true">←</i>로그아웃
-        </Link>
+        <form action={signOut}>
+          <button className="adm-nav__logout" type="submit">
+            <i aria-hidden="true">←</i>로그아웃
+          </button>
+        </form>
       </div>
     </nav>
   )

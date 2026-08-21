@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { isSupabaseConfigured } from '@/lib/supabase/env'
 import './admin.css'
+import { getViewer } from './_authz'
 import { RoleProvider, RoleSwitch } from './role'
 
 /* 어드민 목업 — 인증도 저장도 없다.
@@ -21,7 +23,33 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  if (isSupabaseConfigured) {
+    /* 인증이 실제로 붙은 상태. 역할·이름은 서버(builders 행)에서만 나오고 역할 스위치는
+       사라진다 — 클라이언트 판정 금지(FR-A00-01).
+
+       ⚠ RoleProvider 를 통째로 빼면 안 된다. useRole() 이 컨텍스트 기본값
+         (관리자 · '빌더 조쉬')으로 떨어져서, 누가 로그인하든 사이드바가 조쉬 · ADMIN 으로
+         나오고 빌더에게도 '승인 대기' 메뉴가 보인다. 데이터는 서버에서 이미 걸러지지만
+         화면이 신원을 잘못 말하는 것은 그 자체로 사고다.
+
+       ⚠ 로그인 화면도 이 레이아웃을 쓴다. 그때는 viewer 가 null 이라 최소 권한으로 둔다. */
+    const viewer = await getViewer()
+    return (
+      <RoleProvider
+        initialRole={viewer?.role ?? 'builder'}
+        initialMe={viewer?.slug ?? ''}
+        initialName={viewer?.name ?? ''}
+        canSwitch={false}
+      >
+        {/* 목업 띠가 없으므로 그 높이(--adm-bar)를 0 으로 되돌린다 — 안 그러면 사이드바 ·
+            상단 헤더 · 로그인 카드가 전부 34px 씩 내려앉은 채로 빈 띠 자리를 남긴다.
+            admin.css 를 건드리지 않고 여기서 변수만 덮는다. */}
+        <div className="adm" style={{ '--adm-bar': '0px' } as React.CSSProperties}>{children}</div>
+      </RoleProvider>
+    )
+  }
+
   return (
     <RoleProvider>
       <div className="adm">

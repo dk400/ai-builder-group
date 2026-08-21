@@ -11,3 +11,8 @@ export function safeNext(raw: string | null | undefined): string {
   if (!raw.startsWith('/admin') || raw.startsWith('//')) return fallback
   return raw
 }
+
+/** 로그인 실패 시 돌아갈 역할별 진입점. 폼 값은 허용 목록으로만 받는다. */
+export function safeLoginPath(raw: string | null | undefined): '/admin/login' | '/builder/login' {
+  return raw === '/builder/login' ? '/builder/login' : '/admin/login'
+}

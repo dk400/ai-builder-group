@@ -33,6 +33,7 @@ body:has(.adm)::after { display: none; }
      한글 글리프가 없어 어차피 Pretendard 로 떨어지는데 자간만 남아 어색했다. */
   --adm-dim: #5E5C53;
 }
+.adm--live { --adm-bar: 0px; }
 /* style.css 의 section { padding: 136px 0 } 은 공개 페이지의 섹션 간격이다.
    어드민에서 <section> 을 의미 구분자로 쓰면 그 여백이 그대로 붙어 폼 사이가 벌어진다 —
    실제로 프로필 편집 화면에서 항목 사이가 136px 씩 떠서 화면이 텅 비어 보였다. */
@@ -74,14 +75,15 @@ body:has(.adm)::after { display: none; }
 /* 한글 라벨이라 mono·uppercase·넓은 자간을 걷었다 — 셋 다 라틴 대문자용 장치다 */
 .adm-nav__sec { font-size: 13.5px; font-weight: 700; letter-spacing: -0.01em;
   color: rgba(244,241,234,.62); padding: 22px 12px 10px; }
-.adm-nav a { display: flex; align-items: center; gap: 12px; padding: 13px 12px; border-radius: 12px;
+.adm-nav a, .adm-nav__logout { display: flex; align-items: center; gap: 12px; padding: 13px 12px; border-radius: 12px;
   color: rgba(244,241,234,.74); text-decoration: none; font-size: 16px; font-weight: 600; transition: background var(--hover), color var(--hover); }
-.adm-nav a:hover { background: var(--d-line2); color: var(--paper); }
+.adm-nav a:hover, .adm-nav__logout:hover { background: var(--d-line2); color: var(--paper); }
+.adm-nav__logout { width: 100%; border: 0; background: transparent; font-family: var(--sans); cursor: pointer; }
 .adm-nav a.on { background: var(--paper); color: var(--ink); }
 /* flex 아이템은 min-width:auto 라 글리프가 슬롯보다 넓으면 옆 글자를 밀거나 겹친다.
    로그아웃 화살표가 실제로 "로"를 덮고 있었다. 폭을 고정하고 넘치면 자른다.
    ⚠ 글자를 키울 때 슬롯도 같이 키워야 한다 — 글리프만 키우면 그 버그가 그대로 돌아온다. */
-.adm-nav a i { font-style: normal; flex: 0 0 20px; width: 20px; text-align: center; font-size: 15px;
+.adm-nav a i, .adm-nav__logout i { font-style: normal; flex: 0 0 20px; width: 20px; text-align: center; font-size: 15px;
   opacity: .85; overflow: hidden; line-height: 1; }
 .adm-nav a .n { margin-left: auto; font-family: var(--mono); font-size: 13.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
   background: var(--d-line2); }

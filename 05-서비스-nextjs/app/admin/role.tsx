@@ -17,26 +17,41 @@ import { ADMIN_ACCOUNT, BUILDER_ME } from './_mock'
 
 export type Role = 'admin' | 'builder'
 
-type Ctx = { role: Role; me: string; setRole: (r: Role) => void }
-const RoleCtx = createContext<Ctx>({ role: 'admin', me: ADMIN_ACCOUNT, setRole: () => {} })
+type Ctx = { role: Role; me: string; name: string; setRole: (r: Role) => void }
+const RoleCtx = createContext<Ctx>({ role: 'admin', me: ADMIN_ACCOUNT, name: '빌더 조쉬', setRole: () => {} })
 
 const KEY = 'abg-admin-mock-role'
 
-export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRoleState] = useState<Role>('admin')
+export function RoleProvider({
+  children,
+  initialRole = 'admin',
+  initialMe = ADMIN_ACCOUNT,
+  initialName = '빌더 조쉬',
+  canSwitch = true,
+}: {
+  children: React.ReactNode
+  initialRole?: Role
+  initialMe?: string
+  initialName?: string
+  canSwitch?: boolean
+}) {
+  const [role, setRoleState] = useState<Role>(initialRole)
 
   useEffect(() => {
+    if (!canSwitch) return
     const saved = window.localStorage.getItem(KEY)
     if (saved === 'builder' || saved === 'admin') setRoleState(saved)
-  }, [])
+  }, [canSwitch])
 
   const setRole = (r: Role) => {
+    if (!canSwitch) return
     setRoleState(r)
     window.localStorage.setItem(KEY, r)
   }
 
-  const me = role === 'admin' ? ADMIN_ACCOUNT : BUILDER_ME
-  return <RoleCtx.Provider value={{ role, me, setRole }}>{children}</RoleCtx.Provider>
+  const me = canSwitch ? (role === 'admin' ? ADMIN_ACCOUNT : BUILDER_ME) : initialMe
+  const name = canSwitch ? (role === 'admin' ? '빌더 조쉬' : '빌더 리아') : initialName
+  return <RoleCtx.Provider value={{ role, me, name, setRole }}>{children}</RoleCtx.Provider>
 }
 
 export function useRole() {
