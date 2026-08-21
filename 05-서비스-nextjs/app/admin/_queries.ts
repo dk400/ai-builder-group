@@ -163,14 +163,17 @@ export async function listPending(): Promise<Pending[]> {
   if (!viewer || viewer.role !== 'admin') return []
 
   const [insights, works] = await Promise.all([listInsights(), listWorks()])
+  /* 미리보기 주소는 공개 상세(/insight · /work)가 아니라 /preview 다.
+     승인 전 글은 공개 라우트에 아예 없어서 404 가 난다 — 검수자 눈에는 미리보기가
+     고장 난 것으로 보였다. /preview 는 같은 뷰를 쓰되 승인 전 원본을 읽는다. */
   const rows: Pending[] = [
     ...insights.filter(r => r.status === 'pending').map(r => ({
       kind: 'Insight' as const, slug: r.slug, title: r.title, author: r.author,
-      thumb: r.thumb, submitted: r.updated, href: `/insight/${r.slug}`,
+      thumb: r.thumb, submitted: r.updated, href: `/preview/insight/${r.slug}`,
     })),
     ...works.filter(r => r.status === 'pending').map(r => ({
       kind: 'Work' as const, slug: r.slug, title: r.title, author: r.builders[0] ?? '—',
-      thumb: r.thumb, submitted: r.updated, href: `/work/${r.slug}`,
+      thumb: r.thumb, submitted: r.updated, href: `/preview/work/${r.slug}`,
     })),
   ]
   /* 오래 기다린 것부터. 검수 큐에서 최신순은 오래된 건을 영원히 뒤로 민다 */
@@ -332,4 +335,147 @@ export async function rejectReasonOf(kind: 'insight' | 'work', slug: string): Pr
     .eq('slug', slug)
     .maybeSingle()
   return (data?.reject_reason as string | null) ?? null
+}
+
+/* ── 승인 전 미리보기 (FR-A07-02) ─────────────────────────────────────────────
+   "미리보기는 공개 화면과 같은 렌더" 가 요구사항이다. 그래서 /preview 라우트가 공개 상세와
+   **같은 뷰 컴포넌트**를 쓰고, 아래 두 함수는 거기에 넣을 원본 한 건만 만들어 준다.
+
+   ⚠ 승인 전 글을 공개 라우트(/insight/[slug] · /work/[slug])로 흘리지 않는다. 그 둘의 원천은
+     ARTICLES · WORKS 이고, 거기 넣는 순간 초안 · 승인대기 글이 사이트맵까지 따라 올라간다.
+
+   🔴 /preview 는 **인증이 붙어야 하는 경로**다 (백로그 §A-07 — PRD D3, 공개 토큰 URL 금지).
+     지금은 어드민 전체가 그렇듯 열려 있고, noindex + robots 차단으로만 막혀 있다.
+     4단계 미들웨어 게이트(FR-A00-01)에 /admin 과 함께 /preview 를 반드시 넣을 것. */
+
+export type InsightPreview = {
+  slug: string; cat: string; catLabel: string; title: string
+  thumbSrc: string; author: string; authorType: 'team' | 'partner'
+  date: string; readMin: number | null; bodyHtml: string | null; status: Status
+}
+
+export type WorkPreview = {
+  slug: string; cat: string; title: string; summary: string; tag: string; year: string
+  coverSrc: string; coverAlt: string; withPartner: boolean
+  builders: Array<{ slug: string; name: string; avatar: string; roleLabel: string }>
+  bodyProblem: string | null; bodySolution: string | null; bodyResult: string | null
+  status: Status
+}
+
+export async function getInsightPreview(raw: string): Promise<InsightPreview | null> {
+  const id = safeDecode(raw)
+
+  if (!isSupabaseConfigured) {
+    /* 목업에는 서버가 아는 역할이 없다. 열람 제한은 실경로 분기에만 있다 —
+       role.tsx 주석과 같은 이유로, 이 코드를 4단계로 그대로 가져가면 안 된다. */
+    const a = adminInsights().find(x => x.slug === id) ?? adminInsights().find(x => x.slug === raw)
+    if (!a) return null
+    return {
+      slug: a.slug, cat: a.cat, catLabel: CATEGORY_LABEL[a.cat], title: a.title,
+      thumbSrc: `/assets/img/ins/${a.thumb}`, author: a.author,
+      authorType: a.source === 'own' ? 'team' : 'partner',
+      date: a.date, readMin: a.readMin ?? null, bodyHtml: a.bodyHtml ?? null, status: a.status,
+    }
+  }
+
+  const viewer = await getViewer()
+  if (!viewer) return null
+
+  const supabase = await createSupabaseServerClient()
+  const [{ data }, maps] = await Promise.all([
+    supabase
+      .from('insights')
+      .select('slug, title, body_html, thumb_url, category_id, author_id, status, published_at, updated_at')
+      .eq('slug', id)
+      .maybeSingle(),
+    labelMaps(),
+  ])
+  if (!data) return null
+  /* 남의 초안은 작성자와 관리자만 본다 (FR-A02-01). 화면이 아니라 여기서 자른다 */
+  if (viewer.role !== 'admin' && data.author_id !== viewer.builderId) return null
+
+  return {
+    slug: data.slug as string,
+    cat: (data.category_id as string | null) ?? '',
+    catLabel: maps.catName.get(data.category_id as string) ?? '—',
+    title: data.title as string,
+    thumbSrc: (data.thumb_url as string | null) ?? '',
+    author: maps.builderName.get(data.author_id as string) ?? '—',
+    /* 파트너 공동 발행 여부(_insights 의 source)는 아직 컬럼이 없다. 생기면 여기서 읽는다 */
+    authorType: 'team',
+    date: ymd((data.published_at as string | null) ?? (data.updated_at as string | null)),
+    /* 읽는 데 걸리는 시간도 컬럼이 없다. 없으면 뷰가 그 자리를 지운다 */
+    readMin: null,
+    bodyHtml: (data.body_html as string | null) ?? null,
+    status: data.status as Status,
+  }
+}
+
+export async function getWorkPreview(raw: string): Promise<WorkPreview | null> {
+  const id = safeDecode(raw)
+  /* 참여 빌더 칩은 공개 상세와 같은 규칙으로 만든다 — 첫 번째가 리드다 */
+  const chips = (slugs: string[]) => slugs.flatMap((s, i) => {
+    const b = builderBySlug(s)
+    return b ? [{ slug: b.slug, name: b.name, avatar: b.avatar, roleLabel: i === 0 ? '리드' : '참여' }] : []
+  })
+
+  if (!isSupabaseConfigured) {
+    const w = adminWorks().find(x => x.slug === id) ?? adminWorks().find(x => x.slug === raw)
+    if (!w) return null
+    return {
+      slug: w.slug, cat: w.cat, title: w.title, summary: w.summary, tag: w.tag, year: w.year,
+      coverSrc: `/assets/img/${w.cover}`, coverAlt: w.coverAlt, withPartner: w.withPartner,
+      builders: chips(w.builders),
+      bodyProblem: w.bodyProblem ?? null,
+      bodySolution: w.bodySolution ?? null,
+      bodyResult: w.bodyResult ?? null,
+      status: w.status,
+    }
+  }
+
+  const viewer = await getViewer()
+  if (!viewer) return null
+
+  const supabase = await createSupabaseServerClient()
+  const [{ data }, maps] = await Promise.all([
+    supabase
+      .from('works')
+      .select('id, slug, title, summary, thumb_url, hero_url, body_problem, body_solution, body_result, period_label, category_id, created_by, status')
+      .eq('slug', id)
+      .maybeSingle(),
+    labelMaps(),
+  ])
+  if (!data) return null
+  if (viewer.role !== 'admin' && data.created_by !== viewer.builderId) return null
+
+  /* 빌더 슬러그는 연결 테이블에만 있다. 이름·아바타는 공개 로스터(_builders)에서 붙인다 —
+     getWorkForEdit 가 슬러그를 돌려주는 것과 같은 이유다. */
+  const [{ data: links }, { data: people }] = await Promise.all([
+    supabase.from('work_builders').select('builder_id, sort').eq('work_id', data.id as string),
+    supabase.from('builders').select('id, slug'),
+  ])
+  const slugOf = new Map((people ?? []).map(b => [b.id as string, b.slug as string]))
+  const builderSlugs = (links ?? [])
+    .slice()
+    .sort((a, b) => (a.sort as number) - (b.sort as number))
+    .flatMap(l => { const s = slugOf.get(l.builder_id as string); return s ? [s] : [] })
+
+  return {
+    slug: data.slug as string,
+    cat: (data.category_id as string | null) ?? '',
+    title: data.title as string,
+    summary: (data.summary as string | null) ?? '',
+    tag: maps.catName.get(data.category_id as string) ?? '—',
+    year: (data.period_label as string | null) ?? '',
+    coverSrc: (data.hero_url as string | null) ?? (data.thumb_url as string | null) ?? '',
+    /* alt 컬럼이 없다. 커버는 제목 바로 아래의 장식이라 빈 alt 가 맞다 (NFR 접근성) */
+    coverAlt: '',
+    /* works 에 '똑똑한개발자 공동수행' 컬럼이 아직 없다 — getWorkForEdit 와 같은 이유로 false */
+    withPartner: false,
+    builders: chips(builderSlugs),
+    bodyProblem: (data.body_problem as string | null) ?? null,
+    bodySolution: (data.body_solution as string | null) ?? null,
+    bodyResult: (data.body_result as string | null) ?? null,
+    status: data.status as Status,
+  }
 }

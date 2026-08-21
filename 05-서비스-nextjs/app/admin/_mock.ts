@@ -101,7 +101,37 @@ export type AdminWork = Work & { status: Status; updated: string; leadName: stri
      샘플-승인대기-글   관리자: 승인 · 반려를 눌러 본다  /  빌더: 잠금 안내를 본다
      샘플-작성중-글     빌더가 자유롭게 고치고 "검토 요청"까지 눌러 본다
 
+   ⚠ ② 승인대기 건에만 **읽히는 원고**를 넣어 두었다. 나머지 넷은 지금처럼 상태를 설명하는
+     안내문이다. 승인 대기 화면의 '미리보기'가 여는 것이 바로 ② 이고, 검수는 원고를 읽는
+     행위이기 때문이다 — 거기서 "여기를 고쳐 보세요"가 나오면 미리보기가 고장 난 것처럼
+     읽힌다. ①③④⑤ 는 편집 화면의 상태를 보여주는 자리라 안내문이 맞다.
+
    Supabase 가 붙으면 이 배열은 사라지고 실제 행이 그 자리를 대신한다. */
+
+/* ② 의 원고. 검수 화면에서 실제로 읽어 보는 글이라 길이와 구조가 발행된 글과 같아야 한다
+   (h2 넷 → 목차 넷). 근거 없는 수치는 넣지 않는다 (README 절대 규칙). */
+const BODY_SAMPLE_PENDING = `
+<p>분업을 없애면 일정이 짧아진다고들 합니다. 실제로 짧아집니다. 다만 짧아지는 이유가 흔히 말하는 것과 다릅니다 &mdash; 각자가 빨라져서가 아니라 <strong>기다리는 시간이 사라져서</strong>입니다. 3주짜리 랜딩 페이지를 빌더 한 명과 검수자 한 명 구조로 끝내면서 남긴 기록입니다.</p>
+
+<h2 id="t1">첫째, 문서가 줄어드는 게 아니라 종류가 바뀝니다</h2>
+<p>기획자가 개발자에게 넘기는 문서는 &quot;내가 이해한 것을 남에게 옮기는&quot; 문서입니다. 넘길 사람이 없으면 그 문서도 필요가 없습니다. 대신 다른 문서가 생깁니다 &mdash; <em>나중의 나</em>와 <em>검수하는 사람</em>이 읽을 결정 기록입니다.</p>
+<p>우리가 남기는 것은 셋뿐입니다. 화면 목록, 각 화면에서 사용자가 하려는 일 한 줄, 그리고 &quot;이건 왜 이렇게 했나&quot;에 대한 답. 스무 장짜리 기획서가 사라진 자리에 이 셋이 남습니다.</p>
+<blockquote>없어진 것은 문서가 아니라 인수인계입니다.</blockquote>
+
+<h2 id="t2">둘째, 첫 리뷰가 시안이 아니라 화면 위에서 열립니다</h2>
+<p>분업 구조에서 첫 리뷰는 대개 디자인이 끝난 뒤에 열립니다. 그때 방향이 틀린 것이 발견되면 되돌릴 수 있는 것이 거의 없습니다. 한 사람이 화면을 통째로 들고 있으면 <strong>눌러지는 화면</strong>을 먼저 올릴 수 있고, 리뷰는 그 위에서 열립니다. 말로 설명해야 했던 것의 절반이 그냥 보입니다.</p>
+<p>대신 규칙이 하나 필요합니다. 만든 사람이 자기 결과물을 승인하지 못하게 하는 것입니다. 속도를 한 사람에게 몰아준 만큼 판단은 반드시 다른 사람이 합니다 &mdash; 이 글이 지금 승인 대기 상태인 이유이기도 합니다.</p>
+
+<h2 id="t3">셋째, 남는 시간을 어디에 쓰는지가 팀의 성격이 됩니다</h2>
+<p>줄어든 일정을 그대로 견적에 반영하면 그냥 싼 팀이 됩니다. 우리는 그 시간을 두 곳에 씁니다. 접근성과 성능, 그리고 인수인계 문서입니다. 둘 다 요청받은 적은 없지만, 없으면 반년 뒤에 비용으로 돌아옵니다.</p>
+<p>AI 도구는 여기서 처음 등장합니다. 도구가 사람을 대신해서 빨라진 것이 아니라, 한 사람이 기획 &middot; 디자인 &middot; 개발을 오갈 때 생기는 <em>전환 비용</em>을 줄여 줍니다. 순서를 바꿔 말하면 결과도 바뀝니다.</p>
+
+<h2 id="t4">이 방식이 맞지 않는 경우</h2>
+<p>이해관계자가 많고 승인 단계가 긴 조직이라면 분업이 오히려 안전합니다. 한 사람이 전부 들고 있는 구조는 그 사람이 빠지는 순간 멈추기 때문입니다. 우리가 이 구조를 쓰는 범위도 정해져 있습니다 &mdash; 화면 스무 개 안쪽, 결정권자가 둘 이하인 프로젝트입니다.</p>
+
+<div class="tags"><span class="tag">일하는 방식</span><span class="tag">프로덕트 빌더</span><span class="tag">협업</span></div>
+`.trim()
+
 const DEMO_INSIGHTS: AdminInsight[] = [
   {
     slug: '샘플-작성중-글', cat: 'guide',
@@ -113,10 +143,10 @@ const DEMO_INSIGHTS: AdminInsight[] = [
   },
   {
     slug: '샘플-승인대기-글', cat: 'how',
-    title: '[샘플 ②] 검토 요청됨 — 관리자 승인 대기',
-    excerpt: '빌더가 제출해 검수를 기다리는 상태입니다. 관리자에게는 승인·반려가 보이고, 작성자에게는 폼이 잠깁니다.',
-    thumb: 'ins-native.jpg', source: 'own', author: '빌더 리아', date: '2026.08.20', readMin: 3,
-    bodyHtml: '<h2 id="확인할-것">확인할 것</h2><p>관리자로 보면 <strong>승인 · 공개</strong> 와 <strong>반려</strong> 가 보입니다. 반려를 누르면 사유 입력이 열리고, 비어 있으면 보낼 수 없습니다.</p><h2 id="빌더로-보면">빌더로 보면</h2><p>폼 전체가 잠기고 왜 잠겼는지가 표시됩니다. 검수 중에 원본이 바뀌면 승인한 내용과 공개된 내용이 달라지기 때문입니다.</p>',
+    title: '[샘플 ②] 분업을 없앤 3주, 실제로 달라진 세 가지',
+    excerpt: '기획·디자인·개발을 한 사람이 들고 가면 일정만 짧아지는 게 아닙니다. 3주짜리 프로젝트를 그렇게 굴려 보고 남은 기록입니다.',
+    thumb: 'ins-native.jpg', source: 'own', author: '빌더 리아', date: '2026.08.20', readMin: 5,
+    bodyHtml: BODY_SAMPLE_PENDING,
     status: 'pending', updated: '2026.08.20', owner: BUILDER_ME,
   },
   {
@@ -171,6 +201,33 @@ export function adminInsights(): AdminInsight[] {
 
    리드는 BUILDER_ME(리아)다. 리드가 곧 소유자라(adminWorks 의 owner) 빌더 시점에서
    다섯 상태가 모두 보인다. Supabase 가 붙으면 이 배열은 사라진다. */
+
+/* ② 의 케이스 본문 — works 테이블의 body_problem · body_solution · body_result 세 컬럼과
+   같은 모양이다. DEMO_INSIGHTS 의 ② 와 같은 이유로 이 한 건만 원고를 채운다: 승인 대기
+   화면의 '미리보기'가 여는 화면이고, 검수는 원고를 읽는 행위다.
+
+   ⚠ 실제 프로젝트 아홉 건에는 이 원고를 복제하지 않는다. 없는 사실을 아홉 번 주장하는
+     셈이고 색인에는 중복 문서로 잡힌다 (work/[slug]/view.tsx 주석).
+   ⚠ 성과 수치는 넣지 않았다 (README 절대 규칙 — 근거 없는 수치 금지). 결과 절에서 왜
+     아직 수치를 적지 않는지를 그대로 쓴 이유다. */
+const BODY_SAMPLE_WORK = {
+  problem: `
+<p>문의가 세 곳으로 들어왔습니다. 홈페이지 폼, 카카오 채널, 그리고 담당자 개인 메일입니다. 어느 채널로 들어왔느냐에 따라 첫 응답까지 반나절씩 차이가 났고, 같은 질문에 서로 다른 답이 나가는 일도 있었습니다.</p>
+<p>도구가 없어서 생긴 문제가 아니었습니다. 채널마다 관리 도구가 이미 있었고, 그래서 아무도 한 곳을 보지 않았습니다. 그래서 요구사항을 기능 목록이 아니라 질문 한 줄로 먼저 정했습니다 &mdash; &quot;어디를 열면 오늘 답해야 할 것이 전부 보이는가.&quot;</p>
+`.trim(),
+  solution: `
+<p>세 채널을 하나의 받은편지함으로 모았습니다. 연동은 각 서비스의 웹훅을 그대로 쓰고, 우리 쪽에는 문의 한 건이 한 행으로만 남습니다. 원본은 원래 있던 채널에 그대로 뒀습니다 &mdash; 통째로 옮겨 담으면 그 순간부터 두 벌을 관리해야 합니다.</p>
+<p>응대 초안은 지난 답변에서 가져옵니다. 새로 지어내는 대신, 비슷한 문의에 실제로 나갔던 답변을 근거로 함께 보여 줍니다. 담당자는 초안을 고르고 고쳐서 보냅니다.</p>
+<blockquote>초안을 자동으로 보내지 않는 것이 이 도구의 핵심 설계입니다. 틀린 답이 빨리 나가는 것보다 나쁜 결과는 없습니다.<cite>빌더 리아 · 리드</cite></blockquote>
+<p>권한은 처음부터 두 단계로 나눴습니다. 담당자는 자기에게 배정된 문의만 열고, 관리자만 전체 목록과 배정 변경을 봅니다. 내부 도구라도 문의에는 연락처가 들어 있기 때문입니다.</p>
+`.trim(),
+  result: `
+<p>2주간 사내 파일럿으로 돌렸습니다. 담당자 두 명이 실제 문의를 이 화면에서만 처리했고, 그동안 놓친 문의가 있는지 매일 원래 채널과 대조했습니다.</p>
+<p>가장 크게 달라진 것은 속도가 아니라 <em>인수인계</em>였습니다. 담당자가 자리를 비운 날에도 다른 사람이 같은 화면에서 맥락을 읽고 이어받을 수 있었습니다. 예전에는 그 맥락이 개인 메일함에 있었습니다.</p>
+<p>수치는 아직 적지 않습니다. 파일럿 기간이 짧아 평균을 말할 만큼 표본이 쌓이지 않았습니다 &mdash; 한 달치가 모이면 첫 응답까지 걸린 시간을 채널별로 정리해 이 자리에 추가합니다.</p>
+`.trim(),
+}
+
 const DEMO_WORKS: Array<Work & { status: Status; updated: string }> = [
   {
     slug: '샘플-작성중-프로젝트',
@@ -183,11 +240,14 @@ const DEMO_WORKS: Array<Work & { status: Status; updated: string }> = [
   },
   {
     slug: '샘플-승인대기-프로젝트',
-    title: '[샘플 ②] 검토 요청한 프로젝트 — 관리자 승인 대기',
+    title: '[샘플 ②] 문의 응대를 한곳에 모은 사내 AI 어시스턴트',
     cat: 'aiax', tag: 'AI · AX', year: '2026',
-    summary: '빌더가 제출해 검수를 기다리는 상태입니다. 관리자에게는 승인 · 반려가 보이고, 작성자에게는 폼이 잠깁니다.',
+    summary: '세 채널로 흩어져 들어오던 문의를 하나의 받은편지함으로 모으고, 담당자가 고쳐 쓸 응대 초안까지 붙여 주는 내부 도구.',
     cover: 'work-canape.png', coverAlt: '샘플 프로젝트 자리표시 이미지',
     withPartner: false, builders: [BUILDER_ME, 'dohyun'],
+    bodyProblem: BODY_SAMPLE_WORK.problem,
+    bodySolution: BODY_SAMPLE_WORK.solution,
+    bodyResult: BODY_SAMPLE_WORK.result,
     status: 'pending', updated: '2026.08.20',
   },
   {
@@ -250,13 +310,15 @@ export type Pending = {
 }
 
 export function pendingQueue(): Pending[] {
+  /* href 는 공개 상세가 아니라 /preview 다 — 승인 전 글은 공개 라우트에 없어서 404 가 난다.
+     이유는 _queries.listPending 주석에 함께 적어 뒀다. */
   const ins = adminInsights().filter(a => a.status === 'pending').map(a => ({
     kind: 'Insight' as const, slug: a.slug, title: a.title, author: a.author,
-    thumb: `/assets/img/ins/${a.thumb}`, submitted: a.updated, href: `/insight/${a.slug}`,
+    thumb: `/assets/img/ins/${a.thumb}`, submitted: a.updated, href: `/preview/insight/${a.slug}`,
   }))
   const wk = adminWorks().filter(w => w.status === 'pending').map(w => ({
     kind: 'Work' as const, slug: w.slug, title: w.title, author: w.leadName,
-    thumb: `/assets/img/${w.cover}`, submitted: w.updated, href: `/work/${w.slug}`,
+    thumb: `/assets/img/${w.cover}`, submitted: w.updated, href: `/preview/work/${w.slug}`,
   }))
   return [...ins, ...wk].sort((a, b) => a.submitted.localeCompare(b.submitted))
 }

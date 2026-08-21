@@ -80,6 +80,10 @@ export default async function WorkDetailPage({ params }: Props) {
         coverAlt={work.coverAlt}
         withPartner={work.withPartner}
         builders={builders}
+        /* 공개 아홉 건은 아직 셋 다 비어 있다 — 뷰가 '준비 중' 안내를 띄운다 */
+        bodyProblem={work.bodyProblem ?? null}
+        bodySolution={work.bodySolution ?? null}
+        bodyResult={work.bodyResult ?? null}
       />
     </>
   )

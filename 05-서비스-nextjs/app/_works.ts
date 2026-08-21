@@ -32,6 +32,14 @@ export type Work = {
   withPartner: boolean
   /** 참여 빌더 슬러그. 첫 번째가 리드 — 카드에는 리드만 표기한다 */
   builders: string[]
+  /* 케이스 본문 — works 테이블의 body_problem · body_solution · body_result 와 같은 자리다.
+     셋 다 비어 있으면 상세가 '준비 중' 안내를 띄운다 (work/[slug]/view.tsx).
+
+     ⚠ 여기 아홉 건에는 채우지 않는다. 같은 예시 원고를 복제하면 없는 사실을 아홉 번
+       주장하는 셈이고 색인에는 중복 문서로 잡힌다. 값은 어드민에서 프로젝트별로 들어온다. */
+  bodyProblem?: string
+  bodySolution?: string
+  bodyResult?: string
 }
 
 export const WORKS: Work[] = [

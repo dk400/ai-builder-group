@@ -20,6 +20,9 @@ type Props = {
   bodyHtml: string | null
   toc: TocItem[]
   related: Related[]
+  /* 승인 전 미리보기는 저장소 URL 을 그대로 넘긴다 (thumb_url 에 파일명 규칙이 없다).
+     없으면 지금까지처럼 공개 에셋 경로를 조립한다. */
+  thumbSrc?: string | null
 }
 
 export default function InsightDetailView(p: Props) {
@@ -64,7 +67,7 @@ export default function InsightDetailView(p: Props) {
               그걸 쓴다 — 목록에서 본 그림과 상세의 그림이 같아야 같은 글로 읽힌다.
               제목이 바로 위에 h1 으로 있으므로 커버는 장식이다 → alt="" */}
           <div className="slot mask art-cover">
-            <img className="cover" src={`/assets/img/ins/${p.thumb}`} alt="" />
+            <img className="cover" src={p.thumbSrc ?? `/assets/img/ins/${p.thumb}`} alt="" />
           </div>
 
           {/* 본문은 어드민 Tiptap 이 만든 HTML 이 그대로 들어올 자리다 (insights.body_html).

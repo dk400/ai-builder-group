@@ -1,0 +1,35 @@
+/* 승인 전 미리보기 — 띠 하나만 있는 스타일시트.
+
+   본문은 공개 상세의 CSS(detail.css)를 그대로 쓴다. 여기서 조판을 건드리면 "공개 화면과
+   같은 렌더"(FR-A07-02)가 깨지므로, 이 파일은 화면 아래 띠와 그만큼의 여백만 만든다. */
+
+.pv-bar {
+  position: fixed; inset: auto 0 0 0; z-index: 60; min-height: 48px;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+  padding: 9px 18px; background: var(--ink); color: var(--paper);
+  font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em;
+}
+/* 라임은 배경이지 글자색이 아니다 — 종이 위에서는 읽히지 않는다 */
+.pv-bar__k {
+  background: var(--lime); color: var(--ink); border-radius: 999px;
+  padding: 3px 11px; font-size: 12px; font-weight: 800; letter-spacing: -0.01em; flex: none;
+}
+.pv-bar__t b { font-weight: 800; }
+.pv-bar__a {
+  color: var(--paper); text-decoration: none; border-bottom: 1px solid rgba(244, 241, 234, .45);
+  padding-bottom: 1px; font-weight: 700;
+}
+.pv-bar__a:hover { border-bottom-color: var(--paper); }
+
+/* 띠가 fixed 라 문서 흐름에서 자리를 차지하지 않는다. 푸터 마지막 줄이 가려지지 않도록
+   띠 높이만큼 본문 아래를 비운다 — 그 빈 자리는 띠가 정확히 덮는다. */
+body:has(.pv-bar) { padding-bottom: 48px; }
+
+@media (max-width: 700px) {
+  .pv-bar { flex-direction: column; gap: 6px; padding: 10px 14px; text-align: center; font-size: 12.5px; }
+  /* 좁은 화면에서는 안내 문장이 줄바꿈되어 띠 높이가 폭에 따라 달라진다
+     (390px → 101px, 320px → 122px). 여백을 한 폭에 맞춰 두면 조금만 좁아져도 푸터
+     마지막 줄이 가려진다 — 실측 최대값 위로 넉넉히 잡는다. 남는 자리는 종이 배경이라
+     푸터 아래 여백으로만 보인다. */
+  body:has(.pv-bar) { padding-bottom: 132px; }
+}
