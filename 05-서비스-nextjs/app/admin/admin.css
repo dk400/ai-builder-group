@@ -118,38 +118,38 @@ body:has(.adm)::after { display: none; }
 /* 표 안의 작은 버튼이라도 누를 곳은 32px 을 넘긴다. WCAG 2.2 (2.5.8) 최소치는 24px 이지만
    목록에서 편집·삭제가 나란히 붙어 있어 오조작이 잦은 자리다 — 글자 크기는 그대로 두고
    높이만 확보한다. min-height 로 잡아야 글꼴이 바뀌어도 흔들리지 않는다. */
-.abtn--sm { padding: 6px 11px; font-size: 12.5px; border-radius: 8px; min-height: 32px; }
+.abtn--sm { padding: 8px 13px; font-size: 14px; border-radius: 8px; min-height: 38px; }
 .abtn[disabled] { opacity: .45; cursor: not-allowed; }
 
 /* ── 필터 바 ── */
 .adm-filter { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
-.adm-filter .fchip { font-size: 13px; font-weight: 700; padding: 7px 14px; border-radius: 999px; min-height: 32px;
+.adm-filter .fchip { font-size: 14.5px; font-weight: 700; padding: 8px 15px; border-radius: 999px; min-height: 38px;
   border: 1px solid var(--line-2); background: var(--paper-2); color: var(--adm-dim); cursor: pointer; transition: all var(--hover); }
 .adm-filter .fchip:hover { border-color: var(--ink); color: var(--ink); }
 .adm-filter .fchip.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.adm-filter .fchip .c { font-family: var(--mono); font-size: 12px; font-weight: 700; margin-left: 6px; opacity: .82; }
+.adm-filter .fchip .c { font-family: var(--mono); font-size: 13px; font-weight: 700; margin-left: 6px; opacity: .82; }
 .adm-search { margin-left: auto; position: relative; }
-.adm-search input { width: 240px; padding: 8px 13px 8px 32px; border: 1px solid var(--line-2); border-radius: 9px;
-  background: var(--paper-2); font-family: var(--sans); font-size: 13.5px; color: var(--ink); }
+.adm-search input { width: 260px; padding: 10px 14px 10px 34px; border: 1px solid var(--line-2); border-radius: 9px;
+  background: var(--paper-2); font-family: var(--sans); font-size: 15px; color: var(--ink); }
 .adm-search input:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
 .adm-search span { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); opacity: .45; font-size: 13px; }
 
 /* ── 표 ── */
 .adm-table { width: 100%; border-collapse: collapse; background: var(--paper-2);
   border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-/* 헤더가 한글이라 mono·uppercase 를 걷고 크기·굵기를 올렸다 (10.5px 2.13:1 → 12px 11.9:1) */
-.adm-table th { text-align: left; font-size: 12px; letter-spacing: -0.01em;
-  color: var(--ink-2); font-weight: 700; padding: 11px 16px; border-bottom: 1px solid var(--line); background: var(--paper-3); white-space: nowrap; }
-.adm-table td { padding: 13px 16px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+/* 넓은 화면에서도 목록을 한눈에 읽을 수 있도록 표의 기본 글자 크기를 본문 수준으로 유지한다. */
+.adm-table th { text-align: left; font-size: 14px; letter-spacing: -0.01em;
+  color: var(--ink-2); font-weight: 750; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--paper-3); white-space: nowrap; }
+.adm-table td { padding: 17px 18px; border-bottom: 1px solid var(--line); font-size: 16px; vertical-align: middle; }
 .adm-table tr:last-child td { border-bottom: 0; }
 .adm-table tbody tr:hover { background: var(--paper-3); }
 /* 행 제목이 목록에서 가장 많이 눌리는 링크인데 글자 높이(약 23px)가 곧 클릭 영역이라
    WCAG 2.2 (2.5.8)의 24px 에 걸렸다. 글자 크기는 그대로 두고 세로 여백만 넣는다. */
-.adm-table .t { font-weight: 700; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; display: block;
+.adm-table .t { font-size: 18px; line-height: 1.4; font-weight: 750; letter-spacing: -0.025em; color: var(--ink); text-decoration: none; display: block;
   max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px 0; }
 .adm-table .t:hover { text-decoration: underline; text-underline-offset: 3px; }
-.adm-table .sub { display: block; font-family: var(--mono); font-size: 12px; color: var(--adm-dim); }
-.adm-table .muted { color: var(--adm-dim); font-size: 13.5px; }
+.adm-table .sub { display: block; margin-top: 3px; font-family: var(--mono); font-size: 14px; line-height: 1.5; color: var(--adm-dim); }
+.adm-table .muted { color: var(--adm-dim); font-size: 15.5px; }
 .adm-table .right { text-align: right; white-space: nowrap; }
 .adm-table .acts { display: inline-flex; gap: 6px; }
 .adm-table td.thumb { width: 74px; padding-right: 0; }
@@ -163,9 +163,9 @@ body:has(.adm)::after { display: none; }
 .adm-table--media td.thumb img { width: 200px; height: 125px; border-radius: 10px; }
 
 /* ── 상태 배지 ── */
-.st { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em;
-  padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
-.st::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.st { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 700; letter-spacing: -0.01em;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
+.st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .st--published { color: #2E6B3E; border-color: #BEDBC6; background: #F0F7F2; }
 .st--pending   { color: #8A5A00; border-color: #E8D5A8; background: #FBF5E6; }
 .st--draft     { color: var(--ink-2); border-color: var(--line-2); background: var(--paper-3); }
