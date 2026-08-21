@@ -13,7 +13,7 @@ type Row = {
 }
 
 export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Record<Status | 'all', number> }) {
-  const { role, me } = useRole()
+  const { role, me, name } = useRole()
   const isAdmin = role === 'admin'
   const [active, setActive] = useState<Status | 'all'>('all')
   const [query, setQuery] = useState('')
@@ -44,7 +44,7 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
           <p className="sub">
             {isAdmin
               ? `운영 관리자 — 전체 ${rows.length}건`
-              : `빌더 리아 — 내가 리드인 ${mine.length}건만 보입니다`}
+              : `${name || '빌더'} — 내가 리드인 ${mine.length}건만 보입니다`}
           </p>
         </div>
         <div className="adm-top__r">

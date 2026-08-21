@@ -35,10 +35,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
        ⚠ 로그인 화면도 이 레이아웃을 쓴다. 그때는 viewer 가 null 이라 최소 권한으로 둔다. */
     const viewer = await getViewer()
+    /* initialMe 는 목록의 owner 와 대조하는 키다. 실 데이터에서 owner 는 created_by ·
+       author_id 즉 builders.id(UUID)이지 slug 가 아니다 (_queries 의 owner 매핑 참조).
+       slug 를 넘기면 빌더 화면에서 rows.filter(r => r.owner === me) 가 전부 걸러져 목록이
+       0 건이 된다 — 시드가 정상인데도 그렇게 비었다. builderId 로 UUID 끼리 맞춘다. */
     return (
       <RoleProvider
         initialRole={viewer?.role ?? 'builder'}
-        initialMe={viewer?.slug ?? ''}
+        initialMe={viewer?.builderId ?? ''}
         initialName={viewer?.name ?? ''}
         canSwitch={false}
       >
