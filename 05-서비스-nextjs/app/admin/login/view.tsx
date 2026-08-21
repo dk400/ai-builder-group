@@ -66,12 +66,14 @@ export default function LoginView({ configured, next, error, audience }: Props) 
           <button className="abtn abtn--ink" type="submit">로그인</button>
         </form>
 
-        {/* 자체 회원가입은 제공하지 않는다 (FR-A01-02) — 계정은 관리자가 A-06 에서 발급한다.
-            비밀번호 재설정은 별도 화면 없이 이메일 링크 방식이다 (FR-A00-05). */}
+        {/* '계정은 관리자가 발급합니다 · 비밀번호 재설정 요청' 줄은 뺐다.
+            들어올 수 있는 사람은 이미 계정을 받은 사람이라 발급 안내를 읽을 일이 없고,
+            계정이 없는 구글 로그인은 콜백이 "발급된 계정이 없습니다" 로 되돌려 준다.
+            재설정 링크도 mailto: 자리표시자여서 실제로 닿는 곳이 없었다.
+
+            ⚠ 이로써 비밀번호 재설정(FR-A00-05)의 화면 진입점이 하나도 남지 않는다.
+              별도 화면을 만들지 않기로 한 조항이라, 되살릴 때도 이 자리에 링크 한 줄이다. */}
         <p className="foot">
-          {isBuilder ? '빌더 계정은 관리자가 발급합니다' : '관리자 계정은 내부에서 발급합니다'}
-          {' · '}<a href="mailto:contact@example.com">비밀번호 재설정 요청</a>
-          <br />
           <a href={isBuilder ? '/admin/login' : '/builder/login'}>
             {isBuilder ? '관리자 로그인' : '빌더 로그인'}
           </a>
