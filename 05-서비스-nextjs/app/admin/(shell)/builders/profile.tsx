@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { FOCUS_AREAS, SPECIALTIES, STACKS } from '@/app/_builders'
 import CharCount from '../charcount'
@@ -71,7 +70,7 @@ export type Profile = {
   done: number
 }
 
-/* A-06 프로필 편집 (FR-A06-04 — 슬러그·이름·한 줄 소개·역할·아바타).
+/* A-06 프로필 편집 (FR-A06-04 — 이름·한 줄 소개·역할·아바타).
 
    처음엔 어드민 목록과 같은 2열 폼으로 짰는데 무겁고 복잡했다. 이유가 셋이었다 —
    ① 빈 입력칸이 여섯 개 붙어 있었고(일하는 원칙), ② 사진이 오른쪽 세 번째 카드에 묻혀
@@ -83,7 +82,6 @@ export type Profile = {
    · 모든 칸을 실제 값으로 채운다. 빈 칸이 많을수록 할 일이 많아 보인다
    · 계정 정보는 읽기 전용이라 맨 아래 한 줄로 내렸다 */
 export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEditAccount: boolean }) {
-  const [slug, setSlug] = useState(p.slug)
   const [blurb, setBlurb] = useState(p.blurb)
   const [bio, setBio] = useState(p.bio)
 
@@ -308,27 +306,6 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
             </div>
           </div>
         ))}
-      </section>
-
-      {/* ── 공개 주소 ── */}
-      <section className="prof-sec">
-        <h2>공개 주소</h2>
-        <div className="f">
-          <label htmlFor="bslug">슬러그 <span className="req">*</span></label>
-          <div className="prof-slug">
-            <div className="slug-row">
-              <span className="pre">/builder?b=</span>
-              <input id="bslug" type="text" value={slug}
-                onChange={e => { setSlug(e.target.value); touch() }} />
-            </div>
-            <Link className="abtn abtn--sm" href={`/builder?b=${p.slug}`} target="_blank" rel="noopener noreferrer">
-              열어보기 ↗
-            </Link>
-          </div>
-          {/* 콘텐츠 슬러그와 달리 빌더는 아직 쿼리스트링이라 301 대상이 아니다.
-              /builders/[slug] 로 승격되면(기획서 §14 Q6) 그때부터 리다이렉트가 필요하다. */}
-          <p className="hint">영문 소문자. 프로젝트의 참여 빌더 칩이 이 주소를 가리킵니다.</p>
-        </div>
       </section>
 
       {/* ── 계정 (읽기 전용) ── */}
