@@ -355,3 +355,45 @@ create policy redirects_write on public.redirects for all
 --
 -- insert into public.builders (auth_user_id, slug, name, email, role)
 -- values ('00000000-0000-0000-0000-000000000000', 'admin', '관리자', 'admin@example.com', 'admin');
+
+
+-- ═══════════════════════════════════════════════════════════════════════
+-- 10. 구글 로그인 — 첫 로그인에 계정을 잇는다 (FR-A01-01 · FR-A01-02)
+-- ═══════════════════════════════════════════════════════════════════════
+-- 구글로 처음 들어오면 Supabase 가 auth.users 행을 새로 만든다. 그런데 우리 쪽 신원은
+-- builders 이고, 둘을 잇는 것은 builders.auth_user_id 다. 아무도 이어 주지 않으면
+-- getViewer() 가 영원히 null 을 돌려준다 — "로그인은 됐는데 아무것도 안 보인다".
+--
+-- 🔴 앱에서 이을 수 없다. builders_update 정책이 `auth_user_id = auth.uid()` 를 요구하는데,
+--    아직 이어지지 않은 행은 그 값이 NULL 이라 자기 자신을 갱신하지 못한다. 닭과 달걀이다.
+--    그래서 RLS 를 지나지 않는 security definer 함수로, auth.users 에 트리거를 건다.
+--
+-- 🔴 이것이 자체 회원가입이 되지 않는 이유: **이미 등록된 이메일만 잇는다.** builders 에
+--    행이 없으면 아무 일도 일어나지 않고, 앱의 콜백이 그 세션을 즉시 지운다
+--    (app/auth/callback/route.ts). 계정 발급은 여전히 관리자 몫이다.
+--
+-- ⚠ 이메일은 대소문자를 구분하지 않는다. Google 은 검증된 주소만 넘기므로 소유 확인은
+--   구글 쪽에서 끝났다고 본다. 검증되지 않은 주소를 주는 공급자를 추가한다면 이 가정을
+--   다시 봐야 한다 — 그 경우 남의 이메일로 등록해 계정을 가로챌 수 있다.
+
+create or replace function public.link_builder_on_signup()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  update public.builders
+     set auth_user_id = new.id
+   where auth_user_id is null
+     and lower(email) = lower(new.email);
+  return new;
+end
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created after insert on auth.users
+  for each row execute function public.link_builder_on_signup();
+
+-- 이미 auth.users 에 있는 사람을 뒤늦게 잇는 경우(트리거를 나중에 깔았을 때) 1회 실행:
+--
+-- update public.builders b
+--    set auth_user_id = u.id
+--   from auth.users u
+--  where b.auth_user_id is null and lower(b.email) = lower(u.email);

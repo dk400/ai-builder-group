@@ -421,6 +421,21 @@ body:has(.adm)::after { display: none; }
 /* 링크는 주변 글보다 진해야 링크로 읽힌다 — --muted 는 오히려 더 흐렸다 (3.87:1) */
 .adm-login .foot a { color: var(--ink-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 
+/* 구글 로그인.
+
+   구글 브랜딩 가이드는 흰 바탕 · 진한 글자 · 마크 왼쪽을 요구한다. 그래서 이 화면에서
+   유일하게 --paper 계열 위에 흰색을 쓴다 — 색을 새로 들이는 게 아니라 규격이다.
+   ink 버튼(비밀번호 로그인)과 나란히 놓아도 서로 다른 두 수단으로 읽힌다. */
+.adm-login .abtn--google { gap: 10px; background: #fff; color: var(--ink); border: 1px solid var(--line-2); font-weight: 700; }
+.adm-login .abtn--google:hover { background: var(--paper); border-color: var(--ink-2); }
+.adm-login .abtn--google svg { flex: 0 0 18px; }
+.adm-login__mock { margin: 8px 0 0; text-align: center; }
+/* 두 로그인 수단 사이의 구분선. 선 위에 라벨을 얹는 흔한 형태 */
+.adm-login__or { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--adm-dim); font-size: 12.5px; }
+.adm-login__or::before, .adm-login__or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+/* 오류 문구는 한 곳에서만 정의한다 — 인라인 style 로 흩어 두면 색이 갈린다 */
+.adm-login__err { margin: 0 0 14px; font-size: 13px; font-weight: 600; color: #A02D1F; line-height: 1.6; }
+
 /* ── 좁은 화면 ── */
 @media (max-width: 1000px) {
   .adm-edit { grid-template-columns: 1fr; }

@@ -1,0 +1,62 @@
+'use server'
+
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { isSupabaseConfigured } from '@/lib/supabase/env'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { safeNext } from './_next'
+
+/* A-01 로그인 — Google OAuth (FR-A01-01)
+
+   왜 서버 액션인가 — DR-02 가 "브라우저에서 Supabase 를 직접 호출하지 않는다"이다. 그래서
+   이 저장소에는 브라우저용 Supabase 클라이언트가 아예 없다(lib/supabase 에 client.ts 가 없는
+   것이 실수가 아니다). signInWithOAuth 를 서버에서 부르면 인증 URL 만 돌려주므로, 그 주소로
+   서버가 리다이렉트한다. 브라우저는 구글과만 이야기한다.
+
+   PKCE 검증값(code_verifier)은 이때 쿠키에 심긴다. 서버 액션은 쿠키를 쓸 수 있어서 성립하는
+   구조다 — 서버 컴포넌트에서 부르면 검증값이 저장되지 않고 콜백에서 교환이 실패한다.
+
+   ⚠ 계정을 여기서 만들지 않는다 (FR-A01-02 — 자체 회원가입 없음). 구글 로그인은 "이미 발급된
+     계정의 문을 여는 방법"일 뿐이고, builders 에 행이 없는 사람은 콜백에서 되돌려보낸다.
+     그 판정은 app/auth/callback/route.ts 에 있다. */
+
+/* 콜백 주소의 출처.
+
+   프리뷰 배포마다 도메인이 달라서 SITE_URL 하나로는 못 맞춘다. 실제 요청 호스트를 쓰되,
+   실도메인이 정해져 NEXT_PUBLIC_SITE_URL 이 채워져 있으면 그쪽을 우선한다.
+   ⚠ Host 헤더는 위조될 수 있다. 최종 방어선은 Supabase 대시보드의 Redirect URLs 허용 목록이다
+     — 거기 없는 주소로는 구글이 돌려보내지 않는다. */
+async function callbackOrigin(): Promise<string> {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  if (configured) return configured.replace(/\/$/, '')
+
+  const h = await headers()
+  const host = h.get('x-forwarded-host') ?? h.get('host')
+  if (!host) return 'http://localhost:3000'
+  const proto = h.get('x-forwarded-proto') ?? (host.startsWith('localhost') ? 'http' : 'https')
+  return `${proto}://${host}`
+}
+
+export async function signInWithGoogle(formData: FormData): Promise<void> {
+  const next = safeNext(formData.get('next')?.toString())
+
+  /* 키가 없으면 목업 모드다 — 이 저장소의 규칙("키가 없으면 연동만 꺼진다")대로
+     로그인 화면 전체가 시연용이라 그냥 들여보낸다. proxy.ts 도 같은 조건으로 통과시킨다. */
+  if (!isSupabaseConfigured) redirect(next)
+
+  const supabase = await createSupabaseServerClient()
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${await callbackOrigin()}/auth/callback?next=${encodeURIComponent(next)}`,
+      /* 계정 선택 화면을 항상 띄운다. 개인 구글로 한 번 로그인하면 그 세션이 남아서
+         회사 계정으로 바꿀 방법이 화면에 없다 — 실제로 자주 막히는 지점이다. */
+      queryParams: { prompt: 'select_account' },
+    },
+  })
+
+  if (error || !data.url) redirect('/admin/login?error=oauth')
+
+  /* redirect() 는 예외를 던져 흐름을 끊는다 — 아래에 코드를 두지 말 것 */
+  redirect(data.url)
+}
