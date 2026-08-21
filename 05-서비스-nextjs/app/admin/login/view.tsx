@@ -1,6 +1,9 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { signInWithGoogle, signInWithPassword } from './_actions'
+
+const SAVED_EMAIL_KEY = 'abg-login-email'
 
 type Props = {
   /** Supabase 키가 있는가. 없으면 화면 전체가 목업이다 */
@@ -15,6 +18,24 @@ type Props = {
 
 export default function LoginView({ configured, next, error, audience }: Props) {
   const isBuilder = audience === 'builder'
+  const [email, setEmail] = useState('')
+  const [rememberEmail, setRememberEmail] = useState(false)
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(SAVED_EMAIL_KEY)
+    if (!saved) return
+    setEmail(saved)
+    setRememberEmail(true)
+  }, [])
+
+  const saveEmailPreference = () => {
+    const normalized = email.trim()
+    if (rememberEmail && normalized) {
+      window.localStorage.setItem(SAVED_EMAIL_KEY, normalized)
+    } else {
+      window.localStorage.removeItem(SAVED_EMAIL_KEY)
+    }
+  }
 
   return (
     <main id="main" className="adm-login">
@@ -51,16 +72,25 @@ export default function LoginView({ configured, next, error, audience }: Props) 
         </form>
         <div className="adm-login__or"><span>또는</span></div>
 
-        <form action={signInWithPassword}>
+        <form action={signInWithPassword} onSubmit={saveEmailPreference}>
           <input type="hidden" name="next" value={next} />
           <input type="hidden" name="loginPath" value={isBuilder ? '/builder/login' : '/admin/login'} />
           <div className="f">
             <label htmlFor="email">이메일</label>
-            <input id="email" name="email" type="email" placeholder="you@aibuildergroup.kr" autoComplete="username" required />
+            <input id="email" name="email" type="email" placeholder="you@aibuildergroup.kr" autoComplete="username"
+              value={email} onChange={e => setEmail(e.target.value)} required />
           </div>
           <div className="f">
             <label htmlFor="pw">비밀번호</label>
             <input id="pw" name="password" type="password" placeholder="••••••••" autoComplete="current-password" required minLength={8} />
+          </div>
+
+          <div className="adm-login__remember">
+            <label>
+              <input type="checkbox" checked={rememberEmail} onChange={e => setRememberEmail(e.target.checked)} />
+              <span>이메일 저장</span>
+            </label>
+            <span className="adm-login__session">로그인 상태 자동 유지</span>
           </div>
 
           <button className="abtn abtn--ink" type="submit">로그인</button>
