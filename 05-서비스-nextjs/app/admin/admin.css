@@ -346,7 +346,7 @@ body:has(.adm)::after { display: none; }
 
 .prof-hero { display: flex; gap: 20px; align-items: center; padding: 20px;
   background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 68px; }
-.prof-ava { position: relative; width: 96px; height: 120px; border-radius: 13px; overflow: hidden;
+.prof-ava { position: relative; width: 112px; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
   background: var(--paper-3); flex: none; border: 1px solid var(--line-2); }
 .prof-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .prof-ava input[type="file"] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }

@@ -4,6 +4,7 @@ import type { Profile } from './profile'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { listBuilderApplications } from '../../_queries'
 import { getViewer } from '../../_authz'
+import { redirect } from 'next/navigation'
 
 /* A-06 빌더 관리.
    관리자는 계정 목록을, 빌더는 본인 프로필 편집 폼을 본다 (FR-A06-05).
@@ -42,6 +43,7 @@ export default async function AdminBuildersPage() {
   }))
 
   const viewer = isSupabaseConfigured ? await getViewer() : null
+  if (viewer?.role === 'builder') redirect('/admin/profile')
   const applications = viewer?.role === 'admin' ? await listBuilderApplications() : []
   return <BuildersView rows={rows} profiles={profiles} applications={applications} />
 }

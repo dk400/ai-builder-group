@@ -12,8 +12,17 @@ const profileSchema = z.object({
   roleLabel: z.string().trim().min(2).max(50),
   oneLiner: z.string().trim().min(10).max(52),
   avatarUrl: z.string().trim().max(500).refine(v => v === '' || v.startsWith('/') || z.url().safeParse(v).success),
+  bio: z.string().trim().max(140),
+  focus: z.string().trim().max(100),
+  stack: z.array(z.string().trim().min(1).max(40)).max(12),
+  principles: z.array(z.tuple([z.string().trim().max(21), z.string().trim().max(62)])).length(3),
   intent: z.enum(['save', 'request']),
 })
+
+function parseJson(value: FormDataEntryValue | null): unknown {
+  if (typeof value !== 'string') return null
+  try { return JSON.parse(value) } catch { return null }
+}
 
 export async function saveMyBuilderProfile(formData: FormData): Promise<void> {
   const viewer = await requireViewer()
@@ -22,11 +31,15 @@ export async function saveMyBuilderProfile(formData: FormData): Promise<void> {
     roleLabel: formData.get('roleLabel'),
     oneLiner: formData.get('oneLiner'),
     avatarUrl: formData.get('avatarUrl'),
+    bio: formData.get('bio'),
+    focus: formData.get('focus'),
+    stack: parseJson(formData.get('stack')),
+    principles: parseJson(formData.get('principles')),
     intent: formData.get('intent'),
   })
   if (!parsed.success) redirect('/admin/profile?error=invalid')
 
-  const { name, roleLabel, oneLiner, avatarUrl, intent } = parsed.data
+  const { name, roleLabel, oneLiner, avatarUrl, bio, focus, stack, principles, intent } = parsed.data
   const supabase = await createSupabaseServerClient()
   const { error } = await supabase.from('builders').update({
     name,
@@ -45,7 +58,7 @@ export async function saveMyBuilderProfile(formData: FormData): Promise<void> {
     app_metadata: {
       ...auth.user.app_metadata,
       builder_approval: approval,
-      builder_profile: { name, roleLabel, oneLiner, avatarUrl },
+      builder_profile: { name, roleLabel, oneLiner, avatarUrl, bio, focus, stack, principles },
       ...(intent === 'request' ? { builder_requested_at: new Date().toISOString() } : {}),
     },
   })

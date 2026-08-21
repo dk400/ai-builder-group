@@ -81,7 +81,14 @@ export type Profile = {
    · 사진을 맨 위 아이덴티티 줄로 끌어올리고 교체·삭제를 붙였다
    · 모든 칸을 실제 값으로 채운다. 빈 칸이 많을수록 할 일이 많아 보인다
    · 계정 정보는 읽기 전용이라 맨 아래 한 줄로 내렸다 */
-export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEditAccount: boolean }) {
+type ProfileFormProps = {
+  p: Profile
+  canEditAccount: boolean
+  action?: (formData: FormData) => void | Promise<void>
+  approval?: 'draft' | 'pending' | 'approved' | 'rejected'
+}
+
+export default function ProfileForm({ p, canEditAccount, action, approval = 'approved' }: ProfileFormProps) {
   const [blurb, setBlurb] = useState(p.blurb)
   const [bio, setBio] = useState(p.bio)
 
@@ -151,8 +158,16 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
     touch()
   }
 
+  const roleLabel = spec === OTHER ? specOther : spec
+  const focusLabel = focus === OTHER ? focusOther : focus
+
   return (
-    <div className="prof">
+    <form className="prof" action={action}>
+      <input type="hidden" name="roleLabel" value={roleLabel} />
+      <input type="hidden" name="focus" value={focusLabel} />
+      <input type="hidden" name="stack" value={JSON.stringify(stack)} />
+      <input type="hidden" name="principles" value={JSON.stringify(prs)} />
+      <input type="hidden" name="avatarUrl" value={photo.startsWith('blob:') ? p.avatar : photo} />
       {/* ── 아이덴티티 ── */}
       <div className="prof-hero">
         <div className="prof-ava">
@@ -172,7 +187,7 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
               <button className="abtn abtn--sm" type="button" onClick={resetPhoto}>되돌리기</button>
             )}
             <span className="note">
-              {photoName ?? '상반신 인물 컷 · 밝은 배경 · 800×1000px (4:5)'}
+              {photoName ?? '상반신 인물 컷 · 밝은 배경 · 800×800px (1:1)'}
             </span>
           </div>
         </div>
@@ -183,7 +198,7 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
         <h2>기본 정보</h2>
         <div className="f">
           <label htmlFor="name">이름 <span className="req">*</span></label>
-          <input id="name" type="text" defaultValue={p.name} onChange={touch} />
+          <input id="name" name="name" type="text" defaultValue={p.name} onChange={touch} required minLength={2} maxLength={30} />
           <p className="hint">사이트 전체에 이 표기가 나갑니다 — 빌더 카드 · 프로젝트 크레딧 · 매칭 결과.</p>
         </div>
         {/* 자유 입력이었는데, 이 값이 빌더 카드·프로젝트 크레딧·매칭 결과에 그대로 나가서
@@ -210,7 +225,7 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
             한 줄 소개 <span className="req">*</span> <span className="opt">빌더 카드에 노출</span>
             <CharCount value={blurb} rec={BLURB_REC} max={BLURB_MAX} />
           </label>
-          <textarea id="blurb" value={blurb} style={{ minHeight: 58 }}
+          <textarea id="blurb" name="oneLiner" value={blurb} style={{ minHeight: 58 }} required minLength={10} maxLength={BLURB_MAX}
             onChange={e => { setBlurb(e.target.value); touch() }} />
           <p className="hint">
             <b>{BLURB_REC}자 이내</b>를 권합니다. {BLURB_MAX}자를 넘으면 화면이 좁을 때(1100px, 5열) 네 줄로 넘어가고,
@@ -222,7 +237,7 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
             소개 <span className="opt">프로필 상단 본문</span>
             <CharCount value={bio} rec={BIO_REC} max={BIO_MAX} />
           </label>
-          <textarea id="bio" value={bio} style={{ minHeight: 108 }}
+          <textarea id="bio" name="bio" value={bio} style={{ minHeight: 108 }} maxLength={BIO_MAX}
             onChange={e => { setBio(e.target.value); touch() }} />
           <p className="hint">
             {/* 줄이 바뀌는 자리에 표현식이 오면 JSX 가 그 사이 공백을 지운다 — 문장이 붙는다 */}
@@ -337,8 +352,13 @@ export default function ProfileForm({ p, canEditAccount }: { p: Profile; canEdit
             ? '⚠ 저장하지 않은 변경이 있습니다 — 나가면 사라집니다 (FR-A00-07)'
             : '고친 내용은 공개 사이트의 빌더 프로필에 그대로 나갑니다'}
         </span>
-        <button className="abtn abtn--lime" type="button">저장</button>
+        <button className="abtn" type={action ? 'submit' : 'button'} name="intent" value="save">저장</button>
+        {action && !canEditAccount && approval !== 'approved' && (
+          <button className="abtn abtn--lime" type="submit" name="intent" value="request">
+            {approval === 'pending' ? '승인 요청 다시 보내기' : '빌더 승인 요청'}
+          </button>
+        )}
       </div>
-    </div>
+    </form>
   )
 }
