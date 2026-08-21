@@ -252,6 +252,70 @@ export async function getInsightForEdit(raw: string) {
   }
 }
 
+/** Work 편집 화면 한 건.
+
+    ⚠ getInsightForEdit 과 같은 이유로 공개 데이터(_works.WORKS)에서 찾지 않는다.
+      어드민에는 아직 공개되지 않은 프로젝트(초안 · 승인대기 · 데모 픽스처)가 있고
+      그것들은 WORKS 에 없다 — 목록에는 뜨는데 눌러도 안 열리는 행이 생긴다. */
+export async function getWorkForEdit(raw: string) {
+  const id = safeDecode(raw)
+  const rows = await listWorks()
+  const row = rows.find(r => r.slug === id) ?? rows.find(r => r.slug === raw)
+  if (!row) return null
+
+  if (!isSupabaseConfigured) {
+    const full = adminWorks().find(w => w.slug === row.slug)
+    if (!full) return null
+    return {
+      slug: full.slug,
+      title: full.title,
+      summary: full.summary,
+      tag: full.tag,
+      year: full.year,
+      cover: `/assets/img/${full.cover}`,
+      withPartner: full.withPartner,
+      builders: full.builders,
+      status: full.status,
+      updated: full.updated,
+    }
+  }
+
+  const supabase = await createSupabaseServerClient()
+  const { data } = await supabase
+    .from('works')
+    .select('id, slug, title, summary, thumb_url, period_label, status, updated_at')
+    .eq('slug', row.slug)
+    .maybeSingle()
+  if (!data) return null
+
+  /* 참여 빌더는 **슬러그**로 돌려준다. 편집 폼의 로스터가 슬러그로 맞물리기 때문이다 —
+     listWorks 가 주는 이름(표시용)을 그대로 넘기면 체크박스가 하나도 켜지지 않는다. */
+  const [{ data: links }, { data: people }] = await Promise.all([
+    supabase.from('work_builders').select('builder_id, sort').eq('work_id', data.id as string),
+    supabase.from('builders').select('id, slug'),
+  ])
+  const slugOf = new Map((people ?? []).map(b => [b.id as string, b.slug as string]))
+  const builders = (links ?? [])
+    .slice()
+    .sort((a, b) => (a.sort as number) - (b.sort as number))
+    .flatMap(l => { const s = slugOf.get(l.builder_id as string); return s ? [s] : [] })
+
+  return {
+    slug: data.slug as string,
+    title: data.title as string,
+    summary: (data.summary as string | null) ?? '',
+    tag: row.tag,
+    year: (data.period_label as string | null) ?? '',
+    cover: (data.thumb_url as string | null) ?? '',
+    /* ⚠ works 테이블에 '똑똑한개발자 공동수행' 컬럼이 아직 없다. 폼에서 끄고 켜도 저장할
+       곳이 없으므로 false 로 둔다 — 컬럼(with_partner)이 생기면 여기서 읽는다. */
+    withPartner: false,
+    builders,
+    status: data.status as Status,
+    updated: ymd(data.updated_at as string | null),
+  }
+}
+
 /* 슬러그가 한글이라 이중 인코딩된 요청이 들어와도 살아남게 한 번 더 벗긴다 */
 function safeDecode(v: string): string {
   try { return decodeURIComponent(v) } catch { return v }

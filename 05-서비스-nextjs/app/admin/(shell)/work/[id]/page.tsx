@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
-import { workBySlug } from '@/app/_works'
 import { BUILDERS } from '@/app/_builders'
-import { listWorks, rejectReasonOf } from '../../../_queries'
+import { getWorkForEdit, rejectReasonOf } from '../../../_queries'
 import WorkEditView from './view'
 
 /* A-05 Work 편집. id 가 'new' 면 빈 폼이다.
@@ -24,10 +23,9 @@ export default async function AdminWorkEditPage({ params }: { params: Promise<{ 
     )
   }
 
-  const w = workBySlug(id) ?? workBySlug(raw)
+  /* 어드민 목록과 같은 원천에서 찾는다 — 공개 데이터에는 초안 · 승인대기 · 데모 건이 없다 */
+  const w = await getWorkForEdit(raw)
   if (!w) notFound()
-  const rows = await listWorks()
-  const row = rows.find(x => x.slug === w.slug)
 
   return (
     <WorkEditView
@@ -37,11 +35,11 @@ export default async function AdminWorkEditPage({ params }: { params: Promise<{ 
       summary={w.summary}
       tag={w.tag}
       year={w.year}
-      cover={`/assets/img/${w.cover}`}
+      cover={w.cover || null}
       withPartner={w.withPartner}
       builders={w.builders}
-      status={row?.status ?? 'draft'}
-      updated={row?.updated ?? '—'}
+      status={w.status}
+      updated={w.updated}
       rejectReason={await rejectReasonOf('work', w.slug)}
       roster={roster}
     />

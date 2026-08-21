@@ -81,6 +81,7 @@ const UPDATED: Record<string, string> = {
 /* 반려 사유는 필수 입력이다 (FR-A07-04) — 반려된 건에는 반드시 값이 있다 */
 export const REJECT_REASON: Record<string, string> = {
   '샘플-반려된-글': '두 번째 소제목의 주장에 근거가 없습니다. 실제로 겪은 사례나 수치를 한 줄 넣어 다시 제출해 주세요. 그리고 썸네일이 본문 내용과 맞지 않습니다.',
+  '샘플-반려된-프로젝트': '커버에 고객사 로고가 그대로 남아 있습니다. 공개 동의를 확인하기 전까지는 지우거나 다른 컷으로 교체해 주세요(기획서 §14 Q7). 요약 두 번째 문장의 성과 수치도 출처가 필요합니다.',
   '기업ai-도입-거버넌스': '3장 도입부의 통계 출처가 빠졌습니다. 원 자료 링크를 달아 다시 제출해 주세요.',
   '플랫폼-돌봄-연결': '히어로 이미지에 실제 이용자 얼굴이 그대로 보입니다. 마스킹하거나 다른 컷으로 교체 후 다시 제출해 주세요.',
 }
@@ -157,18 +158,80 @@ export function adminInsights(): AdminInsight[] {
   ]
 }
 
+/* Work 쪽 데모 다섯 건 — DEMO_INSIGHTS 와 같은 이유, 같은 다섯 상태.
+
+   ⚠ **WORKS 에 넣지 않는다.** 그 배열은 공개 /work · /builder · sitemap 의 원천이라,
+     거기 넣으면 초안·승인대기 프로젝트가 그대로 공개된다.
+
+   왜 필요했나 — 빌더(리아) 시점의 Work 목록에 발행 1 · 반려 1, 두 건밖에 없었다. 초안 ·
+   승인대기 · 보관 필터는 눌러도 전부 0 이라 검수 흐름을 화면에서 걸어 볼 수가 없다.
+
+   커버는 기존 이미지를 재사용한다. 데모 행을 채우려고 이미지를 새로 만들지 않는다 —
+   coverAlt 에 자리표시임을 적어 둔 이유다.
+
+   리드는 BUILDER_ME(리아)다. 리드가 곧 소유자라(adminWorks 의 owner) 빌더 시점에서
+   다섯 상태가 모두 보인다. Supabase 가 붙으면 이 배열은 사라진다. */
+const DEMO_WORKS: Array<Work & { status: Status; updated: string }> = [
+  {
+    slug: '샘플-작성중-프로젝트',
+    title: '[샘플 ①] 작성 중인 프로젝트 — 자유롭게 수정할 수 있습니다',
+    cat: 'platform', tag: 'SaaS · Admin', year: '2026',
+    summary: '아직 제출하지 않은 초안입니다. 제목 · 요약 · 분야 · 커버 · 참여 빌더를 모두 고칠 수 있고, 다 되면 검토를 요청합니다.',
+    cover: 'work-aerok-admin.jpg', coverAlt: '샘플 프로젝트 자리표시 이미지',
+    withPartner: false, builders: [BUILDER_ME, 'hajun'],
+    status: 'draft', updated: '2026.08.21',
+  },
+  {
+    slug: '샘플-승인대기-프로젝트',
+    title: '[샘플 ②] 검토 요청한 프로젝트 — 관리자 승인 대기',
+    cat: 'aiax', tag: 'AI · AX', year: '2026',
+    summary: '빌더가 제출해 검수를 기다리는 상태입니다. 관리자에게는 승인 · 반려가 보이고, 작성자에게는 폼이 잠깁니다.',
+    cover: 'work-canape.png', coverAlt: '샘플 프로젝트 자리표시 이미지',
+    withPartner: false, builders: [BUILDER_ME, 'dohyun'],
+    status: 'pending', updated: '2026.08.20',
+  },
+  {
+    slug: '샘플-반려된-프로젝트',
+    title: '[샘플 ③] 반려된 프로젝트 — 사유를 보고 다시 고칩니다',
+    cat: 'commerce', tag: 'Commerce', year: '2026',
+    summary: '관리자가 사유와 함께 돌려보낸 상태입니다. 화면 맨 위에 사유가 붙고, 폼은 다시 열려 있습니다.',
+    cover: 'work-markspon.png', coverAlt: '샘플 프로젝트 자리표시 이미지',
+    withPartner: true, builders: [BUILDER_ME, 'taeo'],
+    status: 'rejected', updated: '2026.08.19',
+  },
+  {
+    slug: '샘플-발행된-프로젝트',
+    title: '[샘플 ④] 발행된 프로젝트 — 공개 중, 내릴 수 있습니다',
+    cat: 'finance', tag: 'Finance', year: '2025',
+    summary: '승인되어 공개된 상태입니다. 작성자는 더 이상 손대지 못하고, 관리자만 수정하거나 내릴 수 있습니다.',
+    cover: 'work-nice.png', coverAlt: '샘플 프로젝트 자리표시 이미지',
+    withPartner: true, builders: [BUILDER_ME, 'sein'],
+    status: 'published', updated: '2026.08.18',
+  },
+  {
+    slug: '샘플-보관된-프로젝트',
+    title: '[샘플 ⑤] 보관된 프로젝트 — 다시 공개할 수 있습니다',
+    cat: 'commerce', tag: 'Media', year: '2024',
+    summary: '공개에서 내려간 상태입니다. 지운 것이 아니라 보관입니다 — 관리자가 다시 공개할 수 있고, 주소는 목록으로 301 됩니다.',
+    cover: 'work-btv.png', coverAlt: '샘플 프로젝트 자리표시 이미지',
+    withPartner: false, builders: [BUILDER_ME, 'eunchae'],
+    status: 'archived', updated: '2026.08.17',
+  },
+]
+
 export function adminWorks(): AdminWork[] {
-  return WORKS.map(w => {
+  /* 리드 이름 · 소유자를 붙이는 규칙은 데모와 실데이터가 같아야 한다.
+     따로 적어 두면 데모만 '—' 로 나오는 식으로 갈라진다 */
+  const withLead = (w: Work, status: Status, updated: string): AdminWork => {
     const leadSlug = w.builders[0]
     const lead = leadSlug ? builderBySlug(leadSlug) : undefined
-    return {
-      ...w,
-      status: WORK_STATUS[w.slug] ?? 'draft',
-      updated: UPDATED[w.slug] ?? `${w.year}.12.01`,
-      leadName: lead?.name ?? '—',
-      owner: leadSlug ?? ADMIN_ACCOUNT,
-    }
-  })
+    return { ...w, status, updated, leadName: lead?.name ?? '—', owner: leadSlug ?? ADMIN_ACCOUNT }
+  }
+
+  return [
+    ...DEMO_WORKS.map(({ status, updated, ...w }) => withLead(w, status, updated)),
+    ...WORKS.map(w => withLead(w, WORK_STATUS[w.slug] ?? 'draft', UPDATED[w.slug] ?? `${w.year}.12.01`)),
+  ]
 }
 
 export function countBy<T extends { status: Status }>(rows: T[], s: Status | 'all'): number {
