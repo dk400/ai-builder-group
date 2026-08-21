@@ -6,7 +6,8 @@
     'use server' 파일이 아니라 여기 둔다. 서버 액션 모듈의 export 는 전부 원격 호출 지점이
     되므로, 순수 함수를 거기 두면 쓰지도 않는 엔드포인트가 하나 생긴다. */
 export function safeNext(raw: string | null | undefined): string {
-  const fallback = '/admin/insight'
+  /* 역할에 따라 갈 곳이 다르다. /admin 이 그 판정을 하고 넘겨준다 */
+  const fallback = '/admin'
   if (!raw) return fallback
   if (!raw.startsWith('/admin') || raw.startsWith('//')) return fallback
   return raw

@@ -4,6 +4,7 @@ import type { Profile } from './profile'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { listBuilderApplications } from '../../_queries'
 import { getViewer } from '../../_authz'
+import { requireAdminArea } from '../_area'
 import { redirect } from 'next/navigation'
 
 /* A-06 빌더 관리.
@@ -43,7 +44,8 @@ export default async function AdminBuildersPage() {
   }))
 
   const viewer = isSupabaseConfigured ? await getViewer() : null
-  if (viewer?.role === 'builder') redirect('/admin/profile')
+  /* 빌더는 자기 영역(/admin/builder)으로 돌아간다 — 판정은 _area 한 곳에 모아 뒀다 */
+  await requireAdminArea()
   const applications = viewer?.role === 'admin' ? await listBuilderApplications() : []
   return <BuildersView rows={rows} profiles={profiles} applications={applications} />
 }

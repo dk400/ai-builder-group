@@ -65,5 +65,5 @@ export async function GET(request: NextRequest) {
     return fail('inactive')
   }
 
-  return NextResponse.redirect(`${origin}${builder.is_active ? next : '/admin/profile'}`)
+  return NextResponse.redirect(`${origin}${builder.is_active ? next : '/admin/builder/profile'}`)
 }

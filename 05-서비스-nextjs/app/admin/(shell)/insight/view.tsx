@@ -12,7 +12,10 @@ type Row = {
   thumb: string; status: Status; updated: string; owner: string
 }
 
-export default function InsightListView({ rows, counts }: { rows: Row[]; counts: Record<Status | 'all', number> }) {
+/* base — 이 화면이 속한 영역의 뿌리. 관리자는 '/admin', 빌더는 '/admin/builder' 다.
+   같은 목록을 두 영역이 함께 쓰기 때문에 링크가 자기 영역 안에 머물러야 한다 —
+   빌더가 /admin/insight/... 로 넘어가면 영역 가드가 곧바로 되돌려보낸다. */
+export default function InsightListView({ rows, counts, base = '/admin' }: { rows: Row[]; counts: Record<Status | 'all', number>; base?: string }) {
   const { role, me, name } = useRole()
   const isAdmin = role === 'admin'
   const [active, setActive] = useState<Status | 'all'>('all')
@@ -41,7 +44,7 @@ export default function InsightListView({ rows, counts }: { rows: Row[]; counts:
     <main id="main">
       <div className="adm-top">
         <div>
-          <h1>Insight 관리</h1>
+          <h1>{isAdmin ? 'Insight 관리' : '내 글'}</h1>
           <p className="sub">
             {isAdmin
               ? `운영 관리자 — 전체 ${rows.length}건`
@@ -49,7 +52,7 @@ export default function InsightListView({ rows, counts }: { rows: Row[]; counts:
           </p>
         </div>
         <div className="adm-top__r">
-          <Link className="abtn abtn--ink" href="/admin/insight/new">＋ 새 글</Link>
+          <Link className="abtn abtn--ink" href={`${base}/insight/new`}>＋ 새 글</Link>
         </div>
       </div>
 
@@ -79,7 +82,7 @@ export default function InsightListView({ rows, counts }: { rows: Row[]; counts:
                 <tr key={r.slug}>
                   <td className="thumb"><img src={r.thumb} alt="" loading="lazy" /></td>
                   <td>
-                    <Link className="t" href={`/admin/insight/${encodeURIComponent(r.slug)}`}>{r.title}</Link>
+                    <Link className="t" href={`${base}/insight/${encodeURIComponent(r.slug)}`}>{r.title}</Link>
                     <span className="sub">/insight/{r.slug}</span>
                   </td>
                   <td className="muted">{r.catLabel}</td>
@@ -92,9 +95,9 @@ export default function InsightListView({ rows, counts }: { rows: Row[]; counts:
                           여기에 규칙을 다시 적었더니 published·archived 가 어긋났다 — 목록에는 "편집"이
                           떠 있는데 들어가면 잠긴 화면이 나왔다. 잠긴 이유도 상태마다 다르다. */}
                       {canEdit(r.status, role) ? (
-                        <Link className="abtn abtn--sm" href={`/admin/insight/${encodeURIComponent(r.slug)}`}>편집</Link>
+                        <Link className="abtn abtn--sm" href={`${base}/insight/${encodeURIComponent(r.slug)}`}>편집</Link>
                       ) : (
-                        <Link className="abtn abtn--sm" href={`/admin/insight/${encodeURIComponent(r.slug)}`}
+                        <Link className="abtn abtn--sm" href={`${base}/insight/${encodeURIComponent(r.slug)}`}
                           title={lockReason(r.status, role)?.title ?? ''}>보기</Link>
                       )}
                       {/* 삭제는 관리자만 (FR-A02-02) — 빌더가 눌러도 서버가 403 을 낸다 */}

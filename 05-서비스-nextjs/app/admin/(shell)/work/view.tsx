@@ -12,7 +12,8 @@ type Row = {
   builders: string[]; status: Status; updated: string; owner: string
 }
 
-export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Record<Status | 'all', number> }) {
+/* base — insight/view.tsx 주석 참조. 관리자 '/admin' · 빌더 '/admin/builder' */
+export default function WorkListView({ rows, counts, base = '/admin' }: { rows: Row[]; counts: Record<Status | 'all', number>; base?: string }) {
   const { role, me, name } = useRole()
   const isAdmin = role === 'admin'
   const [active, setActive] = useState<Status | 'all'>('all')
@@ -40,7 +41,7 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
     <main id="main">
       <div className="adm-top">
         <div>
-          <h1>Work 관리</h1>
+          <h1>{isAdmin ? 'Work 관리' : '내 프로젝트'}</h1>
           <p className="sub">
             {isAdmin
               ? `운영 관리자 — 전체 ${rows.length}건`
@@ -48,7 +49,7 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
           </p>
         </div>
         <div className="adm-top__r">
-          <Link className="abtn abtn--ink" href="/admin/work/new">＋ 새 프로젝트</Link>
+          <Link className="abtn abtn--ink" href={`${base}/work/new`}>＋ 새 프로젝트</Link>
         </div>
       </div>
 
@@ -78,7 +79,7 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
                 <tr key={r.slug}>
                   <td className="thumb"><img src={r.thumb} alt="" loading="lazy" /></td>
                   <td>
-                    <Link className="t" href={`/admin/work/${encodeURIComponent(r.slug)}`}>{r.title}</Link>
+                    <Link className="t" href={`${base}/work/${encodeURIComponent(r.slug)}`}>{r.title}</Link>
                     <span className="sub">/work/{r.slug}</span>
                   </td>
                   <td className="muted">{r.tag}</td>
@@ -91,9 +92,9 @@ export default function WorkListView({ rows, counts }: { rows: Row[]; counts: Re
                           여기에 규칙을 다시 적었더니 published·archived 가 어긋났다 — 목록에는 "편집"이
                           떠 있는데 들어가면 잠긴 화면이 나왔다. 잠긴 이유도 상태마다 다르다. */}
                       {canEdit(r.status, role) ? (
-                        <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}>편집</Link>
+                        <Link className="abtn abtn--sm" href={`${base}/work/${encodeURIComponent(r.slug)}`}>편집</Link>
                       ) : (
-                        <Link className="abtn abtn--sm" href={`/admin/work/${encodeURIComponent(r.slug)}`}
+                        <Link className="abtn abtn--sm" href={`${base}/work/${encodeURIComponent(r.slug)}`}
                           title={lockReason(r.status, role)?.title ?? ''}>보기</Link>
                       )}
                       {isAdmin && <button className="abtn abtn--sm abtn--danger" type="button">삭제</button>}

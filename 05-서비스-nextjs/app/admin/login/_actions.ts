@@ -130,7 +130,7 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
     ...(autoLogin ? { maxAge: 60 * 60 * 24 * 365 } : {}),
   })
 
-  redirect(builder.is_active ? next : '/admin/profile')
+  redirect(builder.is_active ? next : '/admin/builder/profile')
 }
 
 export async function signOut(): Promise<void> {

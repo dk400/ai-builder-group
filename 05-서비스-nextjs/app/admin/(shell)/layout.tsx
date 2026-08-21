@@ -14,7 +14,9 @@ export const dynamic = 'force-dynamic'
 export default async function ShellLayout({ children }: { children: React.ReactNode }) {
   const viewer = isSupabaseConfigured ? await getViewer() : null
   if (isSupabaseConfigured && !viewer) redirect('/admin/login')
-  if (viewer && viewer.role !== 'admin' && viewer.approval !== 'approved') redirect('/admin/profile')
+  /* 승인 게이트는 여기 두지 않는다. 레이아웃은 현재 경로를 몰라서 "프로필 화면만 예외" 를
+     표현할 수 없고, 그대로 두면 승인 대기 중인 빌더가 프로필 화면에서 자기 자신으로
+     무한히 리다이렉트된다. 판정은 (shell)/_area.ts 의 가드가 페이지마다 한다. */
   const { counts, myCounts } = await navCounts()
   return (
     <div className="adm-shell">

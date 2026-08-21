@@ -40,7 +40,7 @@ export async function signUpBuilder(formData: FormData): Promise<void> {
     password,
     options: {
       data: { name },
-      emailRedirectTo: `${await requestOrigin()}/auth/callback?next=/admin/profile&loginPath=/builder/login`,
+      emailRedirectTo: `${await requestOrigin()}/auth/callback?next=/admin/builder/profile&loginPath=/builder/login`,
     },
   })
   if (error || !data.user) redirect('/builder/signup?error=signup')
@@ -68,5 +68,5 @@ export async function signUpBuilder(formData: FormData): Promise<void> {
     redirect('/builder/signup?error=signup')
   }
 
-  redirect(data.session ? '/admin/profile?welcome=1' : '/builder/signup?success=check-email')
+  redirect(data.session ? '/admin/builder/profile?welcome=1' : '/builder/signup?success=check-email')
 }

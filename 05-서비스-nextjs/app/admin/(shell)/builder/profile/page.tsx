@@ -2,9 +2,15 @@ import { redirect } from 'next/navigation'
 import { getViewer } from '@/app/admin/_authz'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { saveMyBuilderProfile } from './actions'
-import ProfileForm, { type Profile } from '@/app/admin/(shell)/builders/profile'
-import AdminNav from '@/app/admin/(shell)/nav'
-import { navCounts } from '@/app/admin/_queries'
+import ProfileForm, { type Profile } from '@/app/admin/(shell)/accounts/profile'
+
+/* 빌더 영역의 '내 프로필' — /admin/builder/profile.
+
+   전에는 (shell) 밖에 있어서 사이드바를 직접 그렸다. 이제 셸 안으로 들어왔으므로
+   AdminNav 를 여기서 렌더하지 않는다 — 두 벌이 겹친다.
+
+   ⚠ 승인 대기 중인 빌더가 갇히지 않도록, 이 화면에는 승인 게이트를 걸지 않는다.
+     "승인 안 됐으니 프로필로 가라"는 리다이렉트는 /admin/builder 쪽에 있다. */
 
 const STATUS = {
   draft: ['프로필 작성 중', '필수 정보를 채운 뒤 빌더 승인을 요청하세요.'],
@@ -50,12 +56,8 @@ export default async function MyProfilePage({ searchParams }: {
 
   const sp = await searchParams
   const [statusTitle, statusCopy] = STATUS[viewer.approval]
-  const { counts, myCounts } = await navCounts()
 
   return (
-    <div className="adm-shell">
-      <AdminNav counts={counts} myCounts={myCounts} />
-      <div className="adm-main">
       <main id="main" className="adm-narrow">
       <div className="adm-top"><div><h1>내 프로필</h1><p className="sub">프로필을 먼저 설정한 뒤 운영 관리자에게 빌더 승인을 요청합니다.</p></div></div>
       <div className="adm-body">
@@ -69,7 +71,5 @@ export default async function MyProfilePage({ searchParams }: {
         <ProfileForm p={profile} canEditAccount={false} action={saveMyBuilderProfile} approval={viewer.approval} />
       </div>
       </main>
-      </div>
-    </div>
   )
 }

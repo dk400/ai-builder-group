@@ -32,7 +32,7 @@ export default function BuilderProfilePage({ p }: { p: Profile }) {
         <div>
           <h1>{isAdmin ? p.name : '내 프로필'}</h1>
           <p className="sub">
-            {isAdmin && <Link href="/admin/builders" style={{ color: 'inherit' }}>← 빌더 관리로</Link>}
+            {isAdmin && <Link href="/admin/accounts" style={{ color: 'inherit' }}>← 빌더 관리로</Link>}
             {isAdmin && ' · '}
             여기서 고친 내용은 공개 사이트의 빌더 프로필에 그대로 나갑니다.
           </p>

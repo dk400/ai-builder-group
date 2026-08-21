@@ -37,7 +37,7 @@ export async function saveMyBuilderProfile(formData: FormData): Promise<void> {
     principles: parseJson(formData.get('principles')),
     intent: formData.get('intent'),
   })
-  if (!parsed.success) redirect('/admin/profile?error=invalid')
+  if (!parsed.success) redirect('/admin/builder/profile?error=invalid')
 
   const { name, roleLabel, oneLiner, avatarUrl, bio, focus, stack, principles, intent } = parsed.data
   const supabase = await createSupabaseServerClient()
@@ -47,15 +47,15 @@ export async function saveMyBuilderProfile(formData: FormData): Promise<void> {
     one_liner: oneLiner,
     avatar_url: avatarUrl || null,
   }).eq('id', viewer.builderId)
-  if (error) redirect('/admin/profile?error=save')
+  if (error) redirect('/admin/builder/profile?error=save')
 
   const { data: auth, error: authError } = await supabase.auth.getUser()
-  if (authError || !auth.user) redirect('/admin/profile?error=save')
+  if (authError || !auth.user) redirect('/admin/builder/profile?error=save')
   const builderProfile = { name, roleLabel, oneLiner, avatarUrl, bio, focus, stack, principles }
   const { error: profileMetaError } = await supabase.auth.updateUser({
     data: { ...auth.user.user_metadata, builder_profile: builderProfile },
   })
-  if (profileMetaError) redirect('/admin/profile?error=save')
+  if (profileMetaError) redirect('/admin/builder/profile?error=save')
 
   if (intent === 'request' && viewer.role !== 'admin') {
     const admin = createSupabaseAdminClient()
@@ -66,37 +66,37 @@ export async function saveMyBuilderProfile(formData: FormData): Promise<void> {
         builder_requested_at: new Date().toISOString(),
       },
     })
-    if (metaError) redirect('/admin/profile?error=save')
+    if (metaError) redirect('/admin/builder/profile?error=save')
   }
 
-  revalidatePath('/admin/profile')
-  revalidatePath('/admin/builders')
-  redirect(`/admin/profile?${intent === 'request' ? 'requested=1' : 'saved=1'}`)
+  revalidatePath('/admin/builder/profile')
+  revalidatePath('/admin/accounts')
+  redirect(`/admin/builder/profile?${intent === 'request' ? 'requested=1' : 'saved=1'}`)
 }
 
 export async function approveBuilderApplication(formData: FormData): Promise<void> {
   await requireAdmin()
   const userId = z.uuid().safeParse(formData.get('userId'))
   const builderId = z.uuid().safeParse(formData.get('builderId'))
-  if (!userId.success || !builderId.success) redirect('/admin/builders?error=invalid')
+  if (!userId.success || !builderId.success) redirect('/admin/accounts?error=invalid')
 
   const admin = createSupabaseAdminClient()
   const { data: auth, error: authError } = await admin.auth.admin.getUserById(userId.data)
-  if (authError || !auth.user) redirect('/admin/builders?error=approve')
+  if (authError || !auth.user) redirect('/admin/accounts?error=approve')
 
   const { error: metaError } = await admin.auth.admin.updateUserById(userId.data, {
     app_metadata: { ...auth.user.app_metadata, builder_approval: 'approved', builder_approved_at: new Date().toISOString() },
   })
-  if (metaError) redirect('/admin/builders?error=approve')
+  if (metaError) redirect('/admin/accounts?error=approve')
 
   const { error: builderError } = await admin.from('builders').update({ is_active: true }).eq('id', builderId.data)
   if (builderError) {
     await admin.auth.admin.updateUserById(userId.data, {
       app_metadata: { ...auth.user.app_metadata, builder_approval: 'pending' },
     })
-    redirect('/admin/builders?error=approve')
+    redirect('/admin/accounts?error=approve')
   }
 
-  revalidatePath('/admin/builders')
-  redirect('/admin/builders?approved=1')
+  revalidatePath('/admin/accounts')
+  redirect('/admin/accounts?approved=1')
 }

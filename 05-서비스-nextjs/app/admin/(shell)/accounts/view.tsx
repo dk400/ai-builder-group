@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRole } from '../../role'
 import ProfileForm, { type Profile } from './profile'
 import type { BuilderApplication } from '../../_queries'
-import { approveBuilderApplication } from '@/app/admin/profile/actions'
+import { approveBuilderApplication } from '@/app/admin/(shell)/builder/profile/actions'
 
 type Row = {
   slug: string; name: string; email: string
@@ -105,7 +105,7 @@ export default function BuildersView({ rows, profiles, applications }: { rows: R
                     style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
                 </td>
                 <td>
-                  <Link className="t" href={`/admin/builders/${r.slug}`}>{r.name}</Link>
+                  <Link className="t" href={`/admin/accounts/${r.slug}`}>{r.name}</Link>
                   <span className="sub">{r.roleLabel}</span>
                 </td>
                 <td className="muted">{r.email}</td>
@@ -125,7 +125,7 @@ export default function BuildersView({ rows, profiles, applications }: { rows: R
                 </td>
                 <td className="right">
                   <span className="acts">
-                    <Link className="abtn abtn--sm" href={`/admin/builders/${r.slug}`}>프로필 편집</Link>
+                    <Link className="abtn abtn--sm" href={`/admin/accounts/${r.slug}`}>프로필 편집</Link>
                     {/* 회수하면 즉시 로그인이 막히지만 작성한 콘텐츠는 남는다 (FR-A06-03) */}
                     {r.active
                       ? <button className="abtn abtn--sm abtn--danger" type="button">회수</button>

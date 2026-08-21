@@ -11,6 +11,8 @@ import { allowedTransitions, canEdit, lockReason, type Status } from '../../../_
 type Roster = { slug: string; name: string; avatar: string; role: string }
 
 type Props = {
+  /* 목록으로 돌아갈 주소. insight/[id]/view.tsx 주석 참조 */
+  listHref?: string
   isNew: boolean
   slug: string
   title: string
@@ -55,7 +57,7 @@ export default function WorkEditView(p: Props) {
         <div>
           <h1>{p.isNew ? '새 프로젝트' : 'Work 편집'}</h1>
           <p className="sub">
-            <Link href="/admin/work" style={{ color: 'inherit' }}>← 목록으로</Link>
+            <Link href={p.listHref ?? "/admin/work"} style={{ color: "inherit" }}>← 목록으로</Link>
             {!p.isNew && <> · 마지막 수정 {p.updated}</>}
           </p>
         </div>

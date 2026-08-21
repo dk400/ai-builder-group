@@ -10,6 +10,9 @@ import SlugField from '../../SlugField'
 import { allowedTransitions, canEdit, lockReason, type Status } from '../../../_transitions'
 
 type Props = {
+  /* 목록으로 돌아갈 주소. 빌더 영역에서는 /admin/builder 다 — 관리자 목록으로 보내면
+     영역 가드가 되돌려보내서 뒤로가기가 두 번 튄다 */
+  listHref?: string
   isNew: boolean
   slug: string
   title: string
@@ -53,7 +56,7 @@ export default function InsightEditView(p: Props) {
         <div>
           <h1>{p.isNew ? '새 글 작성' : 'Insight 편집'}</h1>
           <p className="sub">
-            <Link href="/admin/insight" style={{ color: 'inherit' }}>← 목록으로</Link>
+            <Link href={p.listHref ?? "/admin/insight"} style={{ color: "inherit" }}>← 목록으로</Link>
             {!p.isNew && <> · {p.author} · 마지막 수정 {p.updated}</>}
           </p>
         </div>
