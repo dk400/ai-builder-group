@@ -2,6 +2,8 @@ import { CATEGORY_LABEL } from '@/app/_insights'
 import { builderBySlug } from '@/app/_builders'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { createSupabaseAdminClient } from '@/lib/supabase/admin'
+import { requireAdmin } from './_authz'
 import { getViewer } from './_authz'
 import { STATUS_ORDER, type Status } from './_transitions'
 import {
@@ -206,6 +208,47 @@ export async function navCounts() {
     builders: 1,
   }
   return { counts, myCounts }
+}
+
+export type BuilderApplication = {
+  userId: string
+  builderId: string
+  name: string
+  email: string
+  roleLabel: string
+  oneLiner: string
+  status: 'draft' | 'pending' | 'rejected'
+  requestedAt: string | null
+}
+
+/** 운영 DB의 실제 빌더 가입·승인 요청 목록. app_metadata는 관리자 키로만 읽는다. */
+export async function listBuilderApplications(): Promise<BuilderApplication[]> {
+  if (!isSupabaseConfigured) return []
+  await requireAdmin()
+  const admin = createSupabaseAdminClient()
+  const [{ data: builders, error }, { data: users, error: usersError }] = await Promise.all([
+    admin.from('builders').select('id, auth_user_id, name, email, role_label, one_liner').eq('role', 'builder'),
+    admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+  ])
+  if (error || usersError) return []
+
+  const byId = new Map(users.users.map(user => [user.id, user]))
+  return (builders ?? []).flatMap(builder => {
+    if (!builder.auth_user_id) return []
+    const user = byId.get(builder.auth_user_id)
+    const status = user?.app_metadata.builder_approval
+    if (status !== 'draft' && status !== 'pending' && status !== 'rejected') return []
+    return [{
+      userId: builder.auth_user_id,
+      builderId: builder.id,
+      name: builder.name,
+      email: builder.email,
+      roleLabel: builder.role_label ?? '',
+      oneLiner: builder.one_liner ?? '',
+      status,
+      requestedAt: typeof user?.app_metadata.builder_requested_at === 'string' ? user.app_metadata.builder_requested_at : null,
+    }]
+  }).sort((a, b) => (b.requestedAt ?? '').localeCompare(a.requestedAt ?? ''))
 }
 
 /** 편집 화면 한 건.

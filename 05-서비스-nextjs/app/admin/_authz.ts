@@ -23,6 +23,7 @@ export type Viewer = {
   slug: string
   name: string
   role: Role
+  approval: 'draft' | 'pending' | 'approved' | 'rejected'
 }
 
 export class AuthzError extends Error {
@@ -52,9 +53,15 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
 
   if (error || !data) return null
 
-  /* 회수된 계정은 로그인 세션이 남아 있어도 접근시키지 않는다 (FR-A01-05 · FR-A06-03).
-     세션 만료를 기다리면 "해지했는데 아직 들어와 있다"가 생긴다. */
-  if (!data.is_active) return null
+  const rawApproval = auth.user.app_metadata.builder_approval
+  const approval = data.is_active
+    ? 'approved'
+    : rawApproval === 'draft' || rawApproval === 'pending' || rawApproval === 'rejected'
+      ? rawApproval
+      : null
+
+  /* 승인 절차가 아닌 기존 회수 계정은 세션이 남아 있어도 접근시키지 않는다. */
+  if (!approval) return null
 
   return {
     userId: auth.user.id,
@@ -62,6 +69,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     slug: data.slug,
     name: data.name,
     role: data.role === 'admin' ? 'admin' : 'builder',
+    approval,
   }
 })
 

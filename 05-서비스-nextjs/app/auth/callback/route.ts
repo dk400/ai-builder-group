@@ -3,7 +3,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { safeLoginPath, safeNext } from '@/app/admin/login/_next'
 
-/* 구글 OAuth 콜백 (FR-A01-01 · FR-A01-02 · FR-A01-05)
+/* OAuth·이메일 인증 콜백 (FR-A01-01 · FR-A01-02 · FR-A01-05)
 
    구글 → Supabase → 여기. 받은 code 를 세션으로 교환하고 어드민으로 들여보낸다.
 
@@ -37,8 +37,8 @@ export async function GET(request: NextRequest) {
   /* 여기서부터가 이 라우트의 핵심이다.
 
      구글 로그인은 **누구나** 시도할 수 있다. 교환이 성공했다는 것은 "구글 계정이 진짜다"일
-     뿐이고, 우리 서비스의 계정이 있다는 뜻이 아니다. 그냥 통과시키면 FR-A01-02(자체 회원가입
-     없음)가 사실상 뚫린다 — 아무 구글 계정으로나 어드민에 세션이 생긴다.
+     뿐이고, 우리 서비스의 빌더 신청 계정이 있다는 뜻은 아니다. 이메일 회원가입 또는 관리자
+     발급으로 만들어진 builders 행이 없는 구글 계정은 어드민에 들여보내지 않는다.
 
      그래서 builders 에 행이 있는지 확인하고, 없으면 세션을 즉시 없앤다.
      (RLS 와 getViewer() 가 뒤에서 한 번 더 막지만, 로그인된 채로 빈 화면을 보여 주는 것과
@@ -58,10 +58,12 @@ export async function GET(request: NextRequest) {
   }
 
   /* 회수된 계정은 구글로도 들어올 수 없다 (FR-A01-05 · FR-A06-03) */
-  if (!builder.is_active) {
+  const approval = auth.user.app_metadata.builder_approval
+  const isApplicant = approval === 'draft' || approval === 'pending' || approval === 'rejected'
+  if (!builder.is_active && !isApplicant) {
     await supabase.auth.signOut()
     return fail('inactive')
   }
 
-  return NextResponse.redirect(`${origin}${next}`)
+  return NextResponse.redirect(`${origin}${builder.is_active ? next : '/admin/profile'}`)
 }

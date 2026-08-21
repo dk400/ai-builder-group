@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useRole } from '../../role'
 import ProfileForm, { type Profile } from './profile'
+import type { BuilderApplication } from '../../_queries'
+import { approveBuilderApplication } from '@/app/admin/profile/actions'
 
 type Row = {
   slug: string; name: string; email: string
@@ -10,7 +12,7 @@ type Row = {
   active: boolean; lastLogin: string; done: number
 }
 
-export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles: Profile[] }) {
+export default function BuildersView({ rows, profiles, applications }: { rows: Row[]; profiles: Profile[]; applications: BuilderApplication[] }) {
   const { role, me } = useRole()
   const isAdmin = role === 'admin'
 
@@ -51,8 +53,8 @@ export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles
       <div className="adm-top">
         <div>
           <h1>빌더 관리</h1>
-          {/* 기수가 늘수록 계정이 계속 증가한다 — 발급만큼 회수 절차가 중요하다 (기획서 §5.6) */}
-          <p className="sub">계정 {rows.length}개 · 활성 {active}개. 자체 회원가입은 없고, 여기서만 발급합니다.</p>
+          {/* 기수가 늘수록 계정이 계속 증가한다 — 승인만큼 회수 절차가 중요하다 (기획서 §5.6) */}
+          <p className="sub">계정 {rows.length}개 · 활성 {active}개. 직접 가입한 빌더의 승인 요청도 여기서 검토합니다.</p>
         </div>
         <div className="adm-top__r">
           <button className="abtn abtn--ink" type="button">＋ 계정 발급</button>
@@ -60,6 +62,28 @@ export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles
       </div>
 
       <div className="adm-body">
+        {applications.length > 0 && (
+          <section className="builder-apps" aria-labelledby="builder-apps-title">
+            <div className="builder-apps__head">
+              <div><h2 id="builder-apps-title">빌더 승인 요청</h2><p>프로필을 확인한 뒤 승인하면 전체 빌더 기능이 열립니다.</p></div>
+              <span>{applications.filter(a => a.status === 'pending').length}건 검토 대기</span>
+            </div>
+            <div className="builder-apps__list">
+              {applications.map(a => (
+                <article className="builder-app" key={a.userId}>
+                  <div><span className={`st st--${a.status === 'pending' ? 'pending' : 'draft'}`}>{a.status === 'pending' ? '승인 요청' : a.status === 'rejected' ? '보완 중' : '작성 중'}</span><h3>{a.name}</h3><p>{a.email} · {a.roleLabel || '전문 분야 미입력'}</p><p>{a.oneLiner || '한 줄 소개 미입력'}</p></div>
+                  {a.status === 'pending' && (
+                    <form action={approveBuilderApplication}>
+                      <input type="hidden" name="userId" value={a.userId} />
+                      <input type="hidden" name="builderId" value={a.builderId} />
+                      <button className="abtn abtn--lime" type="submit">빌더 승인</button>
+                    </form>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
         <table className="adm-table">
           <thead>
             <tr>

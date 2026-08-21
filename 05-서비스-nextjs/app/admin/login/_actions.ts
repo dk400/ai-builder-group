@@ -110,9 +110,15 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
     .eq('auth_user_id', userId)
     .maybeSingle()
 
-  if (!builder || !builder.is_active) {
+  const approval = auth.user.app_metadata.builder_approval
+  const isApplicant = approval === 'draft' || approval === 'pending' || approval === 'rejected'
+  if (!builder) {
     await supabase.auth.signOut()
-    fail(builder ? 'inactive' : 'no-account')
+    redirect(`${loginPath}?error=no-account&next=${encodeURIComponent(next)}`)
+  }
+  if (!builder.is_active && !isApplicant) {
+    await supabase.auth.signOut()
+    redirect(`${loginPath}?error=inactive&next=${encodeURIComponent(next)}`)
   }
 
   const cookieStore = await cookies()
@@ -124,7 +130,7 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
     ...(autoLogin ? { maxAge: 60 * 60 * 24 * 365 } : {}),
   })
 
-  redirect(next)
+  redirect(builder.is_active ? next : '/admin/profile')
 }
 
 export async function signOut(): Promise<void> {

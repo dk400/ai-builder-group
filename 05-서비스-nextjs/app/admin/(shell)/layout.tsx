@@ -14,6 +14,7 @@ export const dynamic = 'force-dynamic'
 export default async function ShellLayout({ children }: { children: React.ReactNode }) {
   const viewer = isSupabaseConfigured ? await getViewer() : null
   if (isSupabaseConfigured && !viewer) redirect('/admin/login')
+  if (viewer && viewer.role !== 'admin' && viewer.approval !== 'approved') redirect('/admin/profile')
   const { counts, myCounts } = await navCounts()
   return (
     <div className="adm-shell">

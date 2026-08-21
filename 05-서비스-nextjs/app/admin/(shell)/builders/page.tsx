@@ -1,11 +1,14 @@
 import { adminBuilders } from '../../_mock'
 import BuildersView from './view'
 import type { Profile } from './profile'
+import { isSupabaseConfigured } from '@/lib/supabase/env'
+import { listBuilderApplications } from '../../_queries'
+import { getViewer } from '../../_authz'
 
 /* A-06 빌더 관리.
    관리자는 계정 목록을, 빌더는 본인 프로필 편집 폼을 본다 (FR-A06-05).
    역할 전환이 클라이언트에 있어(목업 한정) 두 경우의 데이터를 모두 내려보낸다. */
-export default function AdminBuildersPage() {
+export default async function AdminBuildersPage() {
   const all = adminBuilders()
 
   const rows = all.map(b => ({
@@ -38,5 +41,7 @@ export default function AdminBuildersPage() {
     done: b.done,
   }))
 
-  return <BuildersView rows={rows} profiles={profiles} />
+  const viewer = isSupabaseConfigured ? await getViewer() : null
+  const applications = viewer?.role === 'admin' ? await listBuilderApplications() : []
+  return <BuildersView rows={rows} profiles={profiles} applications={applications} />
 }

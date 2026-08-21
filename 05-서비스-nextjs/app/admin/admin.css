@@ -447,6 +447,33 @@ body:has(.adm)::after { display: none; }
 /* 오류 문구는 한 곳에서만 정의한다 — 인라인 style 로 흩어 두면 색이 갈린다 */
 .adm-login__err { margin: 0 0 14px; font-size: 13px; font-weight: 600; color: #A02D1F; line-height: 1.6; }
 
+/* 빌더 가입 후 프로필·승인 흐름 */
+.adm-profile__ok { margin: 0 0 18px; padding: 11px 14px; border: 1px solid #B7D36A;
+  border-radius: 10px; background: #F4F9E6; color: #35420F; font-size: 13.5px; font-weight: 700; }
+.notice--approval { margin-bottom: 22px; }
+.notice--pending { border-left-color: #A77A10; background: #FFF8E6; }
+.notice--approved { border-left-color: #648600; background: #F4F9E6; }
+.notice--rejected { border-left-color: #A02D1F; background: #FBF2F0; }
+
+.builder-apps { margin: 0 0 28px; padding: 22px; border: 1px solid var(--line);
+  border-radius: 16px; background: var(--paper-2); }
+.builder-apps__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.builder-apps__head h2 { margin: 0; font-size: 18px; }
+.builder-apps__head p { margin: 5px 0 0; color: var(--adm-dim); font-size: 13px; }
+.builder-apps__head > span { flex: none; padding: 5px 10px; border-radius: 999px;
+  background: var(--lime); font-size: 12px; font-weight: 800; }
+.builder-apps__list { display: grid; gap: 0; }
+.builder-app { display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  padding: 17px 0; border-bottom: 1px dashed var(--line); }
+.builder-app:last-child { border-bottom: 0; padding-bottom: 0; }
+.builder-app h3 { display: inline; margin: 0 0 0 9px; font-size: 16px; }
+.builder-app p { margin: 5px 0 0; color: var(--adm-dim); font-size: 13px; }
+@media (max-width: 700px) {
+  .builder-apps__head, .builder-app { flex-direction: column; align-items: stretch; }
+  .builder-apps__head > span { width: fit-content; }
+}
+
 /* ── 좁은 화면 ── */
 @media (max-width: 1000px) {
   .adm-edit { grid-template-columns: 1fr; }

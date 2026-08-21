@@ -117,6 +117,11 @@ export default function LoginView({ configured, next, error, audience }: Props) 
             <a href="/builder/login">빌더 로그인</a>
           </p>
         )}
+        {isBuilder && (
+          <p className="foot">
+            아직 계정이 없나요? <a href="/builder/signup">빌더 계정 만들기</a>
+          </p>
+        )}
       </div>
     </main>
   )

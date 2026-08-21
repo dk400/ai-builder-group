@@ -16,7 +16,7 @@ const NAV = [
   { href: '/admin/insight', icon: '✎', label: 'Insight 관리', key: 'insight' as const, sec: '콘텐츠' },
   { href: '/admin/work', icon: '▣', label: 'Work 관리', key: 'work' as const, sec: '콘텐츠' },
   { href: '/admin/approvals', icon: '✓', label: '승인 대기', key: 'approvals' as const, sec: '운영', adminOnly: true, hot: true },
-  { href: '/admin/builders', icon: '☺', label: '빌더 관리', key: 'builders' as const, sec: '운영', builderLabel: '내 프로필' },
+  { href: '/admin/builders', builderHref: '/admin/profile', icon: '☺', label: '빌더 관리', key: 'builders' as const, sec: '운영', builderLabel: '내 프로필' },
 ]
 
 export default function AdminNav({ counts, myCounts }: { counts: Counts; myCounts: Counts }) {
@@ -36,13 +36,14 @@ export default function AdminNav({ counts, myCounts }: { counts: Counts; myCount
         const head = item.sec !== lastSec ? item.sec : null
         lastSec = item.sec
         /* /admin/insight/[id] 에서도 Insight 관리가 켜져 있어야 한다 */
-        const on = pathname === item.href || pathname.startsWith(item.href + '/')
+        const href = !isAdmin && item.builderHref ? item.builderHref : item.href
+        const on = pathname === href || pathname.startsWith(href + '/')
         const count = n[item.key]
         const label = !isAdmin && item.builderLabel ? item.builderLabel : item.label
         return (
           <div key={item.href}>
             {head && <div className="adm-nav__sec">{head}</div>}
-            <Link className={on ? 'on' : undefined} href={item.href}>
+            <Link className={on ? 'on' : undefined} href={href}>
               <i aria-hidden="true">{item.icon}</i>
               {label}
               {/* 승인 대기 건수만 라임으로 세운다 — 여기만 사람이 뭔가 해야 하는 숫자다 */}

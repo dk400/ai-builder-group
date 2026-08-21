@@ -283,7 +283,7 @@ create policy builders_update on public.builders for update
 
 drop policy if exists builders_insert on public.builders;
 create policy builders_insert on public.builders for insert
-  with check (public.is_admin());                                  -- FR-A01-02: 자체 가입 없음
+  with check (public.is_admin());                                  -- 회원가입 서버 액션은 service role 사용
 
 -- ── 카테고리 ───────────────────────────────────────────────────────────
 drop policy if exists categories_read on public.categories;
@@ -368,9 +368,9 @@ create policy redirects_write on public.redirects for all
 --    아직 이어지지 않은 행은 그 값이 NULL 이라 자기 자신을 갱신하지 못한다. 닭과 달걀이다.
 --    그래서 RLS 를 지나지 않는 security definer 함수로, auth.users 에 트리거를 건다.
 --
--- 🔴 이것이 자체 회원가입이 되지 않는 이유: **이미 등록된 이메일만 잇는다.** builders 에
---    행이 없으면 아무 일도 일어나지 않고, 앱의 콜백이 그 세션을 즉시 지운다
---    (app/auth/callback/route.ts). 계정 발급은 여전히 관리자 몫이다.
+-- 🔴 구글 로그인은 자동 회원가입 경로가 아니다. **이미 등록된 이메일만 잇는다.** builders 에
+--    행이 없으면 아무 일도 일어나지 않고, 앱의 콜백이 그 세션을 즉시 지운다.
+--    신규 빌더는 /builder/signup 의 검증된 서버 액션에서 신청 계정을 만든다.
 --
 -- ⚠ 이메일은 대소문자를 구분하지 않는다. Google 은 검증된 주소만 넘기므로 소유 확인은
 --   구글 쪽에서 끝났다고 본다. 검증되지 않은 주소를 주는 공급자를 추가한다면 이 가정을
