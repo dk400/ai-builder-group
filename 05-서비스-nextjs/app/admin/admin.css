@@ -419,10 +419,10 @@ body:has(.adm)::after { display: none; }
 .adm-login h1 { margin: 15px 0 3px; font-size: 20px; font-weight: 800; letter-spacing: -0.035em; }
 .adm-login p.lead { margin: 0 0 24px; color: var(--adm-dim); font-size: 14px; }
 .adm-login .abtn { width: 100%; justify-content: center; padding: 12px; font-size: 14.5px; }
-.adm-login__remember { display: flex; align-items: center; justify-content: space-between; gap: 14px;
+.adm-login__remember { display: flex; align-items: center; justify-content: flex-start; gap: 20px;
   margin: -8px 0 20px; color: var(--adm-dim); font-size: 13px; }
 .adm-login__remember label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 650; }
-.adm-login__remember input { width: 17px; height: 17px; margin: 0; accent-color: var(--ink); cursor: pointer; }
+.adm-login__remember input { width: 17px; height: 17px; margin: 0; accent-color: var(--lime); cursor: pointer; }
 .adm-login .foot { margin: 18px 0 0; font-size: 12.5px; color: var(--adm-dim); text-align: center; line-height: 1.7; }
 /* 링크는 주변 글보다 진해야 링크로 읽힌다 — --muted 는 오히려 더 흐렸다 (3.87:1) */
 .adm-login .foot a { color: var(--ink-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
