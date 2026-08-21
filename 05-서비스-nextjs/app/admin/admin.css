@@ -18,7 +18,9 @@ body:has(.adm) { background: var(--paper-3); }
 body:has(.adm)::after { display: none; }
 
 .adm {
-  --adm-nav: 236px; --adm-bar: 34px; color: var(--ink);
+  /* 사이드바 폭 — 표(4e963fe)를 키우고 나니 메뉴만 옛 배율로 남아 작아 보였다.
+     세로로는 어차피 절반이 비므로 글자·간격을 같이 올리고 폭을 그만큼 넓힌다. */
+  --adm-nav: 272px; --adm-bar: 34px; color: var(--ink);
   /* 보조 텍스트 색.
 
      --muted(#807E74)를 쓰고 있었는데 종이 배경(#FBF9F4) 위에서 3.75:1 이라 WCAG AA 의
@@ -62,34 +64,35 @@ body:has(.adm)::after { display: none; }
 .adm-shell { display: grid; grid-template-columns: var(--adm-nav) minmax(0, 1fr); min-height: 100vh; padding-top: var(--adm-bar); }
 
 .adm-nav { position: sticky; top: var(--adm-bar); align-self: start; height: calc(100vh - var(--adm-bar));
-  background: var(--ink); color: var(--paper); display: flex; flex-direction: column; padding: 22px 14px 14px; }
-.adm-nav__brand { display: flex; align-items: center; gap: 9px; padding: 0 10px 20px; font-weight: 800; letter-spacing: -0.03em; font-size: 15px; }
-.adm-nav__brand em { width: 22px; height: 22px; border-radius: 7px; background: var(--lime); color: var(--ink);
-  display: grid; place-items: center; font-style: normal; font-size: 12px; }
-.adm-nav__brand span { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  background: var(--ink); color: var(--paper); display: flex; flex-direction: column; padding: 26px 16px 18px; }
+.adm-nav__brand { display: flex; align-items: center; gap: 10px; padding: 0 12px 24px; font-weight: 800; letter-spacing: -0.03em; font-size: 17px; }
+.adm-nav__brand em { width: 26px; height: 26px; border-radius: 8px; background: var(--lime); color: var(--ink);
+  display: grid; place-items: center; font-style: normal; font-size: 14px; }
+.adm-nav__brand span { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .08em;
   color: var(--lime); border: 1px solid rgba(216,255,61,.42); background: rgba(216,255,61,.14);
-  border-radius: 999px; padding: 3px 9px; }
+  border-radius: 999px; padding: 4px 10px; }
 /* 한글 라벨이라 mono·uppercase·넓은 자간을 걷었다 — 셋 다 라틴 대문자용 장치다 */
-.adm-nav__sec { font-size: 12px; font-weight: 700; letter-spacing: -0.01em;
-  color: rgba(244,241,234,.62); padding: 18px 10px 8px; }
-.adm-nav a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px;
-  color: rgba(244,241,234,.74); text-decoration: none; font-size: 14px; font-weight: 600; transition: background var(--hover), color var(--hover); }
+.adm-nav__sec { font-size: 13.5px; font-weight: 700; letter-spacing: -0.01em;
+  color: rgba(244,241,234,.62); padding: 22px 12px 10px; }
+.adm-nav a { display: flex; align-items: center; gap: 12px; padding: 13px 12px; border-radius: 12px;
+  color: rgba(244,241,234,.74); text-decoration: none; font-size: 16px; font-weight: 600; transition: background var(--hover), color var(--hover); }
 .adm-nav a:hover { background: var(--d-line2); color: var(--paper); }
 .adm-nav a.on { background: var(--paper); color: var(--ink); }
 /* flex 아이템은 min-width:auto 라 글리프가 슬롯보다 넓으면 옆 글자를 밀거나 겹친다.
-   로그아웃 화살표가 실제로 "로"를 덮고 있었다. 폭을 고정하고 넘치면 자른다. */
-.adm-nav a i { font-style: normal; flex: 0 0 17px; width: 17px; text-align: center;
+   로그아웃 화살표가 실제로 "로"를 덮고 있었다. 폭을 고정하고 넘치면 자른다.
+   ⚠ 글자를 키울 때 슬롯도 같이 키워야 한다 — 글리프만 키우면 그 버그가 그대로 돌아온다. */
+.adm-nav a i { font-style: normal; flex: 0 0 20px; width: 20px; text-align: center; font-size: 15px;
   opacity: .85; overflow: hidden; line-height: 1; }
-.adm-nav a .n { margin-left: auto; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+.adm-nav a .n { margin-left: auto; font-family: var(--mono); font-size: 13.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
   background: var(--d-line2); }
 .adm-nav a.on .n { background: var(--paper-3); }
 .adm-nav a .n--hot { background: var(--lime); color: var(--ink); }
-.adm-nav__foot { margin-top: auto; border-top: 1px solid var(--d-line); padding-top: 12px; }
-.adm-who { display: flex; align-items: center; gap: 9px; padding: 8px 10px; }
-.adm-who i { width: 28px; height: 28px; border-radius: 50%; background: var(--d-line2); display: grid; place-items: center;
-  font-style: normal; font-size: 12px; font-weight: 700; color: var(--paper); }
-.adm-who b { display: block; font-size: 13px; }
-.adm-who span { display: block; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .06em; color: rgba(244,241,234,.66); }
+.adm-nav__foot { margin-top: auto; border-top: 1px solid var(--d-line); padding-top: 14px; }
+.adm-who { display: flex; align-items: center; gap: 11px; padding: 10px 12px; }
+.adm-who i { width: 34px; height: 34px; border-radius: 50%; background: var(--d-line2); display: grid; place-items: center;
+  font-style: normal; font-size: 14px; font-weight: 700; color: var(--paper); }
+.adm-who b { display: block; font-size: 15px; }
+.adm-who span { display: block; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; color: rgba(244,241,234,.66); }
 
 /* ── 본문 ── */
 .adm-main { min-width: 0; padding: 0 0 60px; }
@@ -424,9 +427,12 @@ body:has(.adm)::after { display: none; }
   .adm-shell { grid-template-columns: 1fr; }
   .adm-nav { position: static; height: auto; flex-direction: row; align-items: center; gap: 4px;
     overflow-x: auto; padding: 10px 12px; }
-  .adm-nav__brand { padding: 0 8px 0 0; border: 0; }
+  /* 가로 바에서는 브랜드도 flex 아이템이라 눌리면 "AI빌더그룹"이 세 줄로 접힌다.
+     실측: 접힘 때문에 바 높이가 66 → 104px 로 늘었다. 줄이지도 접지도 않는다. */
+  .adm-nav__brand { padding: 0 8px 0 0; border: 0; flex: 0 0 auto; white-space: nowrap; }
   .adm-nav__sec, .adm-nav__foot { display: none; }
-  .adm-nav a { white-space: nowrap; }
+  /* 여기서는 세로가 아니라 가로로 눕는다 — 넓힌 세로 여백을 그대로 두면 상단 바만 두꺼워진다 */
+  .adm-nav a { white-space: nowrap; padding: 9px 12px; }
   .adm-top, .adm-body { padding-left: 18px; padding-right: 18px; }
   .adm-search { margin-left: 0; width: 100%; }
   .adm-search input { width: 100%; box-sizing: border-box; }
