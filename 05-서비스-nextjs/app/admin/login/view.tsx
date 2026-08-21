@@ -103,11 +103,15 @@ export default function LoginView({ configured, next, error, audience }: Props) 
 
             ⚠ 이로써 비밀번호 재설정(FR-A00-05)의 화면 진입점이 하나도 남지 않는다.
               별도 화면을 만들지 않기로 한 조항이라, 되살릴 때도 이 자리에 링크 한 줄이다. */}
-        <p className="foot">
-          <a href={isBuilder ? '/admin/login' : '/builder/login'}>
-            {isBuilder ? '관리자 로그인' : '빌더 로그인'}
-          </a>
-        </p>
+        {/* 역할 전환 링크는 관리자 화면에만 둔다.
+            푸터에서 들어오는 기본 입구가 /admin/login 이라, 빌더가 그리로 잘못 들어왔을 때
+            건너갈 길은 필요하다. 반대 방향은 아니다 — 빌더 화면에 관리자 입구를 걸어 두면
+            권한이 없는 사람에게 문 위치를 가리키는 셈이고, 눌러 봐야 로그인만 실패한다. */}
+        {!isBuilder && (
+          <p className="foot">
+            <a href="/builder/login">빌더 로그인</a>
+          </p>
+        )}
       </div>
     </main>
   )
