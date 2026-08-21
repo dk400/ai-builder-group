@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { asSessionCookie, AUTO_LOGIN_COOKIE } from './auth-cookie'
 import { supabaseEnv } from './env'
 
 /* proxy(구 middleware)에서 세션을 갱신하고 사용자 정보를 돌려준다.
@@ -15,6 +16,7 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const { url, anonKey } = supabaseEnv()
+  const persistentSession = request.cookies.get(AUTO_LOGIN_COOKIE)?.value !== '0'
 
   const supabase = createServerClient(url, anonKey, {
     cookies: {
@@ -27,7 +29,7 @@ export async function updateSession(request: NextRequest) {
         }
         supabaseResponse = NextResponse.next({ request })
         for (const { name, value, options } of cookiesToSet) {
-          supabaseResponse.cookies.set(name, value, options)
+          supabaseResponse.cookies.set(name, value, persistentSession ? options : asSessionCookie(options))
         }
       },
     },

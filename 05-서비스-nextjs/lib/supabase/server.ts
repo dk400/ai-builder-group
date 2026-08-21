@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { asSessionCookie } from './auth-cookie'
 import { supabaseEnv } from './env'
 
 /* 서버 컴포넌트 · 서버 액션용 Supabase 클라이언트.
@@ -14,9 +15,15 @@ import { supabaseEnv } from './env'
    ⚠ 인증 여부를 볼 때 getSession() 을 쓰지 않는다. 그건 쿠키를 그대로 믿는 값이라
      위조될 수 있다. getUser() 는 Supabase 에 물어보고 검증한다. */
 
-export async function createSupabaseServerClient() {
+type ServerClientOptions = {
+  /** false 면 브라우저를 닫을 때 사라지는 세션 쿠키로 로그인한다. */
+  persistentSession?: boolean
+}
+
+export async function createSupabaseServerClient(options: ServerClientOptions = {}) {
   const { url, anonKey } = supabaseEnv()
   const cookieStore = await cookies()
+  const persistentSession = options.persistentSession ?? true
 
   return createServerClient(url, anonKey, {
     cookies: {
@@ -25,8 +32,11 @@ export async function createSupabaseServerClient() {
       },
       setAll(cookiesToSet) {
         try {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options)
+          for (const { name, value, options: cookieOptions } of cookiesToSet) {
+            const sessionOptions = persistentSession
+              ? cookieOptions
+              : asSessionCookie(cookieOptions)
+            cookieStore.set(name, value, sessionOptions)
           }
         } catch {
           /* 서버 컴포넌트 렌더 중이면 여기로 온다. 미들웨어가 갱신을 맡으므로 무시해도 된다 */

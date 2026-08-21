@@ -423,7 +423,6 @@ body:has(.adm)::after { display: none; }
   margin: -8px 0 20px; color: var(--adm-dim); font-size: 13px; }
 .adm-login__remember label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 650; }
 .adm-login__remember input { width: 17px; height: 17px; margin: 0; accent-color: var(--ink); cursor: pointer; }
-.adm-login__session { white-space: nowrap; }
 .adm-login .foot { margin: 18px 0 0; font-size: 12.5px; color: var(--adm-dim); text-align: center; line-height: 1.7; }
 /* 링크는 주변 글보다 진해야 링크로 읽힌다 — --muted 는 오히려 더 흐렸다 (3.87:1) */
 .adm-login .foot a { color: var(--ink-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }

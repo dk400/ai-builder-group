@@ -1,8 +1,9 @@
 'use server'
 
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { AUTO_LOGIN_COOKIE } from '@/lib/supabase/auth-cookie'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { safeLoginPath, safeNext } from './_next'
@@ -67,6 +68,7 @@ const passwordLoginSchema = z.object({
   email: z.email().trim(),
   password: z.string().min(8).max(200),
   next: z.string().optional(),
+  autoLogin: z.literal('on').optional(),
 })
 
 /** 이메일·비밀번호 로그인. 실패 사유는 계정 존재 여부가 드러나지 않게 하나로 합친다. */
@@ -76,6 +78,7 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
     email: formData.get('email'),
     password: formData.get('password'),
     next: formData.get('next')?.toString(),
+    autoLogin: formData.get('autoLogin')?.toString(),
   })
   const next = safeNext(parsed.success ? parsed.data.next : undefined)
   const fail = (reason: string): never =>
@@ -86,8 +89,9 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
     redirect(`${loginPath}?error=credentials&next=${encodeURIComponent(next)}`)
   }
   const credentials = parsed.data
+  const autoLogin = credentials.autoLogin === 'on'
 
-  const supabase = await createSupabaseServerClient()
+  const supabase = await createSupabaseServerClient({ persistentSession: autoLogin })
   const { error } = await supabase.auth.signInWithPassword({
     email: credentials.email,
     password: credentials.password,
@@ -110,6 +114,15 @@ export async function signInWithPassword(formData: FormData): Promise<void> {
     await supabase.auth.signOut()
     fail(builder ? 'inactive' : 'no-account')
   }
+
+  const cookieStore = await cookies()
+  cookieStore.set(AUTO_LOGIN_COOKIE, autoLogin ? '1' : '0', {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    ...(autoLogin ? { maxAge: 60 * 60 * 24 * 365 } : {}),
+  })
 
   redirect(next)
 }

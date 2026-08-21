@@ -20,6 +20,7 @@ export default function LoginView({ configured, next, error, audience }: Props) 
   const isBuilder = audience === 'builder'
   const [email, setEmail] = useState('')
   const [rememberEmail, setRememberEmail] = useState(false)
+  const [autoLogin, setAutoLogin] = useState(true)
 
   useEffect(() => {
     const saved = window.localStorage.getItem(SAVED_EMAIL_KEY)
@@ -90,7 +91,11 @@ export default function LoginView({ configured, next, error, audience }: Props) 
               <input type="checkbox" checked={rememberEmail} onChange={e => setRememberEmail(e.target.checked)} />
               <span>이메일 저장</span>
             </label>
-            <span className="adm-login__session">로그인 상태 자동 유지</span>
+            <label>
+              <input name="autoLogin" type="checkbox" value="on" checked={autoLogin}
+                onChange={e => setAutoLogin(e.target.checked)} />
+              <span>자동 로그인</span>
+            </label>
           </div>
 
           <button className="abtn abtn--ink" type="submit">로그인</button>
