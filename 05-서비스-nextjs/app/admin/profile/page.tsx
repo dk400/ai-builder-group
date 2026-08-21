@@ -3,6 +3,8 @@ import { getViewer } from '@/app/admin/_authz'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { saveMyBuilderProfile } from './actions'
 import ProfileForm, { type Profile } from '@/app/admin/(shell)/builders/profile'
+import AdminNav from '@/app/admin/(shell)/nav'
+import { navCounts } from '@/app/admin/_queries'
 
 const STATUS = {
   draft: ['프로필 작성 중', '필수 정보를 채운 뒤 빌더 승인을 요청하세요.'],
@@ -48,9 +50,13 @@ export default async function MyProfilePage({ searchParams }: {
 
   const sp = await searchParams
   const [statusTitle, statusCopy] = STATUS[viewer.approval]
+  const { counts, myCounts } = await navCounts()
 
   return (
-    <main id="main" className="adm-narrow">
+    <div className="adm-shell">
+      <AdminNav counts={counts} myCounts={myCounts} />
+      <div className="adm-main">
+      <main id="main" className="adm-narrow">
       <div className="adm-top"><div><h1>내 프로필</h1><p className="sub">프로필을 먼저 설정한 뒤 운영 관리자에게 빌더 승인을 요청합니다.</p></div></div>
       <div className="adm-body">
         <div className={`notice notice--approval notice--${viewer.approval}`}>
@@ -62,6 +68,8 @@ export default async function MyProfilePage({ searchParams }: {
 
         <ProfileForm p={profile} canEditAccount={false} action={saveMyBuilderProfile} approval={viewer.approval} />
       </div>
-    </main>
+      </main>
+      </div>
+    </div>
   )
 }
