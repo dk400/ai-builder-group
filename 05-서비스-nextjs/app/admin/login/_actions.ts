@@ -40,6 +40,7 @@ async function callbackOrigin(): Promise<string> {
 
 export async function signInWithGoogle(formData: FormData): Promise<void> {
   const next = safeNext(formData.get('next')?.toString())
+  const loginPath = safeLoginPath(formData.get('loginPath')?.toString())
 
   /* 키가 없으면 목업 모드다 — 이 저장소의 규칙("키가 없으면 연동만 꺼진다")대로
      로그인 화면 전체가 시연용이라 그냥 들여보낸다. proxy.ts 도 같은 조건으로 통과시킨다. */
@@ -49,14 +50,14 @@ export async function signInWithGoogle(formData: FormData): Promise<void> {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${await callbackOrigin()}/auth/callback?next=${encodeURIComponent(next)}`,
+      redirectTo: `${await callbackOrigin()}/auth/callback?next=${encodeURIComponent(next)}&loginPath=${encodeURIComponent(loginPath)}`,
       /* 계정 선택 화면을 항상 띄운다. 개인 구글로 한 번 로그인하면 그 세션이 남아서
          회사 계정으로 바꿀 방법이 화면에 없다 — 실제로 자주 막히는 지점이다. */
       queryParams: { prompt: 'select_account' },
     },
   })
 
-  if (error || !data.url) redirect('/admin/login?error=oauth')
+  if (error || !data.url) redirect(`${loginPath}?error=oauth&next=${encodeURIComponent(next)}`)
 
   /* redirect() 는 예외를 던져 흐름을 끊는다 — 아래에 코드를 두지 말 것 */
   redirect(data.url)

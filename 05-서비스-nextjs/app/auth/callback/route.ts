@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
-import { safeNext } from '@/app/admin/login/_next'
+import { safeLoginPath, safeNext } from '@/app/admin/login/_next'
 
 /* 구글 OAuth 콜백 (FR-A01-01 · FR-A01-02 · FR-A01-05)
 
@@ -14,15 +14,15 @@ import { safeNext } from '@/app/admin/login/_next'
    ⚠ 라우트 핸들러에서는 cookies() 쓰기가 실제 응답에 실린다(서버 컴포넌트와 다른 점).
      세션 쿠키가 여기서 심기므로 createSupabaseServerClient 를 그대로 쓴다. */
 
-const LOGIN = '/admin/login'
-
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const next = safeNext(searchParams.get('next'))
-  const fail = (reason: string) => NextResponse.redirect(`${origin}${LOGIN}?error=${reason}`)
+  const loginPath = safeLoginPath(searchParams.get('loginPath'))
+  const fail = (reason: string) =>
+    NextResponse.redirect(`${origin}${loginPath}?error=${reason}&next=${encodeURIComponent(next)}`)
 
   /* 키가 없는 목업 상태에서는 이 주소로 올 일이 없다. 눌러서 들어왔다면 로그인으로 돌린다 */
-  if (!isSupabaseConfigured) return NextResponse.redirect(`${origin}${LOGIN}`)
+  if (!isSupabaseConfigured) return NextResponse.redirect(`${origin}${loginPath}`)
 
   /* 사용자가 구글 동의 화면에서 취소하면 code 대신 error 가 온다 */
   if (searchParams.get('error')) return fail('oauth')
