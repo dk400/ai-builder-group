@@ -77,7 +77,8 @@ export default function BuildersView({ rows, profiles }: { rows: Row[]; profiles
             {rows.map(r => (
               <tr key={r.slug}>
                 <td className="thumb">
-                  <img src={r.avatar} alt="" loading="lazy" style={{ width: 34, height: 34, borderRadius: '50%' }} />
+                  <img src={r.avatar} alt="" loading="lazy"
+                    style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
                 </td>
                 <td>
                   <Link className="t" href={`/admin/builders/${r.slug}`}>{r.name}</Link>
