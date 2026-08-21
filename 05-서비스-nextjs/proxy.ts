@@ -30,8 +30,48 @@ import { updateSession, redirectKeepingSession } from '@/lib/supabase/session'
 
 const LOGIN_PATH = '/admin/login'
 
+/* 빌더 작업 공간 진입점.
+
+   `/builder` 는 원래 공개 빌더 소개 페이지(P-03)다 — 사이트맵 · llms.txt · GNB · Work 목록 ·
+   Work 상세의 빌더 칩이 전부 이 주소를 가리킨다. 그래서 통째로 어드민으로 바꾸지 않는다.
+   대신 **로그인한 사람에게만** 작업 공간 입구가 되게 한다:
+
+     크롤러 · 비로그인    지금까지와 똑같은 공개 페이지 (정적 생성 · 색인 유지)
+     로그인한 사람        작업 공간으로 이동
+     ?b= 가 붙은 주소     그대로 공개 프로필 (어드민의 '공개 화면 보기' 링크가 이 모양이다)
+
+   ⚠ 역할(빌더냐 관리자냐)은 여기서 보지 않는다. 이 파일 위쪽 주석에 적은 이유 그대로 —
+     역할은 DB 에 있어서 매 요청 조회해야 하고, 미들웨어 세션은 낡을 수 있다.
+     그래서 로그인한 사람은 역할과 무관하게 작업 공간으로 보내고, 무엇을 볼지는 거기서 정한다. */
+const BUILDER_ENTRY = '/builder'
+const WORKSPACE = '/admin/insight'
+
+/* 세션 쿠키가 있을 때만 Supabase 에 물어본다.
+
+   `/builder` 는 공개 페이지라 대부분의 요청이 비로그인이다. 그 요청까지 updateSession() 을
+   태우면 방문자마다 인증 서버 왕복이 하나 붙는다 — 공개 페이지에서 그건 그대로 체감 지연이다.
+   쿠키 이름은 @supabase/ssr 규약(`sb-<프로젝트ref>-auth-token`)을 따른다. */
+function hasSessionCookie(request: NextRequest): boolean {
+  return request.cookies.getAll().some(c => c.name.startsWith('sb-') && c.name.includes('auth-token'))
+}
+
 export async function proxy(request: NextRequest) {
   if (!isSupabaseConfigured) return NextResponse.next()
+
+  if (request.nextUrl.pathname === BUILDER_ENTRY) {
+    if (request.nextUrl.searchParams.has('b')) return NextResponse.next()
+    if (!hasSessionCookie(request)) return NextResponse.next()
+
+    const { response, user } = await updateSession(request)
+    /* 쿠키는 있는데 세션이 죽은 경우다. 공개 페이지를 그대로 보여준다 —
+       공개 주소에서 로그인 화면으로 튕기면 그게 더 이상하다 */
+    if (!user) return response
+
+    const to = request.nextUrl.clone()
+    to.pathname = WORKSPACE
+    to.search = ''
+    return redirectKeepingSession(to, response)
+  }
 
   const { response, user } = await updateSession(request)
   const { pathname, search } = request.nextUrl
@@ -67,6 +107,10 @@ export const config = {
      /preview 를 함께 잡는 이유 — 승인 전 원본(초안 · 승인대기)을 공개 상세와 같은 렌더로
      보여주는 경로다. 주소만 알면 아무나 읽을 수 있으면 그건 "공개 토큰 URL" 이고,
      PRD D3 이 그걸 금지한다(백로그 §A-07 — 미리보기는 인증 필수).
-     robots 차단과 noindex 는 색인을 막을 뿐 접근을 막지 못한다. */
-  matcher: ['/admin/:path*', '/preview/:path*'],
+     robots 차단과 noindex 는 색인을 막을 뿐 접근을 막지 못한다.
+
+     '/builder' 는 **정확히 그 경로 하나만** 잡는다(:path* 를 붙이지 않는다). 하위의
+     /builder/login · /builder/signup 까지 태우면 로그인하러 온 사람을 로그인 전에
+     가로채게 된다. 이 항목의 목적은 진입점 하나를 갈라 주는 것뿐이다. */
+  matcher: ['/admin/:path*', '/preview/:path*', '/builder'],
 }
